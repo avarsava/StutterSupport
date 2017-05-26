@@ -1,5 +1,6 @@
 package com.example.myself.stuttersupport;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,5 +29,10 @@ public class DeepBreatheMenuFragment extends Fragment {
         TextView messageTextView = (TextView) rootView.findViewById(R.id.textView);
         messageTextView.setText(message);
         return rootView;
+    }
+
+    public void buttonClick(View view){
+        Intent intent = new Intent(this.getActivity(), DeepBreatheActivity.class);
+        startActivity(intent);
     }
 }
