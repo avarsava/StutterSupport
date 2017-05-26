@@ -1,13 +1,22 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView style="?android:textAppearanceMedium"
+    android:layout_height="match_parent"
+    tools:context="com.example.myself.stuttersupport.MainMenuActivity">
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        style="?android:textAppearanceMedium"
         android:id="@+id/textView"
         android:padding="16dp"
         android:lineSpacingMultiplier="1.2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/lorem_ipsum" />
-</ScrollView>
+        android:text="@string/lorem_ipsum"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.437" />
+</android.support.constraint.ConstraintLayout>

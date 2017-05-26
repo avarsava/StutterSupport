@@ -23,7 +23,7 @@ public class CarGameMenuFragment extends Fragment {
                              Bundle savedInstanceState){
         String message = getArguments().getString(EXTRA_MESSAGE);
 
-        View rootView = (View) inflater.inflate(R.layout.fragment_settings_screen,
+        View rootView = (View) inflater.inflate(R.layout.fragment_car_menu,
                 container, false);
         TextView messageTextView = (TextView) rootView.findViewById(R.id.textView);
         messageTextView.setText(message);
