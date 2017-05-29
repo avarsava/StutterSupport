@@ -37,9 +37,9 @@ public class MainMenuActivity extends FragmentActivity {
         List<Fragment> fList = new ArrayList<>();
 
         fList.add(SettingsScreenFragment.newInstance("Settings"));
-        fList.add(CarGameMenuFragment.newInstance("Car Game"));
-        fList.add(TrainGameMenuFragment.newInstance("Train Game"));
-        fList.add(DeepBreatheMenuFragment.newInstance("Deep Breathe"));
+        fList.add(GameStarterMenuFragment.newInstance("Car Game"));
+        fList.add(GameStarterMenuFragment.newInstance("Train Game"));
+        fList.add(GameStarterMenuFragment.newInstance("Deep Breathe"));
         fList.add(TrackerFragment.newInstance("Tracker"));
 
         return fList;

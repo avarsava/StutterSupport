@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class DeepBreatheMenuFragment extends Fragment {
+public class GameStarterMenuFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
-    public static final DeepBreatheMenuFragment newInstance(String message){
-        DeepBreatheMenuFragment f = new DeepBreatheMenuFragment();
+    public static final GameStarterMenuFragment newInstance(String message){
+        GameStarterMenuFragment f = new GameStarterMenuFragment();
         Bundle bdl = new Bundle();
         bdl.putString(EXTRA_MESSAGE, message);
         f.setArguments(bdl);
@@ -24,7 +24,7 @@ public class DeepBreatheMenuFragment extends Fragment {
                              Bundle savedInstanceState){
         String message = getArguments().getString(EXTRA_MESSAGE);
 
-        View rootView = (View) inflater.inflate(R.layout.fragment_breathe_menu,
+        View rootView = (View) inflater.inflate(R.layout.fragment_game_starter_menu,
                 container, false);
         TextView messageTextView = (TextView) rootView.findViewById(R.id.textView);
         messageTextView.setText(message);
@@ -32,7 +32,7 @@ public class DeepBreatheMenuFragment extends Fragment {
     }
 
     public void buttonClick(View view){
-        Intent intent = new Intent(this.getActivity(), DeepBreatheActivity.class);
+        Intent intent = new Intent(this.getActivity(), CarGameActivity.class);
         startActivity(intent);
     }
 }
