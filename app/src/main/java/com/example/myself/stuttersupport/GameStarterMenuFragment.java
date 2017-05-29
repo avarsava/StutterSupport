@@ -10,20 +10,19 @@ import android.widget.TextView;
 
 public class GameStarterMenuFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
+    private String message;
+    private Class attachedClass;
 
-    public static final GameStarterMenuFragment newInstance(String message){
+    public static final GameStarterMenuFragment newInstance(String gameName, Class buttonActivity){
         GameStarterMenuFragment f = new GameStarterMenuFragment();
-        Bundle bdl = new Bundle();
-        bdl.putString(EXTRA_MESSAGE, message);
-        f.setArguments(bdl);
+        f.message = gameName;
+        f.attachedClass = buttonActivity;
         return f;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        String message = getArguments().getString(EXTRA_MESSAGE);
-
         View rootView = (View) inflater.inflate(R.layout.fragment_game_starter_menu,
                 container, false);
         TextView messageTextView = (TextView) rootView.findViewById(R.id.textView);
@@ -31,8 +30,11 @@ public class GameStarterMenuFragment extends Fragment {
         return rootView;
     }
 
-    public void buttonClick(View view){
-        Intent intent = new Intent(this.getActivity(), CarGameActivity.class);
-        startActivity(intent);
+    public String getMessage(){
+        return message;
+    }
+
+    public Class getAttachedClass(){
+        return attachedClass;
     }
 }
