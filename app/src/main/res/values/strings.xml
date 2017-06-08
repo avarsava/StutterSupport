@@ -5,4 +5,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lorem_ipsum">\"hey\"</string>
     <string name="startButton">START</string>
+    <string name="breathe_in">Breathe In...</string>
+    <string name="breathe_out">...Breathe Out</string>
 </resources>
