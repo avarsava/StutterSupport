@@ -20,9 +20,9 @@ public class DrawView extends SurfaceView implements Runnable{
     private Thread gameloop = null;
     private SurfaceHolder surface;
     private Paint whitePaint;
-    private Canvas canvas;
+    protected Canvas canvas;
     private volatile boolean running = false;
-    private int frame = 0;
+    protected int frame = 0;
 
     public DrawView(Context context) {
         super(context);
@@ -71,7 +71,7 @@ public class DrawView extends SurfaceView implements Runnable{
         }
     }
 
-    private void doDrawing(){
+    protected void doDrawing(){
         //Don't hardcode the animation! Override this instead
         //draw black background
         canvas.drawColor(Color.BLACK);
