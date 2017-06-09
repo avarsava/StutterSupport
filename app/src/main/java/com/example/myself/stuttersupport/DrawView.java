@@ -2,6 +2,8 @@ package com.example.myself.stuttersupport;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -17,12 +19,16 @@ public class DrawView extends SurfaceView implements Runnable{
     private final int FRAME_DELAY = 10;
     private Thread gameloop = null;
     private SurfaceHolder surface;
+    private Paint whitePaint;
+    private Canvas canvas;
     private volatile boolean running = false;
     private int frame = 0;
 
     public DrawView(Context context) {
         super(context);
         surface = getHolder();
+        whitePaint = new Paint();
+        whitePaint.setColor(Color.WHITE);
     }
 
     @Override
@@ -39,9 +45,10 @@ public class DrawView extends SurfaceView implements Runnable{
             }
 
             //lock canvas to draw onto it
-            Canvas canvas = surface.lockCanvas();
+            canvas = surface.lockCanvas();
 
-            //DRAW ANIMATION HERE
+            //draw the picture
+            doDrawing();
 
             //unlock the canvas
             surface.unlockCanvasAndPost(canvas);
@@ -62,6 +69,14 @@ public class DrawView extends SurfaceView implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    private void doDrawing(){
+        //Don't hardcode the animation! Override this instead
+        //draw black background
+        canvas.drawColor(Color.BLACK);
+        //Draw white circle of increasing size
+        canvas.drawText("OVERRIDE doDrawing()!!", 200f, 200f, whitePaint);
     }
 
     public void resume(){
