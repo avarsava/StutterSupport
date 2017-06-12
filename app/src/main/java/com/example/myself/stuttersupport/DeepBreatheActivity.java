@@ -34,7 +34,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
     private class DeepBreatheView extends DrawView{
         private final long INHALE_DURATION = 7000l;
         private final long EXHALE_DURATION = 11000l;
-        private Paint whitePaint;
+        private Paint whitePaint, blackPaint;
         private STATE currentState;
         private float circleHeight, circleWidth, maxRadius, minRadius;
 
@@ -42,7 +42,9 @@ public class DeepBreatheActivity extends AppCompatActivity {
             super(context);
             currentState = STATE.INHALE;
             whitePaint = new Paint();
+            blackPaint = new Paint();
             whitePaint.setColor(Color.WHITE);
+            blackPaint.setColor(Color.BLACK);
             circleHeight = getScreenHeight()/2;
             circleWidth = getScreenWidth()/2;
             minRadius = 50f; //These will likely get changed later
@@ -57,7 +59,23 @@ public class DeepBreatheActivity extends AppCompatActivity {
             //Draw a white circle
             canvas.drawCircle(circleWidth, circleHeight, animatedRadius(), whitePaint);
 
+            //Draw text over circle
+            canvas.drawText(getInstructions(), circleWidth, circleHeight, blackPaint);
+
             switchStateIfNecessary();
+        }
+
+        private String getInstructions() {
+            String instruction = "";
+            switch(currentState){
+                case INHALE:
+                    instruction = "Breathe in...";
+                    break;
+                case EXHALE:
+                    instruction = "...Breathe out";
+                    break;
+            }
+            return instruction;
         }
 
         private float animatedRadius() {
