@@ -41,19 +41,26 @@ public class DeepBreatheActivity extends AppCompatActivity {
         public DeepBreatheView(Context context) {
             super(context);
             currentState = STATE.INHALE;
-            whitePaint = new Paint();
-            blackPaint = new Paint();
-            whitePaint.setColor(Color.WHITE);
-            blackPaint.setColor(Color.BLACK);
+            setUpPaints();
             circleHeight = getScreenHeight()/2;
             circleWidth = getScreenWidth()/2;
             minRadius = 50f; //These will likely get changed later
             maxRadius = 200f;
         }
 
+        private void setUpPaints() {
+            whitePaint = new Paint();
+            blackPaint = new Paint();
+            whitePaint.setColor(Color.WHITE);
+            blackPaint.setColor(Color.BLACK);
+            blackPaint.setTextSize(50f);
+            blackPaint.setTextAlign(Paint.Align.CENTER);
+        }
+
         @Override
         protected void doDrawing(){
             //Draw a blue background
+            //TODO: This will be a happy breathing man some day
             canvas.drawColor(Color.BLUE);
 
             //Draw a white circle
