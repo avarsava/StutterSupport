@@ -65,10 +65,14 @@ public class DeepBreatheActivity extends AppCompatActivity {
 
             switch(currentState){
                 case INHALE:
-                    newRadius = ((maxRadius - minRadius)*getElapsedTime()/INHALE_DURATION) + minRadius;
+                    newRadius = ((maxRadius - minRadius)*getElapsedTime()/INHALE_DURATION)
+                            + minRadius;
+                    if (newRadius > maxRadius) newRadius = maxRadius;
                     break;
                 case EXHALE:
-                    newRadius = ((minRadius - maxRadius)*getElapsedTime()/EXHALE_DURATION) + maxRadius;
+                    newRadius = ((minRadius - maxRadius)*getElapsedTime()/EXHALE_DURATION)
+                            + maxRadius;
+                    if (newRadius < minRadius) newRadius = minRadius;
                     break;
             }
 
