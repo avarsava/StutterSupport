@@ -43,8 +43,8 @@ public class DeepBreatheActivity extends AppCompatActivity {
             currentState = STATE.INHALE;
             whitePaint = new Paint();
             whitePaint.setColor(Color.WHITE);
-            circleHeight = getScreenHeight()/50;
-            circleWidth = getScreenWidth()/50;
+            circleHeight = getScreenHeight()/2;
+            circleWidth = getScreenWidth()/2;
             minRadius = 50f; //These will likely get changed later
             maxRadius = 200f;
         }
@@ -55,7 +55,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
             canvas.drawColor(Color.BLUE);
 
             //Draw a white circle
-            canvas.drawCircle(circleHeight, circleWidth, animatedRadius(), whitePaint);
+            canvas.drawCircle(circleWidth, circleHeight, animatedRadius(), whitePaint);
 
             switchStateIfNecessary();
         }
