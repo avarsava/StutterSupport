@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class DeepBreatheActivity extends AppCompatActivity {
-    private enum STATES {BREATHEIN, BREATHEOUT}
+    private enum STATE {INHALE, EXHALE}
     private final Long BREATHE_IN_TIME = 7000L;
     private final Long BREATHE_OUT_TIME = 11000L;
     private DrawView screen;
@@ -32,12 +32,21 @@ public class DeepBreatheActivity extends AppCompatActivity {
     }
 
     private class DeepBreatheView extends DrawView{
+        private final long INHALE_DURATION = 7000l;
+        private final long EXHALE_DURATION = 11000l;
         private Paint whitePaint;
+        private STATE currentState;
+        private float circleHeight, circleWidth, maxRadius, minRadius;
 
         public DeepBreatheView(Context context) {
             super(context);
+            currentState = STATE.INHALE;
             whitePaint = new Paint();
             whitePaint.setColor(Color.WHITE);
+            circleHeight = getScreenHeight()/50;
+            circleWidth = getScreenWidth()/50;
+            minRadius = 50f; //These will likely get changed later
+            maxRadius = 200f;
         }
 
         @Override
@@ -46,7 +55,42 @@ public class DeepBreatheActivity extends AppCompatActivity {
             canvas.drawColor(Color.BLUE);
 
             //Draw a white circle
-            canvas.drawCircle(200f, 200f, frame*10, whitePaint);
+            canvas.drawCircle(circleHeight, circleWidth, animatedRadius(), whitePaint);
+
+            switchStateIfNecessary();
+        }
+
+        private float animatedRadius() {
+            float newRadius = 0f;
+
+            switch(currentState){
+                case INHALE:
+                    newRadius = ((maxRadius - minRadius)*getElapsedTime()/INHALE_DURATION) + minRadius;
+                    break;
+                case EXHALE:
+                    newRadius = ((minRadius - maxRadius)*getElapsedTime()/EXHALE_DURATION) + maxRadius;
+                    break;
+            }
+
+            return newRadius;
+        }
+
+        //TODO: There's probably a cleaner way to do this
+        private void switchStateIfNecessary(){
+            switch(currentState){
+                case INHALE:
+                    if (getElapsedTime()/INHALE_DURATION >= 1.0){
+                        currentState = STATE.EXHALE;
+                        resetTimer();
+                    }
+                    break;
+                case EXHALE:
+                    if(getElapsedTime()/EXHALE_DURATION >= 1.0){
+                        currentState = STATE.INHALE;
+                        resetTimer();
+                    }
+                    break;
+            }
         }
     }
 }

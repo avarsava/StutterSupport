@@ -1,11 +1,14 @@
 package com.example.myself.stuttersupport;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.logging.Logger;
 
 /**
  * Created by Myself on 6/9/2017.
@@ -14,15 +17,16 @@ import android.view.SurfaceView;
  * by Jonathan Harbour
  */
 
-public class DrawView extends SurfaceView implements Runnable{
-    private final int FRAME_LIMIT = 10;
-    private final int FRAME_DELAY = 10;
+public abstract class DrawView extends SurfaceView implements Runnable{
+    private final int FRAME_LIMIT = 50;
+    private final int FRAME_DELAY = 50;
     private Thread gameloop = null;
     private SurfaceHolder surface;
     private Paint whitePaint;
     protected Canvas canvas;
     private volatile boolean running = false;
     protected int frame = 0;
+    private long startTime;
 
     public DrawView(Context context) {
         super(context);
@@ -38,6 +42,7 @@ public class DrawView extends SurfaceView implements Runnable{
 
     @Override
     public void run() {
+        resetTimer();
         while(running){
             //if surface is not useable, try again
             if (!surface.getSurface().isValid()){
@@ -71,13 +76,7 @@ public class DrawView extends SurfaceView implements Runnable{
         }
     }
 
-    protected void doDrawing(){
-        //Don't hardcode the animation! Override this instead
-        //draw black background
-        canvas.drawColor(Color.BLACK);
-        //Draw white circle of increasing size
-        canvas.drawText("OVERRIDE doDrawing()!!", 200f, 200f, whitePaint);
-    }
+    protected abstract void doDrawing();
 
     public void resume(){
         running = true;
@@ -94,5 +93,21 @@ public class DrawView extends SurfaceView implements Runnable{
                 //do nothing
             }
         }
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    public void resetTimer(){
+        startTime = System.currentTimeMillis();
+    }
+
+    public long getElapsedTime(){
+        return System.currentTimeMillis() - startTime;
     }
 }
