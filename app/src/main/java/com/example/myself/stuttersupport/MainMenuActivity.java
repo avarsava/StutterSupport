@@ -53,7 +53,12 @@ public class MainMenuActivity extends FragmentActivity {
                 (GameStarterMenuFragment) mPagerAdapter.instantiateItem(mPager,
                         mPager.getCurrentItem());
         Intent intent = new Intent(this, currentFragment.getAttachedClass());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        //TODO: This will update the tracker
     }
 
     /**

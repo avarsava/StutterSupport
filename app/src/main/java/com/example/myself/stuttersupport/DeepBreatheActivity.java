@@ -1,9 +1,12 @@
 package com.example.myself.stuttersupport;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 
 public class DeepBreatheActivity extends AppCompatActivity {
@@ -11,10 +14,12 @@ public class DeepBreatheActivity extends AppCompatActivity {
     private final Long BREATHE_IN_TIME = 7000L;
     private final Long BREATHE_OUT_TIME = 11000L;
     private DrawView screen;
+    private int maxCycles;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        maxCycles = getResources().getInteger(R.integer.DeepBreatheRepeats);
         screen = new DeepBreatheView(this);
         setContentView(screen);
     }
@@ -31,12 +36,28 @@ public class DeepBreatheActivity extends AppCompatActivity {
         screen.pause();
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        screen.pause();
+        screen = null;
+    }
+
+    protected void killIfCountHigh(int cycleCount) {
+        if(cycleCount >= maxCycles) {
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
+
     private class DeepBreatheView extends DrawView{
         private final long INHALE_DURATION = 7000l;
         private final long EXHALE_DURATION = 11000l;
         private Paint whitePaint, blackPaint;
         private STATE currentState;
         private float circleHeight, circleWidth, maxRadius, minRadius;
+        private int cycleCount;
 
         public DeepBreatheView(Context context) {
             super(context);
@@ -46,6 +67,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
             circleWidth = getScreenWidth()/2;
             minRadius = 50f; //These will likely get changed later
             maxRadius = 200f;
+            cycleCount = 0;
         }
 
         private void setUpPaints() {
@@ -70,6 +92,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
             canvas.drawText(getInstructions(), circleWidth, circleHeight, blackPaint);
 
             switchStateIfNecessary();
+            killIfCountHigh(cycleCount);
         }
 
         private String getInstructions() {
@@ -85,6 +108,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
             return instruction;
         }
 
+        //TODO: Probably clean this up
         private float animatedRadius() {
             float newRadius = 0f;
 
@@ -117,6 +141,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
                     if(getElapsedTime()/EXHALE_DURATION >= 1.0){
                         currentState = STATE.INHALE;
                         resetTimer();
+                        cycleCount++;
                     }
                     break;
             }

@@ -89,6 +89,7 @@ public abstract class DrawView extends SurfaceView implements Runnable{
         while(true){
             try{
                 gameloop.join();
+                break;
             } catch(InterruptedException e){
                 //do nothing
             }
