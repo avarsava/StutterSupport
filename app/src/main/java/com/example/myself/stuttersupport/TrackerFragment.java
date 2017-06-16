@@ -1,32 +1,38 @@
 package com.example.myself.stuttersupport;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
-public class TrackerFragment extends Fragment {
-    public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
+import java.util.Calendar;
 
-    public static final TrackerFragment newInstance(String message){
+public class TrackerFragment extends Fragment {
+
+    public static final TrackerFragment newInstance(){
         TrackerFragment f = new TrackerFragment();
-        Bundle bdl = new Bundle();
-        bdl.putString(EXTRA_MESSAGE, message);
-        f.setArguments(bdl);
         return f;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        String message = getArguments().getString(EXTRA_MESSAGE);
-
         View rootView = (View) inflater.inflate(R.layout.fragment_tracker_menu,
                 container, false);
-        TextView messageTextView = (TextView) rootView.findViewById(R.id.textView);
-        messageTextView.setText(message);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        long endOfMonth = cal.getTimeInMillis();
+        cal.set(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        long startOfMonth = cal.getTimeInMillis();
+        CalendarView calView = (CalendarView) rootView.findViewById(R.id.trackerCalendar);
+        calView.setMaxDate(endOfMonth);
+        calView.setMinDate(startOfMonth);
         return rootView;
     }
 }
