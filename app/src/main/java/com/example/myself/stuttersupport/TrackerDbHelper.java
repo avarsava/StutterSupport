@@ -29,7 +29,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table " + TABLE + " (" + C_DATE + " text primary key)";
+        String sql = "create table " + TABLE + " (" + C_DATE + " date primary key)";
         db.execSQL(sql);
         Log.d("TrackerDbHelper", "onCreate w sql: " + sql);
     }
