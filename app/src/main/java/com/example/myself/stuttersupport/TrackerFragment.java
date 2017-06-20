@@ -10,6 +10,8 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 
 public class TrackerFragment extends Fragment {
     private TrackerDbHelper trackerDbHelper;
@@ -25,6 +27,12 @@ public class TrackerFragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(R.layout.fragment_tracker_menu,
                 container, false);
+        HashSet<Date> markedDates = new HashSet<>();
+        markedDates.add(new Date()); //TODO: Not this
+
+        TrackerCalendar cal = ((TrackerCalendar)rootView.findViewById(R.id.tracker_calendar));
+        cal.updateCalendar(markedDates);
+
         return rootView;
     }
 }

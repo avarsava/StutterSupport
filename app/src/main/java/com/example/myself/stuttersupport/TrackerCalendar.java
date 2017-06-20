@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Created by Myself on 6/20/2017.
@@ -24,8 +25,6 @@ public class TrackerCalendar extends LinearLayout
 
     // internal components
     private LinearLayout header;
-    private ImageView btnPrev;
-    private ImageView btnNext;
     private TextView txtDate;
     private GridView grid;
     private Calendar currentDate = Calendar.getInstance();
@@ -60,14 +59,15 @@ public class TrackerCalendar extends LinearLayout
 
         // layout is inflated, assign local variables to components
         header = (LinearLayout)findViewById(R.id.calendar_header);
-        //btnPrev = (ImageView)findViewById(R.id.calendar_prev_button);
-        //btnNext = (ImageView)findViewById(R.id.calendar_next_button);
         txtDate = (TextView)findViewById(R.id.calendar_date_display);
         grid = (GridView)findViewById(R.id.calendar_grid);
     }
 
-    /**
-    private void updateCalendar()
+    public void updateCalendar(){
+        updateCalendar(null);
+    }
+
+    public void updateCalendar(HashSet<Date> dates)
     {
         ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar)currentDate.clone();
@@ -86,11 +86,19 @@ public class TrackerCalendar extends LinearLayout
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        // update grid
-        ((CalendarAdapter)grid.getAdapter()).updateData(cells);
-
         // update title
-        txtDate.setText(sdf.format(currentDate.getTime()));
+        txtDate.setText(getMonthAndYear());
     }
-     **/
+
+    public String getMonthAndYear() {
+        String[] monthNames = new String[]{"January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"};
+        Date currentDate = new Date();
+        int year = currentDate.getYear() + 1900; //Date represents the year as a difference
+        int monthnum = currentDate.getMonth();
+        String month = monthNames[monthnum];
+
+
+        return month + " " + year;
+    }
 }

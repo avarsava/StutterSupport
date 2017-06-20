@@ -31,11 +31,12 @@ https://github.com/ahmed-alamir/CalendarView -->
             android:id="@+id/calendar_date_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
+            android:textAlignment="center"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="#222222"
-            android:text="current date"/>
+            android:text="current date"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
         <!-- android:layout_toRightOf="@+id/calendar_prev_button"
             android:layout_toLeftOf="@+id/calendar_next_button" -->
 

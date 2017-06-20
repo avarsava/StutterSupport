@@ -8,6 +8,7 @@
     tools:layout_editor_absoluteX="0dp">
 
     <com.example.myself.stuttersupport.TrackerCalendar
+        android:id="@+id/tracker_calendar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
