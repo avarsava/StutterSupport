@@ -13,21 +13,4 @@
         android:id="@+id/bottom_guideline"
         app:layout_constraintGuide_percent=".50"
         android:orientation="horizontal"/>
-
-    <CalendarView
-        android:id="@+id/trackerCalendar"
-        android:layout_width="348dp"
-        android:layout_height="0dp"
-        android:maxDate="01/01/2013"
-        android:minDate="09/01/2012"
-        android:minHeight="200dp"
-        android:minWidth="200dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
 </android.support.constraint.ConstraintLayout>

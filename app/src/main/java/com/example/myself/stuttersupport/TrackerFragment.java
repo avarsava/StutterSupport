@@ -12,9 +12,11 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 public class TrackerFragment extends Fragment {
+    private TrackerDbHelper trackerDbHelper;
 
-    public static final TrackerFragment newInstance(){
+    public static final TrackerFragment newInstance(TrackerDbHelper tdbh){
         TrackerFragment f = new TrackerFragment();
+        f.trackerDbHelper = tdbh;
         return f;
     }
 
@@ -23,16 +25,6 @@ public class TrackerFragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(R.layout.fragment_tracker_menu,
                 container, false);
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        long endOfMonth = cal.getTimeInMillis();
-        cal.set(Calendar.DATE, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        long startOfMonth = cal.getTimeInMillis();
-        CalendarView calView = (CalendarView) rootView.findViewById(R.id.trackerCalendar);
-        calView.setMaxDate(endOfMonth);
-        calView.setMinDate(startOfMonth);
         return rootView;
     }
 }
