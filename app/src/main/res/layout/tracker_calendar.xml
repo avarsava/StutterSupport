@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Takes inspiration from
-https://www.toptal.com/android/android-customization-how-to-build-a-ui-component-that-does-what-you-want -->
+https://github.com/ahmed-alamir/CalendarView -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
