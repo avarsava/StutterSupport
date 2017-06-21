@@ -76,23 +76,11 @@ public class MainMenuActivity extends FragmentActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK){
-            SQLiteDatabase db = trackerDbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.clear();
-            String dateString = "";
-            Date currentDate = new Date();
-            dateString = (currentDate.getYear() + 1900) + "-"
-                    + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
-            values.put(TrackerDbHelper.C_DATE, dateString);
-            try {
-                db.insertOrThrow(TrackerDbHelper.TABLE, null, values);
-            } catch (SQLException e){
-                Log.e("DATABASE", "ERROR when adding to DB");
-                e.printStackTrace();
-            }
-            Log.d("DATABASE", "Exiting onActivityResult");
+            trackerDbHelper.addDateToDb();
         }
     }
+
+
 
     /**
      * Pager adapter that represents 5 SettingsScreenFragment objects,

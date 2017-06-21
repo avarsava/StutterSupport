@@ -1,9 +1,14 @@
 package com.example.myself.stuttersupport;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Created by Myself on 6/16/2017.
@@ -42,8 +47,34 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //Temporary and probably bad
+        //TODO: Temporary and probably bad
         db.execSQL("drop table if exists " + TABLE);
         onCreate(db);
+    }
+
+    public void addDateToDb() {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.clear();
+        String dateString = "";
+        Date currentDate = new Date();
+        dateString = (currentDate.getYear() + 1900) + "-"
+                + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+        values.put(C_DATE, dateString);
+        try {
+            db.insertOrThrow(TABLE, null, values);
+        } catch (SQLException e){
+            Log.e("DATABASE", "ERROR when adding to DB");
+            e.printStackTrace();
+        }
+        Log.d("DATABASE", "Exiting onActivityResult");
+    }
+
+    public HashSet<Date> getDates() {
+        HashSet<Date> dates = new HashSet<>();
+
+
+
+        return dates;
     }
 }
