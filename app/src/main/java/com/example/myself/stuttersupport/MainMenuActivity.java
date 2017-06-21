@@ -1,6 +1,11 @@
 package com.example.myself.stuttersupport;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -8,10 +13,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainMenuActivity extends FragmentActivity {
     /**
@@ -24,6 +33,11 @@ public class MainMenuActivity extends FragmentActivity {
      */
     private PagerAdapter mPagerAdapter;
 
+    /**
+     * Tracks completed Activities
+     */
+    protected TrackerDbHelper trackerDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -33,6 +47,9 @@ public class MainMenuActivity extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getFragments());
         mPager.setAdapter(mPagerAdapter);
+
+        //Get the Tracker DB Helper
+        trackerDbHelper = new TrackerDbHelper(this);
     }
 
     private List<Fragment> getFragments(){
@@ -42,7 +59,7 @@ public class MainMenuActivity extends FragmentActivity {
         fList.add(GameStarterMenuFragment.newInstance("Car Game", CarGameActivity.class));
         fList.add(GameStarterMenuFragment.newInstance("Train Game", TrainGameActivity.class));
         fList.add(GameStarterMenuFragment.newInstance("Deep Breathe", DeepBreatheActivity.class));
-        fList.add(TrackerFragment.newInstance("Tracker"));
+        fList.add(TrackerFragment.newInstance(trackerDbHelper));
 
         return fList;
     }
@@ -58,7 +75,21 @@ public class MainMenuActivity extends FragmentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        //TODO: This will update the tracker
+        if(resultCode == RESULT_OK){
+            SQLiteDatabase db = trackerDbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.clear();
+            String dateString = "";
+            dateString = Calendar.YEAR + "-" + Calendar.MONTH + "-" + Calendar.DATE;
+            values.put(TrackerDbHelper.C_DATE, dateString);
+            try {
+                db.insertOrThrow(TrackerDbHelper.TABLE, null, values);
+            } catch (SQLException e){
+                Log.e("DATABASE", "ERROR when adding to DB");
+                e.printStackTrace();
+            }
+            Log.d("DATABASE", "Exiting onActivityResult");
+        }
     }
 
     /**
