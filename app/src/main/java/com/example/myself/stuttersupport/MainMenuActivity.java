@@ -80,7 +80,9 @@ public class MainMenuActivity extends FragmentActivity {
             ContentValues values = new ContentValues();
             values.clear();
             String dateString = "";
-            dateString = Calendar.YEAR + "-" + Calendar.MONTH + "-" + Calendar.DATE;
+            Date currentDate = new Date();
+            dateString = (currentDate.getYear() + 1900) + "-"
+                    + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
             values.put(TrackerDbHelper.C_DATE, dateString);
             try {
                 db.insertOrThrow(TrackerDbHelper.TABLE, null, values);
