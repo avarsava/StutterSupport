@@ -38,18 +38,20 @@ public class MainMenuActivity extends FragmentActivity {
      */
     protected TrackerDbHelper trackerDbHelper;
 
+    private TrackerFragment trackerPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        //Get the Tracker DB Helper
+        trackerDbHelper = new TrackerDbHelper(this);
+
         //Instantiate a ViewPager and a PagerAdapter
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getFragments());
         mPager.setAdapter(mPagerAdapter);
-
-        //Get the Tracker DB Helper
-        trackerDbHelper = new TrackerDbHelper(this);
     }
 
     private List<Fragment> getFragments(){
@@ -59,7 +61,7 @@ public class MainMenuActivity extends FragmentActivity {
         fList.add(GameStarterMenuFragment.newInstance("Car Game", CarGameActivity.class));
         fList.add(GameStarterMenuFragment.newInstance("Train Game", TrainGameActivity.class));
         fList.add(GameStarterMenuFragment.newInstance("Deep Breathe", DeepBreatheActivity.class));
-        fList.add(TrackerFragment.newInstance(trackerDbHelper));
+        fList.add(trackerPage = TrackerFragment.newInstance(trackerDbHelper));
 
         return fList;
     }
@@ -77,6 +79,7 @@ public class MainMenuActivity extends FragmentActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK){
             trackerDbHelper.addDateToDb();
+            trackerPage.refreshCalendar(trackerDbHelper);
         }
     }
 
