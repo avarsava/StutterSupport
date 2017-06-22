@@ -2,6 +2,8 @@ package com.example.myself.stuttersupport;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -59,7 +61,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
         String dateString = "";
         Date currentDate = new Date();
         dateString = (currentDate.getYear() + 1900) + "-"
-                + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+                + (currentDate.getMonth()) + "-" + currentDate.getDate();
         values.put(C_DATE, dateString);
         try {
             db.insertOrThrow(TABLE, null, values);
@@ -68,13 +70,45 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         Log.d("DATABASE", "Exiting onActivityResult");
+        db.close();
     }
 
     public HashSet<Date> getDates() {
         HashSet<Date> dates = new HashSet<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(true, TABLE, null, null, null, null, null, null, null);
+        String strDate;
+        int year, month, date;
+        final int COLUMN_INDEX = 0; //There's only 1 column in this table
 
-
-
+        cursor.moveToFirst();
+        try {
+            if (cursor.isNull(COLUMN_INDEX)) {
+                db.close();
+                return dates;
+            }
+        } catch (CursorIndexOutOfBoundsException e){ //TODO: Is this too hacky?
+            db.close();
+            return dates;
+        }
+        //Past this point, save to assume there's dates in the database
+        do{ //hoo boy alexis you're really pushing it here
+            strDate = cursor.getString(COLUMN_INDEX);
+            year = Integer.parseInt(strDate.substring(0, 4)) - 1900;
+            if (doubleDigitMonth(strDate)){
+                month = Integer.parseInt(strDate.substring(5,7));
+                date = Integer.parseInt(strDate.substring(8));
+            } else {
+                month = Integer.parseInt(String.valueOf(strDate.charAt(5)));
+                date = Integer.parseInt(strDate.substring(7));
+            }
+            dates.add(new Date(year, month, date));
+        } while (cursor.moveToNext());
+        db.close();
         return dates;
+    }
+
+    private boolean doubleDigitMonth(String strDate) {
+        return strDate.charAt(5) == '1' && strDate.charAt(6) != '-';
     }
 }
