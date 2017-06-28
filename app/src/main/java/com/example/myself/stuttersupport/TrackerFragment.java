@@ -15,12 +15,15 @@ import java.util.HashSet;
 
 public class TrackerFragment extends Fragment {
     private TrackerDbHelper trackerDbHelper;
+    private StreakDbHelper streakDbHelper;
 
     public static TrackerCalendar cal;
 
-    public static final TrackerFragment newInstance(TrackerDbHelper tdbh){
+    public static final TrackerFragment newInstance(TrackerDbHelper tdbh,
+                                                    StreakDbHelper sdbh){
         TrackerFragment f = new TrackerFragment();
         f.trackerDbHelper = tdbh;
+        f.streakDbHelper = sdbh;
         return f;
     }
 
