@@ -77,26 +77,26 @@ public class StreakDbHelper extends SQLiteOpenHelper {
     }
 
     public void updateCurrent(int newValue){
-        SQLiteDatabase db = getWritableDatabase();
         int bestStreak = getBest();
         ContentValues newRow = new ContentValues();
 
         newRow.put(C_TYPE, R_CURRENT);
         newRow.put(C_VALUE, newValue);
 
+        SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE, newRow, C_TYPE+"=?", new String[]{R_CURRENT});
         if(newValue > bestStreak) incrementBest();
         db.close();
     }
 
     public void incrementBest(){
-        SQLiteDatabase db = getWritableDatabase();
         int oldBest = getBest();
         ContentValues newRow = new ContentValues();
 
         newRow.put(C_TYPE, R_BEST);
-        newRow.put(C_VALUE, oldBest++);
+        newRow.put(C_VALUE, ++oldBest);
 
+        SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE, newRow, C_TYPE+"=?", new String[]{R_BEST});
         db.close();
     }
@@ -118,7 +118,7 @@ public class StreakDbHelper extends SQLiteOpenHelper {
                 new String[]{row},
                 null, null, null);
         cursor.moveToFirst();
-        value = cursor.getInt(1);
+        value = cursor.getInt(0);
         db.close();
         return value;
     }

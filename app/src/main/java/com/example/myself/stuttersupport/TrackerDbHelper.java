@@ -88,6 +88,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
         Date dateEntry = new Date();
         Calendar cal = Calendar.getInstance();
 
+        dateEntry = clearTime(dateEntry);
         while(dates.contains(dateEntry)){
             newStreak++;
 
@@ -97,6 +98,16 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
         }
 
         sdbh.updateCurrent(newStreak);
+    }
+
+    private Date clearTime(Date dateEntry) {
+        long fullTime = dateEntry.getTime();
+        long millis = fullTime % 1000;
+        Date newDate = new Date(fullTime - millis);
+        newDate.setHours(0);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        return newDate;
     }
 
     public HashSet<Date> getDates() {
