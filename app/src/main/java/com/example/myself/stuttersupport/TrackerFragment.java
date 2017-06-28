@@ -18,6 +18,7 @@ public class TrackerFragment extends Fragment {
     private StreakDbHelper streakDbHelper;
 
     public static TrackerCalendar cal;
+    public static StreakDisplayer streak;
 
     public static final TrackerFragment newInstance(TrackerDbHelper tdbh,
                                                     StreakDbHelper sdbh){
@@ -34,12 +35,18 @@ public class TrackerFragment extends Fragment {
                 container, false);
 
         cal = ((TrackerCalendar)rootView.findViewById(R.id.tracker_calendar));
+        streak = ((StreakDisplayer)rootView.findViewById(R.id.streak_displayer));
         refreshCalendar(trackerDbHelper);
+        refreshStreak(trackerDbHelper, streakDbHelper);
 
         return rootView;
     }
 
     public void refreshCalendar(TrackerDbHelper tdbh){
         cal.updateCalendar(tdbh.getDates());
+    }
+
+    public void refreshStreak(TrackerDbHelper tdbh, StreakDbHelper sdbh) {
+        streak.update(tdbh, sdbh);
     }
 }
