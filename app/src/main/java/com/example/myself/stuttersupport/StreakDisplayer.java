@@ -3,13 +3,13 @@ package com.example.myself.stuttersupport;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * Created by Myself on 6/28/2017.
  */
 
-public class StreakDisplayer extends LinearLayout {
+public class StreakDisplayer extends RelativeLayout {
     public StreakDisplayer(Context context)
     {
         super(context);
