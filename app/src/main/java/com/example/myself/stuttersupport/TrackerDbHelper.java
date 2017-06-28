@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -54,7 +55,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addDateToDb() {
+    public void addDateToDb(StreakDbHelper sdbh) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
@@ -69,8 +70,33 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
             Log.e("DATABASE", "ERROR when adding to DB");
             e.printStackTrace();
         }
-        Log.d("DATABASE", "Exiting onActivityResult");
         db.close();
+
+        updateStreaks(sdbh);
+    }
+
+    /**
+     * By updating current, may update best as a side effect
+     * Calendar is required as it obeys calendar rules when adding and subtracting
+     * Date does not appear to do so.
+     *
+     * @param sdbh Needs to be provided a helper due to Context requirement
+     */
+    private void updateStreaks(StreakDbHelper sdbh) {
+        int newStreak = 0;
+        HashSet<Date> dates = getDates();
+        Date dateEntry = new Date();
+        Calendar cal = Calendar.getInstance();
+
+        while(dates.contains(dateEntry)){
+            newStreak++;
+
+            cal.setTime(dateEntry);
+            cal.add(Calendar.DATE, -1);
+            dateEntry = cal.getTime();
+        }
+
+        sdbh.updateCurrent(newStreak);
     }
 
     public HashSet<Date> getDates() {
