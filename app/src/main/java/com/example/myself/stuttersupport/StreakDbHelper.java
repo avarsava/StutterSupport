@@ -101,17 +101,25 @@ public class StreakDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    private int getBest(){
-        int best;
+    public int getCurrent(){
+        return getValue(R_CURRENT);
+    }
+
+    public int getBest(){
+        return getValue(R_BEST);
+    }
+
+    private int getValue(String row){
+        int value;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE,
                 new String[]{C_VALUE},
                 C_TYPE+"=?",
-                new String[]{R_BEST},
+                new String[]{row},
                 null, null, null);
         cursor.moveToFirst();
-        best = cursor.getInt(1);
+        value = cursor.getInt(1);
         db.close();
-        return best;
+        return value;
     }
 }
