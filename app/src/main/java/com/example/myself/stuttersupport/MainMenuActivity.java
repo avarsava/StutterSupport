@@ -86,6 +86,7 @@ public class MainMenuActivity extends FragmentActivity {
         if(resultCode == RESULT_OK){
             trackerDbHelper.addDateToDb(streakDbHelper);
             trackerPage.refreshCalendar(trackerDbHelper);
+            trackerPage.refreshStreak(trackerDbHelper, streakDbHelper);
         }
     }
 
