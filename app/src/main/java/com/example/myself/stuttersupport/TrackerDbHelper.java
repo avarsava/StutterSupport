@@ -36,7 +36,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table " + TABLE + " (" + C_DATE + " date primary key)";
+        String sql = "CREATE TABLE " + TABLE + " (" + C_DATE + " DATE PRIMARY KEY)";
         db.execSQL(sql);
         Log.d("TrackerDbHelper", "onCreate w sql: " + sql);
     }
@@ -50,7 +50,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //TODO: Temporary and probably bad
-        db.execSQL("drop table if exists " + TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
 
