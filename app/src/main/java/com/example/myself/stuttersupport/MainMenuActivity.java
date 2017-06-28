@@ -38,6 +38,11 @@ public class MainMenuActivity extends FragmentActivity {
      */
     protected TrackerDbHelper trackerDbHelper;
 
+    /**
+     * Tracks historical Activity completion
+     */
+    protected StreakDbHelper streakDbHelper;
+
     private TrackerFragment trackerPage;
 
     @Override
@@ -45,8 +50,9 @@ public class MainMenuActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        //Get the Tracker DB Helper
+        //Get the Tracker & Streak DB Helpers
         trackerDbHelper = new TrackerDbHelper(this);
+        streakDbHelper = new StreakDbHelper(this);
 
         //Instantiate a ViewPager and a PagerAdapter
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -78,7 +84,7 @@ public class MainMenuActivity extends FragmentActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK){
-            trackerDbHelper.addDateToDb();
+            trackerDbHelper.addDateToDb(streakDbHelper);
             trackerPage.refreshCalendar(trackerDbHelper);
         }
     }
