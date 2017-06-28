@@ -82,7 +82,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
      *
      * @param sdbh Needs to be provided a helper due to Context requirement
      */
-    private void updateStreaks(StreakDbHelper sdbh) {
+    public void updateStreaks(StreakDbHelper sdbh) {
         int newStreak = 0;
         HashSet<Date> dates = getDates();
         Date dateEntry = new Date();

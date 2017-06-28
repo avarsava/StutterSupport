@@ -4,12 +4,16 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * Created by Myself on 6/28/2017.
  */
 
 public class StreakDisplayer extends RelativeLayout {
+    private TextView currentStreakView;
+    private TextView bestStreakView;
+
     public StreakDisplayer(Context context)
     {
         super(context);
@@ -36,5 +40,16 @@ public class StreakDisplayer extends RelativeLayout {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         inflater.inflate(R.layout.streak_displayer, this);
+
+        //layout is inflated, assign components to local variables
+        currentStreakView = (TextView)findViewById(R.id.current_streak);
+        bestStreakView = (TextView)findViewById(R.id.best_streak);
+    }
+
+    public void update(TrackerDbHelper tdbh, StreakDbHelper sdbh){
+        tdbh.updateStreaks(sdbh);
+
+        currentStreakView.setText("Current Streak: " + sdbh.getCurrent());
+        bestStreakView.setText("Best Streak: " + sdbh.getBest());
     }
 }

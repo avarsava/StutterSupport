@@ -67,7 +67,7 @@ public class MainMenuActivity extends FragmentActivity {
         fList.add(GameStarterMenuFragment.newInstance("Car Game", CarGameActivity.class));
         fList.add(GameStarterMenuFragment.newInstance("Train Game", TrainGameActivity.class));
         fList.add(GameStarterMenuFragment.newInstance("Deep Breathe", DeepBreatheActivity.class));
-        fList.add(trackerPage = TrackerFragment.newInstance(trackerDbHelper));
+        fList.add(trackerPage = TrackerFragment.newInstance(trackerDbHelper, streakDbHelper));
 
         return fList;
     }
