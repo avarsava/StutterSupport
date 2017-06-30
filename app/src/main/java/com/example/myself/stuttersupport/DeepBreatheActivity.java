@@ -1,25 +1,27 @@
 package com.example.myself.stuttersupport;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 public class DeepBreatheActivity extends AppCompatActivity {
+    private SharedPreferences prefs;
     private enum STATE {INHALE, EXHALE}
-    private final Long BREATHE_IN_TIME = 7000L;
-    private final Long BREATHE_OUT_TIME = 11000L;
     private DrawView screen;
     private int maxCycles;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        maxCycles = getResources().getInteger(R.integer.DeepBreatheRepeats);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        maxCycles = prefs.getInt("noOfBreaths", 1);
         screen = new DeepBreatheView(this);
         setContentView(screen);
     }
@@ -52,8 +54,9 @@ public class DeepBreatheActivity extends AppCompatActivity {
 
 
     private class DeepBreatheView extends DrawView{
-        private final long INHALE_DURATION = 7000l;
-        private final long EXHALE_DURATION = 11000l;
+        SharedPreferences prefs;
+        private final long INHALE_DURATION;
+        private final long EXHALE_DURATION;
         private Paint whitePaint, blackPaint;
         private STATE currentState;
         private float circleHeight, circleWidth, maxRadius, minRadius;
@@ -61,6 +64,9 @@ public class DeepBreatheActivity extends AppCompatActivity {
 
         public DeepBreatheView(Context context) {
             super(context);
+            prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            INHALE_DURATION = (long)prefs.getInt("inhaleLength", 7)*1000;
+            EXHALE_DURATION = (long)prefs.getInt("exhaleLength", 11)*1000;
             currentState = STATE.INHALE;
             setUpPaints();
             circleHeight = getScreenHeight()/2;
