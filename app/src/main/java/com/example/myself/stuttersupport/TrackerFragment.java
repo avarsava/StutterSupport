@@ -1,17 +1,10 @@
 package com.example.myself.stuttersupport;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.TextView;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
 
 public class TrackerFragment extends Fragment {
     private TrackerDbHelper trackerDbHelper;
