@@ -70,12 +70,25 @@ public class MainMenuActivity extends FragmentActivity {
     }
 
     public void buttonClick(View view){
-        //Get the fragment currently on screen so we know which game to launch
-        GameStarterMenuFragment currentFragment =
-                (GameStarterMenuFragment) mPagerAdapter.instantiateItem(mPager,
-                        mPager.getCurrentItem());
-        Intent intent = new Intent(this, currentFragment.getAttachedClass());
-        startActivityForResult(intent, 1);
+        switch(view.getId()){
+            case R.id.startButton:
+                //Get the fragment currently on screen so we know which game to launch
+                GameStarterMenuFragment currentFragment =
+                        (GameStarterMenuFragment) mPagerAdapter.instantiateItem(mPager,
+                                mPager.getCurrentItem());
+                Intent gameIntent = new Intent(this, currentFragment.getAttachedClass());
+                startActivityForResult(gameIntent, 1);
+                break;
+            case R.id.settingsButton:
+                Intent settingsIntent = new Intent(this, SettingsScreenActivity.class);
+                startActivity(settingsIntent);
+                break;
+        }
+
+    }
+
+    public void settingsClick(View view){
+
     }
 
     @Override
@@ -133,7 +146,7 @@ public class MainMenuActivity extends FragmentActivity {
     }
 
     /**
-     * Pager adapter that represents 5 SettingsScreenFragment objects,
+     * Pager adapter that represents 5 SettingsScreenActivity objects,
      * in sequence
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

@@ -19,7 +19,8 @@
         <activity android:name=".MainMenuActivity" />
         <activity android:name=".CarGameActivity" />
         <activity android:name=".TrainGameActivity" />
-        <activity android:name=".DeepBreatheActivity"></activity>
+        <activity android:name=".DeepBreatheActivity"/>
+        <activity android:name=".SettingsScreenActivity" />
     </application>
 
 </manifest>
