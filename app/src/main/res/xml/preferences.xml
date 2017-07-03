@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Deep Breathe inhale length -->
-    <Preference android:title="Inhale Length"
+    <EditTextPreference android:title="Inhale Length"
         android:key="inhaleLength"
-        android:defaultValue="7"/>
+        android:defaultValue="7"
+        android:numeric="integer"
+        android:maxLength="2"/>
 
     <!-- Deep Breathe exhale length -->
-    <Preference android:title="Exhale Length"
+    <EditTextPreference android:title="Exhale Length"
         android:key="exhaleLength"
-        android:defaultValue="11"/>
+        android:defaultValue="11"
+        android:numeric="integer"
+        android:maxLength="2"/>
 
     <!-- Deep Breathe # of Breaths -->
-    <Preference android:title="Number of Breaths"
+    <EditTextPreference android:title="Number of Breaths"
         android:key="noOfBreaths"
-        android:defaultValue="1"/>
+        android:defaultValue="1"
+        android:numeric="integer"
+        android:maxLength="2"/>
 </PreferenceScreen>

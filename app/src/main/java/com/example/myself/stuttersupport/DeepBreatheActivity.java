@@ -21,7 +21,7 @@ public class DeepBreatheActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        maxCycles = prefs.getInt("noOfBreaths", 1);
+        maxCycles = Integer.valueOf(prefs.getString("noOfBreaths", "1"));
         screen = new DeepBreatheView(this);
         setContentView(screen);
     }
@@ -65,8 +65,8 @@ public class DeepBreatheActivity extends AppCompatActivity {
         public DeepBreatheView(Context context) {
             super(context);
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            INHALE_DURATION = (long)prefs.getInt("inhaleLength", 7)*1000;
-            EXHALE_DURATION = (long)prefs.getInt("exhaleLength", 11)*1000;
+            INHALE_DURATION = Long.valueOf(prefs.getString("inhaleLength", "7"))*1000;
+            EXHALE_DURATION = Long.valueOf(prefs.getString("exhaleLength", "11"))*1000;
             currentState = STATE.INHALE;
             setUpPaints();
             circleHeight = getScreenHeight()/2;
