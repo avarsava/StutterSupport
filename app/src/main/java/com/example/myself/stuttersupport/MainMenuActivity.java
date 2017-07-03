@@ -61,9 +61,10 @@ public class MainMenuActivity extends FragmentActivity {
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<>();
 
-        fList.add(GameStarterMenuFragment.newInstance("Car Game", CarGameActivity.class));
-        fList.add(GameStarterMenuFragment.newInstance("Train Game", TrainGameActivity.class));
-        fList.add(GameStarterMenuFragment.newInstance("Deep Breathe", DeepBreatheActivity.class));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu, CarGameActivity.class));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu, TrainGameActivity.class));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_deep_breathe_splash,
+                DeepBreatheActivity.class));
         fList.add(trackerPage = TrackerFragment.newInstance(trackerDbHelper, streakDbHelper));
 
         return fList;

@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 public class GameStarterMenuFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
-    private String message;
+    private int bgResource;
     private Class attachedClass;
 
-    public static final GameStarterMenuFragment newInstance(String gameName, Class buttonActivity){
+    public static final GameStarterMenuFragment newInstance(int pic, Class buttonActivity){
         GameStarterMenuFragment f = new GameStarterMenuFragment();
-        f.message = gameName;
+        f.bgResource = pic;
         f.attachedClass = buttonActivity;
         return f;
     }
@@ -24,13 +24,8 @@ public class GameStarterMenuFragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(R.layout.fragment_game_starter_menu,
                 container, false);
-        TextView messageTextView = (TextView) rootView.findViewById(R.id.textView);
-        messageTextView.setText(message);
+        rootView.setBackgroundDrawable(getResources().getDrawable(bgResource));
         return rootView;
-    }
-
-    public String getMessage(){
-        return message;
     }
 
     public Class getAttachedClass(){
