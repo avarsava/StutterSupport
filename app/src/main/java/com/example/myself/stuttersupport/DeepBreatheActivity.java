@@ -2,12 +2,10 @@ package com.example.myself.stuttersupport;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -57,10 +55,15 @@ public class DeepBreatheActivity extends AppCompatActivity {
         SharedPreferences prefs;
         private final long INHALE_DURATION;
         private final long EXHALE_DURATION;
-        private Paint whitePaint, blackPaint;
+        private Paint circlePaint, textPaint;
         private STATE currentState;
         private float circleHeight, circleWidth, maxRadius, minRadius;
         private int cycleCount;
+        private Drawable background;
+        private final Drawable INHALE_BG =
+                getResources().getDrawable(R.drawable.ic_deep_breathe_inhale);
+        private final Drawable EXHALE_BG =
+                getResources().getDrawable(R.drawable.ic_deep_breathe_exhale);
 
         public DeepBreatheView(Context context) {
             super(context);
@@ -69,33 +72,36 @@ public class DeepBreatheActivity extends AppCompatActivity {
             EXHALE_DURATION = Long.valueOf(prefs.getString("exhaleLength", "11"))*1000;
             currentState = STATE.INHALE;
             setUpPaints();
-            circleHeight = getScreenHeight()/2;
-            circleWidth = getScreenWidth()/2;
-            minRadius = 50f; //These will likely get changed later
-            maxRadius = 200f;
+            float width = getScreenWidth();
+            circleHeight = getScreenHeight()*0.75f;
+            circleWidth = width/2;
+            minRadius = width*0.1f; //These will likely get changed later
+            maxRadius = width*0.3f;
             cycleCount = 0;
         }
 
         private void setUpPaints() {
-            whitePaint = new Paint();
-            blackPaint = new Paint();
-            whitePaint.setColor(Color.WHITE);
-            blackPaint.setColor(Color.BLACK);
-            blackPaint.setTextSize(50f);
-            blackPaint.setTextAlign(Paint.Align.CENTER);
+            circlePaint = new Paint();
+            textPaint = new Paint();
+            circlePaint.setColor(Color.MAGENTA);
+            textPaint.setColor(Color.BLACK);
+            textPaint.setTextSize(50f);
+            textPaint.setTextAlign(Paint.Align.CENTER);
+            background = INHALE_BG;
         }
 
         @Override
         protected void doDrawing(){
-            //Draw a blue background
-            //TODO: This will be a happy breathing man some day
-            canvas.drawColor(Color.BLUE);
+            //Draw the background
+            background.setBounds(0, 0,
+                    getScreenWidth(), getScreenHeight());
+            background.draw(canvas);
 
             //Draw a white circle
-            canvas.drawCircle(circleWidth, circleHeight, animatedRadius(), whitePaint);
+            canvas.drawCircle(circleWidth, circleHeight, animatedRadius(), circlePaint);
 
             //Draw text over circle
-            canvas.drawText(getInstructions(), circleWidth, circleHeight, blackPaint);
+            canvas.drawText(getInstructions(), circleWidth, circleHeight, textPaint);
 
             switchStateIfNecessary();
             killIfCountHigh(cycleCount);
@@ -140,12 +146,14 @@ public class DeepBreatheActivity extends AppCompatActivity {
                 case INHALE:
                     if (getElapsedTime()/INHALE_DURATION >= 1.0){
                         currentState = STATE.EXHALE;
+                        background = EXHALE_BG;
                         resetTimer();
                     }
                     break;
                 case EXHALE:
                     if(getElapsedTime()/EXHALE_DURATION >= 1.0){
                         currentState = STATE.INHALE;
+                        background = INHALE_BG;
                         resetTimer();
                         cycleCount++;
                     }
