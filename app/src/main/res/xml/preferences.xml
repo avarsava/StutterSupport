@@ -4,6 +4,7 @@
     <EditTextPreference android:title="Inhale Length"
         android:key="inhaleLength"
         android:defaultValue="7"
+        android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"/>
 
@@ -11,6 +12,7 @@
     <EditTextPreference android:title="Exhale Length"
         android:key="exhaleLength"
         android:defaultValue="11"
+        android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"/>
 
@@ -18,6 +20,7 @@
     <EditTextPreference android:title="Number of Breaths"
         android:key="noOfBreaths"
         android:defaultValue="1"
+        android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"/>
 </PreferenceScreen>
