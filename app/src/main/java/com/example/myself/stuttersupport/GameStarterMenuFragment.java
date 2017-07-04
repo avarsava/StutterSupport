@@ -5,17 +5,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class GameStarterMenuFragment extends Fragment {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
     private int bgResource;
     private Class attachedClass;
+    private int attachedSettingsFile;
 
-    public static final GameStarterMenuFragment newInstance(int pic, Class buttonActivity){
+    public static final GameStarterMenuFragment newInstance(int pic, Class buttonActivity,
+                                                            int settingsId){
         GameStarterMenuFragment f = new GameStarterMenuFragment();
         f.bgResource = pic;
         f.attachedClass = buttonActivity;
+        f.attachedSettingsFile = settingsId;
         return f;
     }
 
@@ -30,5 +32,9 @@ public class GameStarterMenuFragment extends Fragment {
 
     public Class getAttachedClass(){
         return attachedClass;
+    }
+
+    public int getAttachedSettingsFile() {
+        return attachedSettingsFile;
     }
 }

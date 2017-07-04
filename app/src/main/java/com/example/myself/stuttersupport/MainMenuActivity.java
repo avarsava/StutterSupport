@@ -61,27 +61,33 @@ public class MainMenuActivity extends FragmentActivity {
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<>();
 
-        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu, CarGameActivity.class));
-        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu, TrainGameActivity.class));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu,
+                CarGameActivity.class, R.xml.car_game_prefs));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu,
+                TrainGameActivity.class, R.xml.train_game_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_deep_breathe_splash,
-                DeepBreatheActivity.class));
+                DeepBreatheActivity.class, R.xml.deep_breathe_prefs));
         fList.add(trackerPage = TrackerFragment.newInstance(trackerDbHelper, streakDbHelper));
 
         return fList;
     }
 
     public void buttonClick(View view){
+        //Get the fragment currently on screen so we know which game to launch
+        GameStarterMenuFragment currentFragment =
+                (GameStarterMenuFragment) mPagerAdapter.instantiateItem(mPager,
+                        mPager.getCurrentItem());
+
+        //Handle each type of button
         switch(view.getId()){
             case R.id.startButton:
-                //Get the fragment currently on screen so we know which game to launch
-                GameStarterMenuFragment currentFragment =
-                        (GameStarterMenuFragment) mPagerAdapter.instantiateItem(mPager,
-                                mPager.getCurrentItem());
                 Intent gameIntent = new Intent(this, currentFragment.getAttachedClass());
                 startActivityForResult(gameIntent, 1);
                 break;
             case R.id.settingsButton:
-                Intent settingsIntent = new Intent(this, SettingsScreenActivity.class);
+                Intent settingsIntent = new Intent(this,
+                        SettingsScreenActivity.class);
+                settingsIntent.putExtra("prefs", currentFragment.getAttachedSettingsFile());
                 startActivity(settingsIntent);
                 break;
         }
