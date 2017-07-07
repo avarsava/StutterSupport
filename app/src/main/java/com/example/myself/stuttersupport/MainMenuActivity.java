@@ -12,6 +12,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -97,15 +98,28 @@ public class MainMenuActivity extends FragmentActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK){
+            //Show encouragement
+            showEncouragement();
+
+            //Update streak
             int currentStreak = streakDbHelper.getCurrent();
             trackerDbHelper.addDateToDb(streakDbHelper);
             trackerPage.refreshCalendar(trackerDbHelper);
             trackerPage.refreshStreak(trackerDbHelper, streakDbHelper);
+
+            //Show dialog if milestone is hit
             if(MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak)) {
                 showDialog(this, "Congratulations!", "You've hit a new milestone! " +
                         "Want to share it with the world?");
             }
         }
+    }
+
+    private void showEncouragement() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You're doing great! Keep up the good work!");
+        builder.setNeutralButton("Thanks!", null);
+        builder.show();
     }
 
     private boolean isLargeMilestone(int currentStreak) {
