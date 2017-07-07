@@ -72,14 +72,14 @@ public class MainMenuActivity extends FragmentActivity {
         return fList;
     }
 
-    public void buttonClick(View view){
+    public void buttonClick(View view) {
         //Get the fragment currently on screen so we know which game to launch
         GameStarterMenuFragment currentFragment =
                 (GameStarterMenuFragment) mPagerAdapter.instantiateItem(mPager,
                         mPager.getCurrentItem());
 
         //Handle each type of button
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.startButton:
                 Intent gameIntent = new Intent(this, currentFragment.getAttachedClass());
                 startActivityForResult(gameIntent, 1);
@@ -91,10 +91,6 @@ public class MainMenuActivity extends FragmentActivity {
                 startActivity(settingsIntent);
                 break;
         }
-
-    }
-
-    public void settingsClick(View view){
 
     }
 
