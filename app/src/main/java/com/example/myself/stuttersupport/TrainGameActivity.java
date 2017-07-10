@@ -15,7 +15,7 @@ public class TrainGameActivity extends AppCompatActivity {
 
     private String[] getPair(){
         String[] pair = new String[2];
-        int pairId = Numbers.randomInt(MIN_PAIR, MAX_PAIR);
+        int pairId = Numbers.randInt(MIN_PAIR, MAX_PAIR);
 
         pair[0] = getResources().getStringArray(R.array.calls)[pairId];
         pair[1] = getResources().getStringArray(R.array.resps)[pairId];
