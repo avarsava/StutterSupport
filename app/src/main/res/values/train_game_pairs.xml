@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="call_001">hello</string>
+    <string name="resp_001">goodbye</string>
+
+</resources>
