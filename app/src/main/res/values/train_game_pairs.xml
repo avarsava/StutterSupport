@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="call_1">hello</string>
-    <string name="resp_1">goodbye</string>
+    <string-array name="calls">
+        <item>hello</item>
+    </string-array>
+    <string-array name="resps">
+        <item>goodbye</item>
+    </string-array>
 
 </resources>
