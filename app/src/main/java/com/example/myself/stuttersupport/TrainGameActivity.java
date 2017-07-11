@@ -67,7 +67,9 @@ public class TrainGameActivity extends AppCompatActivity {
         SharedPreferences prefs;
         private STATE currentState;
         private int cycleCount;
+        private final long WAIT_DURATION;
         private String[] currentPair;
+        private String currentString;
         private Paint blackPaint, whitePaint;
 
 
@@ -75,8 +77,10 @@ public class TrainGameActivity extends AppCompatActivity {
             super(context);
             setUpPaints();
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            WAIT_DURATION = Long.valueOf(prefs.getString("waitTime", "1"))*1000;
             currentState = STATE.CALL;
             currentPair = getPair();
+            currentString = currentPair[0];
             cycleCount = 0;
         }
 
@@ -88,17 +92,33 @@ public class TrainGameActivity extends AppCompatActivity {
                     getScreenHeight(),
                     whitePaint);
 
-            //Write call
-            canvas.drawText(currentPair[0],
+            //Write current String
+            canvas.drawText(currentString,
                     getScreenWidth()/2,
                     getScreenHeight()/2,
                     blackPaint);
 
-            //Write resp
-            canvas.drawText(currentPair[1],
-                    getScreenWidth()/2,
-                    (getScreenHeight()/2) + 100,
-                    blackPaint);
+            switchStateIfNecessary();
+            killIfCountHigh(cycleCount);
+        }
+
+        private void switchStateIfNecessary(){
+            switch(currentState){
+                case CALL:
+                    if(true){ //TODO: Add this ones own wait
+                        currentState = STATE.WAIT;
+                        resetTimer();
+                    }
+                    break;
+                case WAIT:
+                    if(getElapsedTime()/WAIT_DURATION >= 1.0){
+                        currentState = STATE.RESP;
+                        currentString = currentPair[1];
+                    }
+                    break;
+                case RESP:
+                    break;
+            }
         }
 
         private void setUpPaints(){

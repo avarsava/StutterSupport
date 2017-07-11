@@ -7,4 +7,12 @@
         android:inputType="number"
         android:numeric="integer"
         android:maxLength="2" />
+
+    <!-- How long to wait before showing response -->
+    <EditTextPreference android:title="Wait Time"
+        android:key="waitTime"
+        android:defaultValue="1"
+        android:inputType="number"
+        android:numeric="integer"
+        android:maxLength="2" />
 </PreferenceScreen>
