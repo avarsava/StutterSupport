@@ -7,8 +7,10 @@ import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 
-public class TrainGameActivity extends AppCompatActivity {
+public class TrainGameActivity extends AppCompatActivity{
     private final int MIN_PAIR = 1;
     private final int MAX_PAIR = 1;
     private enum STATE {CALL, WAIT, RESP};
@@ -63,25 +65,38 @@ public class TrainGameActivity extends AppCompatActivity {
         return pair;
     }
 
-    private class TrainGameView extends DrawView {
+    protected class TrainGameView extends DrawView {
         SharedPreferences prefs;
         private STATE currentState;
         private int cycleCount;
+        private final long CALL_DURATION = 3000L;
         private final long WAIT_DURATION;
+        private final long RESP_DURATION = 3000L;
+        private final long CANCEL_DURATION = 3000L;
         private String[] currentPair;
         private String currentString;
         private Paint blackPaint, whitePaint;
+        private boolean successful = false;
 
 
         public TrainGameView(Context context) {
             super(context);
+            this.setOnTouchListener(new TrainTouchListener());
             setUpPaints();
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            WAIT_DURATION = Long.valueOf(prefs.getString("waitTime", "1"))*1000;
+            WAIT_DURATION = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
             currentState = STATE.CALL;
             currentPair = getPair();
             currentString = currentPair[0];
             cycleCount = 0;
+        }
+
+        public STATE getCurrentState(){
+            return currentState;
+        }
+
+        public void setCurrentString(String newString){
+            currentString = newString;
         }
 
         protected void doDrawing(){
@@ -105,8 +120,9 @@ public class TrainGameActivity extends AppCompatActivity {
         private void switchStateIfNecessary(){
             switch(currentState){
                 case CALL:
-                    if(true){ //TODO: Add this ones own wait
+                    if(getElapsedTime()/CALL_DURATION >= 1.0){
                         currentState = STATE.WAIT;
+                        currentString = "";
                         resetTimer();
                     }
                     break;
@@ -114,9 +130,18 @@ public class TrainGameActivity extends AppCompatActivity {
                     if(getElapsedTime()/WAIT_DURATION >= 1.0){
                         currentState = STATE.RESP;
                         currentString = currentPair[1];
+                        resetTimer();
                     }
                     break;
                 case RESP:
+                    if(getElapsedTime()/RESP_DURATION >= 1.0){
+                        if(!successful){
+                            cancelCycle();
+                        }
+                        currentState = STATE.CALL;
+                        resetTimer();
+                        cycleCount++;
+                    }
                     break;
             }
         }
@@ -126,6 +151,41 @@ public class TrainGameActivity extends AppCompatActivity {
             whitePaint = new Paint();
             blackPaint.setColor(Color.BLACK);
             whitePaint.setColor(Color.WHITE);
+        }
+
+        public void cancelCycle() {
+            resetTimer();
+            while(getElapsedTime()/CANCEL_DURATION < 1.0){
+                //TODO: Is there a cleaner way to wait?
+            }
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+
+        public void markSuccessful() {
+            successful = true;
+        }
+    }
+
+    private class TrainTouchListener implements View.OnTouchListener{
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            TrainGameView tgv = (TrainGameView) v;
+            STATE currentState = tgv.getCurrentState();
+
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if(currentState == STATE.CALL || currentState == STATE.WAIT){
+                    tgv.setCurrentString("HOLD UR HORSES");
+                    tgv.cancelCycle();
+                } else {
+                    tgv.setCurrentString("GOOD JOB!!");
+                    tgv.markSuccessful();
+                }
+                return true;
+            }
+
+            return false;
         }
     }
 }
