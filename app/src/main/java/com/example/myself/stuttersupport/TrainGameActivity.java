@@ -141,6 +141,7 @@ public class TrainGameActivity extends AppCompatActivity{
                         currentState = STATE.CALL;
                         resetTimer();
                         cycleCount++;
+                        successful = false;
                     }
                     break;
             }
