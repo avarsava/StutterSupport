@@ -2,6 +2,8 @@ package com.example.myself.stuttersupport;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,7 +55,7 @@ public class TrainGameActivity extends AppCompatActivity {
 
     private String[] getPair(){
         String[] pair = new String[2];
-        int pairId = Numbers.randInt(MIN_PAIR, MAX_PAIR);
+        int pairId = Numbers.randInt(MIN_PAIR, MAX_PAIR) - 1;
 
         pair[0] = getResources().getStringArray(R.array.calls)[pairId];
         pair[1] = getResources().getStringArray(R.array.resps)[pairId];
@@ -62,12 +64,48 @@ public class TrainGameActivity extends AppCompatActivity {
     }
 
     private class TrainGameView extends DrawView {
+        SharedPreferences prefs;
+        private STATE currentState;
+        private int cycleCount;
+        private String[] currentPair;
+        private Paint blackPaint, whitePaint;
+
+
         public TrainGameView(Context context) {
             super(context);
+            setUpPaints();
+            prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            currentState = STATE.CALL;
+            currentPair = getPair();
+            cycleCount = 0;
         }
 
         protected void doDrawing(){
-            
+            //draw bg
+            canvas.drawRect(0,
+                    0,
+                    getScreenWidth(),
+                    getScreenHeight(),
+                    whitePaint);
+
+            //Write call
+            canvas.drawText(currentPair[0],
+                    getScreenWidth()/2,
+                    getScreenHeight()/2,
+                    blackPaint);
+
+            //Write resp
+            canvas.drawText(currentPair[1],
+                    getScreenWidth()/2,
+                    (getScreenHeight()/2) + 100,
+                    blackPaint);
+        }
+
+        private void setUpPaints(){
+            blackPaint = new Paint();
+            whitePaint = new Paint();
+            blackPaint.setColor(Color.BLACK);
+            whitePaint.setColor(Color.WHITE);
         }
     }
 }
