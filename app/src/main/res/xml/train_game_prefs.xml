@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Number of pairs to go through -->
+    <EditTextPreference android:title="Number of Rounds"
+        android:key="noOfPairs"
+        android:defaultValue="1"
+        android:inputType="number"
+        android:numeric="integer"
+        android:maxLength="2" />
 
+    <!-- How long to wait before showing response -->
+    <EditTextPreference android:title="Wait Time"
+        android:key="waitTime"
+        android:defaultValue="10"
+        android:inputType="number"
+        android:numeric="integer"
+        android:maxLength="2" />
 </PreferenceScreen>
