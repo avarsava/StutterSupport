@@ -33,7 +33,7 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
     private enum STATE {CALL, WAIT, RESP};
 
     private SharedPreferences prefs;
-    private DrawView screen;
+    private TrainGameView screen;
     private SpeechRecognizer recognizer;
     private int maxCycles;
 
@@ -95,12 +95,14 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
             return;
         }
 
-        //TODO: Have this affect the game
         String text = hypothesis.getHypstr();
         if(text.equals("hello")){
-            Toast.makeText(getApplicationContext(), "Hello!", Toast.LENGTH_SHORT).show();
-            resetRecognizer();
+            processSpeech(true);
+        } else {
+            //TODO: I don't think this ever gets reached. Maybe use onResult for this?
+            processSpeech(false);
         }
+        resetRecognizer();
     }
 
     @Override
@@ -153,7 +155,20 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
 
         //Switch to keyword search
         //TODO: get the word we're looking for from the pair
+        //TODO: does this mean it won't detect any other words?
         recognizer.addKeyphraseSearch("kws","hello");
+    }
+
+    private void processSpeech(boolean correct){
+        STATE phase = screen.getCurrentState();
+
+        if(phase == STATE.RESP && correct){
+            screen.setCurrentString("Good Job!");
+            screen.markSuccessful();
+        } else {
+            screen.setCurrentString("Hold on there bucko!");
+            screen.cancelCycle();
+        }
     }
 
     private void resetRecognizer() {
@@ -279,28 +294,6 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
 
         public void markSuccessful() {
             successful = true;
-        }
-    }
-
-    private class TrainTouchListener implements View.OnTouchListener{
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            TrainGameView tgv = (TrainGameView) v;
-            STATE currentState = tgv.getCurrentState();
-
-            if(event.getAction() == MotionEvent.ACTION_DOWN){
-                if(currentState == STATE.CALL || currentState == STATE.WAIT){
-                    tgv.setCurrentString("HOLD UR HORSES");
-                    tgv.cancelCycle();
-                } else {
-                    tgv.setCurrentString("GOOD JOB!!");
-                    tgv.markSuccessful();
-                }
-                return true;
-            }
-
-            return false;
         }
     }
 }
