@@ -1,24 +1,41 @@
 package com.example.myself.stuttersupport;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
-public class TrainGameActivity extends AppCompatActivity{
+import java.io.File;
+import java.io.IOException;
+
+import edu.cmu.pocketsphinx.Assets;
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
+import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
+
+public class TrainGameActivity extends AppCompatActivity implements RecognitionListener{
     private final int MIN_PAIR = 1;
     private final int MAX_PAIR = 1;
+    private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
+
     private enum STATE {CALL, WAIT, RESP};
 
     private SharedPreferences prefs;
     private DrawView screen;
+    private SpeechRecognizer recognizer;
     private int maxCycles;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +44,16 @@ public class TrainGameActivity extends AppCompatActivity{
         maxCycles = Integer.valueOf(prefs.getString("noOfPairs", "1"));
         screen = new TrainGameView(this);
         setContentView(screen);
+
+        //Speech recognizer permission setup
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_RECORD_AUDIO);
+            return;
+        }
+
+        //set up speech recognition
+        runRecognizerSetup();
     }
 
     @Override
@@ -46,6 +73,92 @@ public class TrainGameActivity extends AppCompatActivity{
         super.onDestroy();
         screen.pause();
         screen = null;
+        if(recognizer != null){
+            recognizer.cancel();
+            recognizer.shutdown();
+        }
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+        //nothing
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+        //nothing
+    }
+
+    @Override
+    public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis == null){
+            return;
+        }
+
+        //TODO: Have this affect the game
+        String text = hypothesis.getHypstr();
+        if(text.equals("hello")){
+            Toast.makeText(getApplicationContext(), "Hello!", Toast.LENGTH_SHORT).show();
+            resetRecognizer();
+        }
+    }
+
+    @Override
+    public void onResult(Hypothesis hypothesis) {
+        //nothing
+    }
+
+    @Override
+    public void onError(Exception e) {
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTimeout() {
+        //nothing
+    }
+
+    private void runRecognizerSetup() {
+        new AsyncTask<Void, Void, Exception>() {
+            protected Exception doInBackground(Void... params) {
+                try {
+                    Assets assets = new Assets(TrainGameActivity.this);
+                    File assetDir = assets.syncAssets();
+                    setupRecognizer(assetDir);
+                } catch (IOException e) {
+                    return e;
+                }
+                return null;
+            }
+
+            protected void onPostExecute(Exception result){
+                if (result != null){
+                    Toast.makeText(getApplicationContext(),
+                            "Failed to init recognizer!", Toast.LENGTH_SHORT).show();
+                } else {
+                    recognizer.startListening("kws");
+                }
+            }
+        }.execute();
+    }
+
+    private void setupRecognizer(File assetsDir) throws IOException{
+        //Set up recognizer
+        recognizer = SpeechRecognizerSetup.defaultSetup()
+                .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                .setRawLogDir(assetsDir)
+                .getRecognizer();
+        recognizer.addListener(this);
+
+        //Switch to keyword search
+        //TODO: get the word we're looking for from the pair
+        recognizer.addKeyphraseSearch("kws","hello");
+    }
+
+    private void resetRecognizer() {
+        recognizer.stop();
+        recognizer.startListening("kws");
     }
 
     protected void killIfCountHigh(int cycleCount) {
@@ -81,7 +194,6 @@ public class TrainGameActivity extends AppCompatActivity{
 
         public TrainGameView(Context context) {
             super(context);
-            this.setOnTouchListener(new TrainTouchListener());
             setUpPaints();
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             WAIT_DURATION = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
@@ -108,11 +220,13 @@ public class TrainGameActivity extends AppCompatActivity{
                     whitePaint);
 
             //Write current String
+            //TODO: This should be more drawing stuff
             canvas.drawText(currentString,
                     getScreenWidth()/2,
                     getScreenHeight()/2,
                     blackPaint);
 
+            //cycle end logic
             switchStateIfNecessary();
             killIfCountHigh(cycleCount);
         }
