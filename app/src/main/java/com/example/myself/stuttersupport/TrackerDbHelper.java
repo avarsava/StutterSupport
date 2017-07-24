@@ -19,8 +19,6 @@ import java.util.HashSet;
  * Based off DbHelper.java from Learning Android by Marko Gargenta
  */
 
-//TODO: Refactor so StreakDbHelper & TrackerDbHelper have a parent
-
 public class TrackerDbHelper extends DatabaseHelper {
     public static final String C_DATE = "date";
 
