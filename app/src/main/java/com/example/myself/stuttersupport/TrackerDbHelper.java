@@ -21,16 +21,11 @@ import java.util.HashSet;
 
 //TODO: Refactor so StreakDbHelper & TrackerDbHelper have a parent
 
-public class TrackerDbHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "tracker.db";
-    private static final int DB_VERSION = 1;
-    public static final String TABLE = "tracker";
+public class TrackerDbHelper extends DatabaseHelper {
     public static final String C_DATE = "date";
-    Context context;
 
     public TrackerDbHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
-        this.context = context;
+        super(context, "tracker.db", "tracker");
     }
 
     /**
@@ -42,18 +37,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
         String sql = "CREATE TABLE " + TABLE + " (" + C_DATE + " DATE PRIMARY KEY)";
         db.execSQL(sql);
         Log.d("TrackerDbHelper", "onCreate w sql: " + sql);
-    }
-
-    /**
-     * Called whenever the database receives an update
-     * @param db
-     * @param oldVersion
-     * @param newVersion
-     */
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
-        onCreate(db);
     }
 
     public void addDateToDb(StreakDbHelper sdbh) {

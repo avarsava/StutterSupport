@@ -14,19 +14,14 @@ import android.util.Log;
  * Based off DbHelper.java from Learning Android by Marko Gargenta
  */
 
-public class StreakDbHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "streak.db";
-    private static final int DB_VERSION = 1;
-    public static final String TABLE = "streak";
+public class StreakDbHelper extends DatabaseHelper {
     public static final String C_TYPE = "type";
     public static final String C_VALUE = "value";
     public static final String R_CURRENT = "current";
     public static final String R_BEST = "best";
-    Context context;
 
     public StreakDbHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
-        this.context = context;
+        super(context, "streak.db", "streak");
     }
 
     /**
@@ -57,18 +52,6 @@ public class StreakDbHelper extends SQLiteOpenHelper {
             Log.e("DATABASE", "ERROR when adding to DB");
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Called whenever the database receives an update
-     * @param db
-     * @param oldVersion
-     * @param newVersion
-     */
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
-        onCreate(db);
     }
 
     public void updateCurrent(int newValue){
