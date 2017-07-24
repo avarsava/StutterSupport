@@ -120,7 +120,6 @@ public class DeepBreatheActivity extends AppCompatActivity {
             return instruction;
         }
 
-        //TODO: Probably clean this up
         private float animatedRadius() {
             float newRadius = 0f;
 
@@ -140,7 +139,6 @@ public class DeepBreatheActivity extends AppCompatActivity {
             return newRadius;
         }
 
-        //TODO: There's probably a cleaner way to do this
         private void switchStateIfNecessary(){
             switch(currentState){
                 case INHALE:

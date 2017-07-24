@@ -62,7 +62,6 @@ public abstract class DrawView extends SurfaceView implements Runnable{
             frame++;
 
             //reset the frame if it's over our limit
-            //TODO: Can advancing the frame and this check be done at the same time?
             if (frame > FRAME_LIMIT){
                 frame = 0;
             }

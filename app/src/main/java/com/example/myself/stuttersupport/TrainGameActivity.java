@@ -23,6 +23,7 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
+//TODO: Refactor this whole thing, the screen keeping track of the current String pair does NOT make sense
 public class TrainGameActivity extends AppCompatActivity implements RecognitionListener{
     private final int MIN_PAIR = 1;
     private final int MAX_PAIR = 1;
@@ -94,7 +95,7 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
         }
 
         String text = hypothesis.getHypstr();
-        if(text.equals("hello")){
+        if(text.equals(screen.getCurrentPair()[1])){
             processSpeech(true);
         } else {
             //TODO: I don't think this ever gets reached. Maybe use onResult for this?
@@ -152,9 +153,8 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
         recognizer.addListener(this);
 
         //Switch to keyword search
-        //TODO: get the word we're looking for from the pair
-        //TODO: does this mean it won't detect any other words?
-        recognizer.addKeyphraseSearch("kws","hello");
+        //TODO: This means it won't detect any other words. Figure out how to have that happen
+        recognizer.addKeyphraseSearch("kws", screen.getCurrentPair()[1]);
     }
 
     private void processSpeech(boolean correct){
@@ -214,6 +214,10 @@ public class TrainGameActivity extends AppCompatActivity implements RecognitionL
             currentPair = getPair();
             currentString = currentPair[0];
             cycleCount = 0;
+        }
+
+        public String[] getCurrentPair(){
+            return currentPair;
         }
 
         public STATE getCurrentState(){

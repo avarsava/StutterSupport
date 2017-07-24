@@ -67,7 +67,6 @@ public class StreakDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //TODO: Temporary and probably bad
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }

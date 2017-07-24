@@ -19,6 +19,8 @@ import java.util.HashSet;
  * Based off DbHelper.java from Learning Android by Marko Gargenta
  */
 
+//TODO: Refactor so StreakDbHelper & TrackerDbHelper have a parent
+
 public class TrackerDbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "tracker.db";
     private static final int DB_VERSION = 1;
@@ -50,7 +52,6 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //TODO: Temporary and probably bad
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
@@ -124,7 +125,7 @@ public class TrackerDbHelper extends SQLiteOpenHelper {
                 db.close();
                 return dates;
             }
-        } catch (CursorIndexOutOfBoundsException e){ //TODO: Is this too hacky?
+        } catch (CursorIndexOutOfBoundsException e){
             db.close();
             return dates;
         }
