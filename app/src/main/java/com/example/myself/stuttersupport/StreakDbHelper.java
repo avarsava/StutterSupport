@@ -3,14 +3,10 @@ package com.example.myself.stuttersupport;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import java.util.Date;
-import java.util.HashSet;
 
 /**
  * Created by Myself on 6/16/2017.
