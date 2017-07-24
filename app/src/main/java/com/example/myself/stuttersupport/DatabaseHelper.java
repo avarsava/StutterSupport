@@ -12,13 +12,11 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
     protected final String DB_NAME;
     protected final String TABLE;
     private static final int DB_VERSION = 1;
-    Context context; //TODO: Why do I need this
 
     public DatabaseHelper(Context context, String dbname, String table){
         super(context, dbname, null, DB_VERSION);
         this.DB_NAME = dbname;
         this.TABLE = table;
-        this.context = context;
     }
 
     @Override
