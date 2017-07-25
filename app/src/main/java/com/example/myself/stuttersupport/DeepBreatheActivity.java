@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 public class DeepBreatheActivity extends GameActivity {
-    private final Drawable INHALE_BG =
-            getResources().getDrawable(R.drawable.ic_deep_breathe_inhale);
-    private final Drawable EXHALE_BG =
-            getResources().getDrawable(R.drawable.ic_deep_breathe_exhale);
+    private Drawable inhaleBg;
+    private Drawable exhaleBg;
 
     private enum STATE {INHALE, EXHALE}
 
@@ -27,6 +25,10 @@ public class DeepBreatheActivity extends GameActivity {
         maxCycles = Integer.valueOf(prefs.getString("noOfBreaths", "1"));
         inhaleDuration = Long.valueOf(prefs.getString("inhaleLength", "7")) * 1000;
         exhaleDuration = Long.valueOf(prefs.getString("exhaleLength", "11")) * 1000;
+        inhaleBg =
+                getResources().getDrawable(R.drawable.ic_deep_breathe_inhale);
+        exhaleBg =
+                getResources().getDrawable(R.drawable.ic_deep_breathe_exhale);
         screen = new DeepBreatheView(this, this);
         setContentView(screen);
     }
@@ -49,14 +51,14 @@ public class DeepBreatheActivity extends GameActivity {
             case INHALE:
                 if (getElapsedTime() / inhaleDuration >= 1.0) {
                     currentState = STATE.EXHALE;
-                    screen.setBackgroundImage(EXHALE_BG);
+                    screen.setBackgroundImage(exhaleBg);
                     resetTimer();
                 }
                 break;
             case EXHALE:
                 if (getElapsedTime() / exhaleDuration >= 1.0) {
                     currentState = STATE.INHALE;
-                    screen.setBackgroundImage(INHALE_BG);
+                    screen.setBackgroundImage(inhaleBg);
                     resetTimer();
                     cycleCount++;
                 }
@@ -86,7 +88,7 @@ public class DeepBreatheActivity extends GameActivity {
             textPaint.setColor(Color.BLACK);
             textPaint.setTextSize(50f);
             textPaint.setTextAlign(Paint.Align.CENTER);
-            background = INHALE_BG;
+            background = inhaleBg;
         }
 
         @Override
