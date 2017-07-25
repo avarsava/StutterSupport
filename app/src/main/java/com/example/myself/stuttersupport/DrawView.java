@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -20,16 +21,20 @@ import java.util.logging.Logger;
 public abstract class DrawView extends SurfaceView implements Runnable{
     private final int FRAME_LIMIT = 50;
     private final int FRAME_DELAY = 50;
+
+    private volatile boolean running = false;
     private Thread gameloop = null;
+    private GameActivity gameActivity;
     private SurfaceHolder surface;
     private Paint whitePaint;
-    protected Canvas canvas;
-    private volatile boolean running = false;
-    protected int frame = 0;
-    private long startTime;
 
-    public DrawView(Context context) {
+    protected int frame = 0;
+    protected Drawable background;
+    protected Canvas canvas;
+
+    public DrawView(Context context, GameActivity ga) {
         super(context);
+        this.gameActivity = ga;
         surface = getHolder();
         whitePaint = new Paint();
         whitePaint.setColor(Color.WHITE);
@@ -42,7 +47,7 @@ public abstract class DrawView extends SurfaceView implements Runnable{
 
     @Override
     public void run() {
-        resetTimer();
+        gameActivity.resetTimer();
         while(running){
             //if surface is not useable, try again
             if (!surface.getSurface().isValid()){
@@ -77,10 +82,16 @@ public abstract class DrawView extends SurfaceView implements Runnable{
 
     protected abstract void doDrawing();
 
-    public void resume(){
-        running = true;
-        gameloop = new Thread(this);
-        gameloop.start();
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public void setBackgroundImage(Drawable newBg){
+        background = newBg;
     }
 
     public void pause(){
@@ -95,19 +106,9 @@ public abstract class DrawView extends SurfaceView implements Runnable{
         }
     }
 
-    public static int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
-    }
-
-    public static int getScreenHeight() {
-        return Resources.getSystem().getDisplayMetrics().heightPixels;
-    }
-
-    public void resetTimer(){
-        startTime = System.currentTimeMillis();
-    }
-
-    public long getElapsedTime(){
-        return System.currentTimeMillis() - startTime;
+    public void resume(){
+        running = true;
+        gameloop = new Thread(this);
+        gameloop.start();
     }
 }

@@ -3,7 +3,7 @@ package com.example.myself.stuttersupport;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class CarGameActivity extends AppCompatActivity {
+public class CarGameActivity extends GameActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
