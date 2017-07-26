@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import edu.cmu.pocketsphinx.Hypothesis;
 
 public class TrainGameActivity extends GameActivity{
@@ -30,7 +33,7 @@ public class TrainGameActivity extends GameActivity{
         waitDuration = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
         currentState = STATE.NOTREADY;
         currentPair = getPair();
-        currentString = "Please wait...";
+        currentString = currentPair[0];
         screen = new TrainGameView(this, this);
         setContentView(screen);
 
@@ -52,9 +55,8 @@ public class TrainGameActivity extends GameActivity{
     }
 
     @Override
-    protected void recognizerReady(){
+    protected void startButtonPressed(){
         currentState = STATE.CALL;
-        currentString = currentPair[0];
     }
 
     private String[] getPair(){

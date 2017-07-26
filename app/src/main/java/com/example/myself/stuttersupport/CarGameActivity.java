@@ -12,7 +12,7 @@ public class CarGameActivity extends GameActivity {
     }
 
     @Override
-    protected void recognizerReady() {
-        //TODO: Implement
+    protected void startButtonPressed(){
+        //TODO: Implement me
     }
 }

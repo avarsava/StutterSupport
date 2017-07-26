@@ -11,7 +11,7 @@ public class DeepBreatheActivity extends GameActivity {
     private Drawable inhaleBg;
     private Drawable exhaleBg;
 
-    private enum STATE {INHALE, EXHALE}
+    private enum STATE {NOTREADY, INHALE, EXHALE}
 
     private long inhaleDuration;
     private long exhaleDuration;
@@ -20,7 +20,7 @@ public class DeepBreatheActivity extends GameActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentState = STATE.INHALE;
+        currentState = STATE.NOTREADY;
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         maxCycles = Integer.valueOf(prefs.getString("noOfBreaths", "1"));
         inhaleDuration = Long.valueOf(prefs.getString("inhaleLength", "7")) * 1000;
@@ -31,11 +31,14 @@ public class DeepBreatheActivity extends GameActivity {
                 getResources().getDrawable(R.drawable.ic_deep_breathe_exhale);
         screen = new DeepBreatheView(this, this);
         setContentView(screen);
+
+        //dummy speech recognizer just to roll the ball
+        runRecognizerSetup(null);
     }
 
     @Override
-    protected void recognizerReady(){
-        //Nothing, this game does not use the recognizer
+    protected void startButtonPressed(){
+        currentState = STATE.INHALE;
     }
 
     private String getInstructions() {

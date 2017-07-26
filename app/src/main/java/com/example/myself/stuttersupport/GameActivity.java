@@ -54,19 +54,19 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
     @Override
     public void onResume(){
         super.onResume();
-        screen.resume();
+        if (screen != null) screen.resume();
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        screen.pause();
+        if (screen != null) screen.pause();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        screen.pause();
+        if (screen != null) screen.pause();
         screen = null;
         if(recognizer != null){
             recognizer.cancel();
@@ -105,7 +105,7 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
         //nothing
     }
 
-    protected abstract void recognizerReady();
+    protected abstract void startButtonPressed();
 
     public long getElapsedTime(){
         return System.currentTimeMillis() - startTime;
@@ -118,11 +118,20 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
         }
     }
 
+    protected void recognizerReady(){
+        screen.toggleButton();
+    }
+
     public void resetTimer(){
         startTime = System.currentTimeMillis();
     }
 
     protected void runRecognizerSetup(final String keyword) {
+        if(keyword == null){
+            recognizerReady();
+            return;
+        }
+
         new AsyncTask<Void, Void, Exception>() {
             protected Exception doInBackground(Void... params) {
                 try {
