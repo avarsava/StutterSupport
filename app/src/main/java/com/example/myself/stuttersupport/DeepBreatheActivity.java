@@ -33,6 +33,11 @@ public class DeepBreatheActivity extends GameActivity {
         setContentView(screen);
     }
 
+    @Override
+    protected void recognizerReady(){
+        //Nothing, this game does not use the recognizer
+    }
+
     private String getInstructions() {
         String instruction = "";
         switch (currentState) {

@@ -10,4 +10,9 @@ public class CarGameActivity extends GameActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_game);
     }
+
+    @Override
+    protected void recognizerReady() {
+        //TODO: Implement
+    }
 }

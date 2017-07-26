@@ -23,7 +23,7 @@ import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
  * Created by Myself on 7/25/2017.
  */
 
-public class GameActivity extends AppCompatActivity implements RecognitionListener {
+public abstract class GameActivity extends AppCompatActivity implements RecognitionListener {
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
 
     private final String KEYPHRASE_SEARCH = "kws";
@@ -42,9 +42,11 @@ public class GameActivity extends AppCompatActivity implements RecognitionListen
         cycleCount = 0;
 
         //Speech recognizer permission setup
-        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.RECORD_AUDIO);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_RECORD_AUDIO);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_RECORD_AUDIO);
             return;
         }
     }
@@ -103,6 +105,8 @@ public class GameActivity extends AppCompatActivity implements RecognitionListen
         //nothing
     }
 
+    protected abstract void recognizerReady();
+
     public long getElapsedTime(){
         return System.currentTimeMillis() - startTime;
     }
@@ -136,6 +140,7 @@ public class GameActivity extends AppCompatActivity implements RecognitionListen
                     Toast.makeText(getApplicationContext(),
                             "Failed to init recognizer!", Toast.LENGTH_SHORT).show();
                 } else {
+                    recognizerReady();
                     recognizer.startListening(KEYPHRASE_SEARCH);
                 }
             }

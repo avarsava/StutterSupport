@@ -14,7 +14,7 @@ public class TrainGameActivity extends GameActivity{
     private final int MIN_PAIR = 1;
     private final int MAX_PAIR = 1;
 
-    private enum STATE {CALL, WAIT, RESP};
+    private enum STATE {NOTREADY, CALL, WAIT, RESP};
 
     private String[] currentPair;
     private String currentString;
@@ -28,14 +28,14 @@ public class TrainGameActivity extends GameActivity{
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         maxCycles = Integer.valueOf(prefs.getString("noOfPairs", "1"));
         waitDuration = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
-        currentState = STATE.CALL;
+        currentState = STATE.NOTREADY;
         currentPair = getPair();
-        currentString = currentPair[0];
+        currentString = "Please wait...";
         screen = new TrainGameView(this, this);
         setContentView(screen);
 
         //set up speech recognition
-        runRecognizerSetup(getCurrentPair()[1]);
+        runRecognizerSetup(currentPair[1]);
     }
 
     @Override
@@ -45,18 +45,16 @@ public class TrainGameActivity extends GameActivity{
         }
 
         String text = hypothesis.getHypstr();
-        if(text.equals(getCurrentPair()[1])){
-            processSpeech(true);
-        } else {
-            //TODO: I don't think this ever gets reached. Maybe use onResult for this?
-            processSpeech(false);
+        if(text.equals(currentPair[1])){
+            processSpeech();
         }
         resetRecognizer();
     }
 
     @Override
-    public void onResult(Hypothesis hypothesis) {
-        //nothing
+    protected void recognizerReady(){
+        currentState = STATE.CALL;
+        currentString = currentPair[0];
     }
 
     private String[] getPair(){
@@ -69,14 +67,6 @@ public class TrainGameActivity extends GameActivity{
         return pair;
     }
 
-    public String[] getCurrentPair(){
-        return currentPair;
-    }
-
-    public STATE getCurrentState(){
-        return currentState;
-    }
-
     public void cancelCycle() {
         resetTimer();
         while(getElapsedTime()/CANCEL_DURATION < 1.0){
@@ -86,10 +76,8 @@ public class TrainGameActivity extends GameActivity{
         finish();
     }
 
-    private void processSpeech(boolean correct){
-        STATE phase = getCurrentState();
-
-        if(phase == STATE.RESP && correct){
+    private void processSpeech(){
+        if(currentState == STATE.RESP){
             currentString = "Good Job!";
             successful = true;
         } else {
