@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.io.File;
@@ -37,6 +38,7 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
     @Override
     protected void onCreate(Bundle savedStateInstance){
         super.onCreate(savedStateInstance);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         cycleCount = 0;
 
         //Speech recognizer permission setup
