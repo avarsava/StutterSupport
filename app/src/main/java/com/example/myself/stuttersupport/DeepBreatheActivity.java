@@ -39,6 +39,7 @@ public class DeepBreatheActivity extends GameActivity {
     @Override
     protected void startButtonPressed(){
         currentState = STATE.INHALE;
+        resetTimer();
     }
 
     private String getInstructions() {
