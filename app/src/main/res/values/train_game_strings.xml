@@ -2,9 +2,10 @@
 <resources>
     <string-array name="calls">
         <item>hello</item>
-    </string-array>
-    <string-array name="resps">
         <item>goodbye</item>
+        <item>ball</item>
+        <item>cat</item>
+        <item>phone</item>
     </string-array>
 
 </resources>

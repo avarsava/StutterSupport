@@ -5,8 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+
+import java.util.Arrays;
+import java.util.List;
 
 import edu.cmu.pocketsphinx.Hypothesis;
 
@@ -15,12 +16,12 @@ public class TrainGameActivity extends GameActivity{
     private final long RESP_DURATION = 3000L;
     private final long CANCEL_DURATION = 3000L;
     private final int MIN_PAIR = 1;
-    private final int MAX_PAIR = 1;
+    private final int MAX_PAIR = 5;
 
     private enum STATE {NOTREADY, CALL, WAIT, RESP};
 
-    private String[] currentPair;
-    private String currentString;
+    private String currentString, displayString;
+    private String[] usedStrings;
     private long waitDuration;
     private boolean successful = false;
     private STATE currentState;
@@ -29,16 +30,17 @@ public class TrainGameActivity extends GameActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        maxCycles = Integer.valueOf(prefs.getString("noOfPairs", "1"));
+        maxCycles = Integer.valueOf(prefs.getString("noOfPairs", "3"));
+        usedStrings = new String[maxCycles];
         waitDuration = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
         currentState = STATE.NOTREADY;
-        currentPair = getPair();
-        currentString = currentPair[0];
+        currentString = getString();
+        displayString = currentString;
         screen = new TrainGameView(this, this);
         setContentView(screen);
 
         //set up speech recognition
-        runRecognizerSetup(currentPair[1]);
+        runRecognizerSetup(currentString, getResources().getStringArray(R.array.calls));
     }
 
     @Override
@@ -48,7 +50,7 @@ public class TrainGameActivity extends GameActivity{
         }
 
         String text = hypothesis.getHypstr();
-        if(text.equals(currentPair[1])){
+        if(text.equals(currentString)){
             processSpeech();
         }
         resetRecognizer();
@@ -57,16 +59,21 @@ public class TrainGameActivity extends GameActivity{
     @Override
     protected void startButtonPressed(){
         currentState = STATE.CALL;
+        resetTimer();
     }
 
-    private String[] getPair(){
-        String[] pair = new String[2];
-        int pairId = Numbers.randInt(MIN_PAIR, MAX_PAIR) - 1;
+    private String getString(){
+        String potentialString = "";
+        List<String> usedStringsList = Arrays.asList(usedStrings);
+        int randId;
 
-        pair[0] = getResources().getStringArray(R.array.calls)[pairId];
-        pair[1] = getResources().getStringArray(R.array.resps)[pairId];
+        do {
+            randId = Numbers.randInt(MIN_PAIR, MAX_PAIR) - 1;
+            potentialString = getResources().getStringArray(R.array.calls)[randId];
+        } while (usedStringsList.contains(potentialString));
 
-        return pair;
+        usedStrings[cycleCount] = potentialString;
+        return potentialString;
     }
 
     public void cancelCycle() {
@@ -80,17 +87,17 @@ public class TrainGameActivity extends GameActivity{
 
     private void processSpeech(){
         if(currentState == STATE.RESP){
-            currentString = "Good Job!";
+            displayString = "Good Job!";
             successful = true;
         } else {
-            currentString = "Hold on there bucko!";
+            displayString = "Hold on there bucko!";
             cancelCycle();
         }
     }
 
     private void resetRecognizer() {
         recognizer.stop();
-        recognizer.startListening("kws");
+        recognizer.startListening(currentString);
     }
 
     private void switchStateIfNecessary(){
@@ -98,14 +105,14 @@ public class TrainGameActivity extends GameActivity{
             case CALL:
                 if(getElapsedTime()/CALL_DURATION >= 1.0){
                     currentState = STATE.WAIT;
-                    currentString = "";
+                    displayString = "";
                     resetTimer();
                 }
                 break;
             case WAIT:
                 if(getElapsedTime()/ waitDuration >= 1.0){
                     currentState = STATE.RESP;
-                    currentString = currentPair[1];
+                    displayString = currentString;
                     resetTimer();
                 }
                 break;
@@ -117,6 +124,9 @@ public class TrainGameActivity extends GameActivity{
                     currentState = STATE.CALL;
                     resetTimer();
                     cycleCount++;
+                    currentString = getString();
+                    displayString = currentString;
+                    resetRecognizer();
                     successful = false;
                 }
                 break;
@@ -142,7 +152,7 @@ public class TrainGameActivity extends GameActivity{
 
             //Write current String
             //TODO: This should be more drawing stuff
-            canvas.drawText(currentString,
+            canvas.drawText(displayString,
                     getScreenWidth()/2,
                     getScreenHeight()/2,
                     blackPaint);

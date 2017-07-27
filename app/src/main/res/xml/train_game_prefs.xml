@@ -3,7 +3,7 @@
     <!-- Number of pairs to go through -->
     <EditTextPreference android:title="Number of Rounds"
         android:key="noOfPairs"
-        android:defaultValue="1"
+        android:defaultValue="3"
         android:inputType="number"
         android:numeric="integer"
         android:maxLength="2" />

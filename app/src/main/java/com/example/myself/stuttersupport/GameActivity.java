@@ -26,8 +26,6 @@ import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 public abstract class GameActivity extends AppCompatActivity implements RecognitionListener {
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
 
-    private final String KEYPHRASE_SEARCH = "kws";
-
     private long startTime;
 
     protected int maxCycles;
@@ -126,7 +124,7 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
         startTime = System.currentTimeMillis();
     }
 
-    protected void runRecognizerSetup(final String keyword) {
+    protected void runRecognizerSetup(final String keyword, final String[] dictionary) {
         if(keyword == null){
             recognizerReady();
             return;
@@ -137,7 +135,7 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
                 try {
                     Assets assets = new Assets(GameActivity.this);
                     File assetDir = assets.syncAssets();
-                    setupRecognizer(assetDir, keyword);
+                    setupRecognizer(assetDir, dictionary);
                 } catch (IOException e) {
                     return e;
                 }
@@ -150,13 +148,13 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
                             "Failed to init recognizer!", Toast.LENGTH_SHORT).show();
                 } else {
                     recognizerReady();
-                    recognizer.startListening(KEYPHRASE_SEARCH);
+                    recognizer.startListening(keyword);
                 }
             }
         }.execute();
     }
 
-    protected void setupRecognizer(File assetsDir, String keyword) throws IOException{
+    protected void setupRecognizer(File assetsDir, String[] keywords) throws IOException{
         //Set up recognizer
         recognizer = SpeechRecognizerSetup.defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
@@ -166,7 +164,8 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
         recognizer.addListener(this);
 
         //Switch to keyword search
-        //TODO: This means it won't detect any other words. Figure out how to have that happen
-        recognizer.addKeyphraseSearch(KEYPHRASE_SEARCH, keyword);
+        for(String keyword : keywords){
+            recognizer.addKeyphraseSearch(keyword, keyword);
+        }
     }
 }
