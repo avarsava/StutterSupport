@@ -124,7 +124,7 @@ public class TrainGameActivity extends GameActivity{
                     currentState = STATE.CALL;
                     resetTimer();
                     cycleCount++;
-                    currentString = getString();
+                    if (cycleCount != maxCycles) currentString = getString();
                     displayString = currentString;
                     resetRecognizer();
                     successful = false;
