@@ -51,6 +51,7 @@ public class MainMenuActivity extends FragmentActivity {
         //Get the Tracker & Streak DB Helpers
         trackerDbHelper = new TrackerDbHelper(this);
         streakDbHelper = new StreakDbHelper(this);
+        trackerPage = TrackerFragment.newInstance(trackerDbHelper, streakDbHelper);
 
         //Instantiate a ViewPager and a PagerAdapter
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -61,13 +62,13 @@ public class MainMenuActivity extends FragmentActivity {
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<>();
 
+        fList.add(trackerPage);
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu,
                 CarGameActivity.class, R.xml.car_game_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu,
                 TrainGameActivity.class, R.xml.train_game_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_deep_breathe_splash,
                 DeepBreatheActivity.class, R.xml.deep_breathe_prefs));
-        fList.add(trackerPage = TrackerFragment.newInstance(trackerDbHelper, streakDbHelper));
 
         return fList;
     }
