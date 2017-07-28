@@ -159,7 +159,7 @@ public class TrainGameActivity extends GameActivity{
 
             //cycle end logic
             switchStateIfNecessary();
-            killIfCountHigh(cycleCount);
+            killIfCountHigh();
         }
 
         private void setUpPaints(){
