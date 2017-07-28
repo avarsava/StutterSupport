@@ -19,8 +19,20 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author  Alexis Varsava <av11sl@brocku.ca>
+ * @version 0.1
+ * @since   0.1
+ *
+ * Uses a ViewPager to scroll multiple Fragments horizontally, providing a menu. The Fragments
+ * include a GameStarterMenuFragment for each game, plus a TrackerFragment to display the Tracker.
+ */
 public class MainMenuActivity extends FragmentActivity {
+    /**
+     * Important milestones in the streak count, in days.
+     */
     private final List<Integer> MILESTONES = new LinkedList<>(Arrays.asList(1, 7, 31, 50, 75, 100));
+
     /**
      * Handles animation, allows swiping
      */
@@ -41,8 +53,18 @@ public class MainMenuActivity extends FragmentActivity {
      */
     protected StreakDbHelper streakDbHelper;
 
+    /**
+     * Fragment which displays the Tracker calendar and Streak counter.
+     */
     private TrackerFragment trackerPage;
 
+    /**
+     * Creates new Activity and displays the main menu layout. Initializes the tracker and streak
+     * database helpers and the tracker fragment. Creates a new ViewPager and PagerAdapter to
+     * handle scrolling Fragments.
+     *
+     * @param savedInstanceState Used for internal Android communication
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -59,6 +81,12 @@ public class MainMenuActivity extends FragmentActivity {
         mPager.setAdapter(mPagerAdapter);
     }
 
+    /**
+     * Creates a list of GameStarterMenuFragments and one TrackerFragment which can be scrolled
+     * through on the menu.
+     *
+     * @return List of Fragments in menu
+     */
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<>();
 
@@ -73,6 +101,12 @@ public class MainMenuActivity extends FragmentActivity {
         return fList;
     }
 
+    /**
+     * Handles clicking on both the game start and settings buttons. Starts game if game start
+     * button is pressed, opens game settings if settings button is pressed.
+     *
+     * @param view View on which click took place.
+     */
     public void buttonClick(View view) {
         //Get the fragment currently on screen so we know which game to launch
         GameStarterMenuFragment currentFragment =
@@ -95,6 +129,15 @@ public class MainMenuActivity extends FragmentActivity {
 
     }
 
+    /**
+     * Executed when game activities return a result. If RESULT_OK is received, indicating a
+     * successful activity, then encouragement is shown, the streak is updated, and a social media
+     * prompt may be displayed to the user.
+     *
+     * @param requestCode ID of the request
+     * @param resultCode integer indicating whether the result is a success
+     * @param data The Intent associated with the result
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK){
@@ -115,6 +158,9 @@ public class MainMenuActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Shows a popup dialog with words of encouragement.
+     */
     private void showEncouragement() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("You're doing great! Keep up the good work!");
@@ -122,15 +168,27 @@ public class MainMenuActivity extends FragmentActivity {
         builder.show();
     }
 
+    /**
+     * Calculates whether streak counts as a large milestone value.
+     *
+     * Streak counts as large if it is larger than 100 and is divisible by 50.
+     *
+     * @param currentStreak Current streak count
+     * @return true if large milestone, false otherwise
+     */
     private boolean isLargeMilestone(int currentStreak) {
         return (currentStreak > 100) && (currentStreak % 50 == 0);
     }
 
     /**
+     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
+     * creates an intent which the OS uses to post a message to whatever social media app installed
+     * on the device the user chooses.
+     *
      * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
-     * @param activity
-     * @param title
-     * @param message
+     * @param activity This activity
+     * @param title Title for the dialog
+     * @param message Message to display on dialog
      */
     public void showDialog(Activity activity, String title, CharSequence message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -149,6 +207,10 @@ public class MainMenuActivity extends FragmentActivity {
         builder.show();
     }
 
+    /**
+     * Creates an implicit Intent which the OS uses to send a message to any social media app
+     * that the user may have on their device.
+     */
     private void createSocialIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -156,6 +218,11 @@ public class MainMenuActivity extends FragmentActivity {
         startActivity(Intent.createChooser(shareIntent, "Share..."));
     }
 
+    /**
+     * Generates a message, to be posted on social media, based on current streak count.
+     *
+     * @return message intended for social media
+     */
     private String generateShareMessage() {
         int streak = streakDbHelper.getCurrent();
         if(streak == 1) return "I just started practicing my speech using Stutter Support!";
@@ -167,18 +234,37 @@ public class MainMenuActivity extends FragmentActivity {
      * in sequence
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        /**
+         * List of fragments which will be paged through on menu
+         */
         private List<Fragment> fragments;
 
+        /**
+         * Constructs a new screen slide menu
+         * @param fm Fragment Manager to manage fragments
+         * @param frags list of fragments to be displayed in menu
+         */
         public ScreenSlidePagerAdapter(FragmentManager fm, List<Fragment> frags){
             super(fm);
             fragments = frags;
         }
 
+        /**
+         * Gets the Fragment at a specific position in the list
+         *
+         * @param position position of the Fragment to be returned
+         * @return Fragment at position
+         */
         @Override
         public Fragment getItem(int position){
             return fragments.get(position);
         }
 
+        /**
+         * Gets the number of Fragments in the menu
+         *
+         * @return number of Fragments in the menu
+         */
         @Override
         public int getCount() {
             return fragments.size();
