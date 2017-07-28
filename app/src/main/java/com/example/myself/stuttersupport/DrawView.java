@@ -13,14 +13,17 @@ import android.view.SurfaceView;
 import android.view.View;
 
 /**
- * Created by Myself on 6/9/2017.
+ * @author Alexis Varsava <av11sl@brocku.ca>
+ * @version 0.1
+ * @since 0.1
  *
  * Heavily draws upon Sams Teach Yourself Android Game Programming in 24 Hours
- * by Jonathan Harbour
+ * by Jonathan Harbour. Draws the screen during the game activities, and also manages the run loop,
+ * though game logic belongs to the game activity rather than the game screen. Also is responsible
+ * for drawing the start button if it has been toggled.
  */
 
 public abstract class DrawView extends SurfaceView implements Runnable{
-    private final int FRAME_LIMIT = 50;
     private final int FRAME_DELAY = 50;
 
     //TODO: Make these make sense
@@ -37,7 +40,6 @@ public abstract class DrawView extends SurfaceView implements Runnable{
     private Paint yellowPaint;
 
     protected boolean buttonVisible = false;
-    protected int frame = 0;
     protected Drawable background;
     protected Canvas canvas;
 
@@ -58,7 +60,7 @@ public abstract class DrawView extends SurfaceView implements Runnable{
     public void run() {
         gameActivity.resetTimer();
         while(running){
-            //if surface is not useable, try again
+            //if surface is not usable, try again
             if (!surface.getSurface().isValid()){
                 continue;
             }
@@ -74,14 +76,6 @@ public abstract class DrawView extends SurfaceView implements Runnable{
 
             //unlock the canvas
             surface.unlockCanvasAndPost(canvas);
-
-            //advance the frame
-            frame++;
-
-            //reset the frame if it's over our limit
-            if (frame > FRAME_LIMIT){
-                frame = 0;
-            }
 
             //control speed of animation
             try{
