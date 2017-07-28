@@ -28,7 +28,7 @@ public abstract class DrawView extends SurfaceView implements Runnable{
      * Used to control the speed of animation.
      */
     private final int FRAME_DELAY = 50;
-    
+
     /**
      * How many pixels from the left of the screen the Start Button begins.
      */

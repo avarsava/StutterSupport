@@ -201,11 +201,11 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
     /**
      * Game logic used to end the game when enough cycles of gameplay have been completed.
      *
-     * TODO: Don't set to successful every time
+     * @param result Result code of activity
      */
-    protected void killIfCountHigh() {
+    protected void killIfCountHigh(int result) {
         if(cycleCount >= maxCycles) {
-            setResult(RESULT_OK);
+            setResult(result);
             finish();
         }
     }

@@ -23,6 +23,7 @@ public class TrainGameActivity extends GameActivity{
     private String currentString, displayString;
     private String[] usedStrings;
     private long waitDuration;
+    private int passed = 0;
     private boolean successful = false;
     private STATE currentState;
 
@@ -76,19 +77,27 @@ public class TrainGameActivity extends GameActivity{
         return potentialString;
     }
 
+    private int calculateSuccess(){
+        if (passed == maxCycles){
+            return RESULT_OK;
+        } else {
+            return RESULT_CANCELED;
+        }
+    }
+
     public void cancelCycle() {
         resetTimer();
         while(getElapsedTime()/CANCEL_DURATION < 1.0){
             //TODO: Is there a cleaner way to wait?
         }
-        setResult(RESULT_CANCELED);
-        finish();
+
     }
 
     private void processSpeech(){
         if(currentState == STATE.RESP){
             displayString = "Good Job!";
             successful = true;
+            passed++;
         } else {
             displayString = "Hold on there bucko!";
             cancelCycle();
@@ -159,7 +168,7 @@ public class TrainGameActivity extends GameActivity{
 
             //cycle end logic
             switchStateIfNecessary();
-            killIfCountHigh();
+            killIfCountHigh(calculateSuccess());
         }
 
         private void setUpPaints(){
