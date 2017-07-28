@@ -28,27 +28,30 @@ public abstract class DrawView extends SurfaceView implements Runnable{
      * Used to control the speed of animation.
      */
     private final int FRAME_DELAY = 50;
-
-    //TODO: Make the button dimensions make sense
+    
     /**
      * How many pixels from the left of the screen the Start Button begins.
      */
-    private final int BUTTON_LEFT = 10;
+    private final int BUTTON_LEFT = (int)
+            (25*getResources().getDisplayMetrics().scaledDensity);
 
     /**
      * How many pixels from the top of the screen the Start Button begins.
      */
-    private final int BUTTON_TOP = 10;
+    private final int BUTTON_TOP = (int)
+            (getScreenHeight() - (100*getResources().getDisplayMetrics().scaledDensity));
 
     /**
      * How many pixels from the right of the screen the Start Button extends to.
      */
-    private final int BUTTON_RIGHT = 100;
+    private final int BUTTON_RIGHT = (int)
+            (getScreenWidth() - (25*getResources().getDisplayMetrics().scaledDensity));
 
     /**
      * How many pixels from the bottom of the screen the Start Button extends to.
      */
-    private final int BUTTON_BOTTOM = 100;
+    private final int BUTTON_BOTTOM = (int)
+            (getScreenHeight() - (50*getResources().getDisplayMetrics().scaledDensity));
 
     /**
      * Boolean used to control whether the run loop goes.
@@ -71,9 +74,9 @@ public abstract class DrawView extends SurfaceView implements Runnable{
     private SurfaceHolder surface;
 
     /**
-     * Yellow paint used to draw the Start Button
+     * Image of Start Button
      */
-    private Paint yellowPaint;
+    private Drawable startButtonImg;
 
     /**
      * Boolean used to control whether the Start Button is visible, defaults to false to give
@@ -95,7 +98,7 @@ public abstract class DrawView extends SurfaceView implements Runnable{
 
     /**
      * Creates a new DrawView. Sets the View to listen for touch events on the start button and
-     * gets the drawing surface from the system. Then initializes the Paint for drawing the
+     * gets the drawing surface from the system. Then initializes the Drawable for drawing the
      * Start Button.
      *
      * @param context The application context
@@ -106,7 +109,7 @@ public abstract class DrawView extends SurfaceView implements Runnable{
         this.gameActivity = ga;
         this.setOnTouchListener(new ButtonListener());
         surface = getHolder();
-        setUpPaints();
+        startButtonImg = getResources().getDrawable(R.drawable.ic_start_button);
     }
 
     /**
@@ -165,8 +168,8 @@ public abstract class DrawView extends SurfaceView implements Runnable{
      * Draws the start button to the screen.
      */
     protected void drawButton(){
-        canvas.drawRect(new Rect(BUTTON_LEFT, BUTTON_TOP, BUTTON_RIGHT, BUTTON_BOTTOM),
-                yellowPaint);
+        startButtonImg.setBounds(BUTTON_LEFT, BUTTON_TOP, BUTTON_RIGHT, BUTTON_BOTTOM);
+        startButtonImg.draw(canvas);
     }
 
     /**
@@ -201,14 +204,6 @@ public abstract class DrawView extends SurfaceView implements Runnable{
      */
     public void setBackgroundImage(Drawable newBg){
         background = newBg;
-    }
-
-    /**
-     * Sets up the paints used to draw the Start Button.
-     */
-    private void setUpPaints(){
-        yellowPaint = new Paint();
-        yellowPaint.setColor(Color.YELLOW);
     }
 
     /**
