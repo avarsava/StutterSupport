@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -293,19 +293,48 @@
          d="m 198.0595,135.60417 c 0,10.31725 -4.48729,19.98653 -12.32106,28.30253 -3.24479,3.44453 19.01664,26.31164 14.70464,29.24169 -4.88702,3.32078 -36.48775,-13.37581 -42.52344,-10.85321 -14.54271,6.07808 -32.07712,9.62744 -50.95239,9.62744 -50.308864,0 -91.092257,-25.21463 -91.092258,-56.31845 2e-6,-31.10382 40.783395,-56.31845 91.092258,-56.318449 50.30886,2e-6 91.09225,25.214629 91.09225,56.318449 z"
          style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.56500006;stroke-miterlimit:4;stroke-dasharray:none" />
     </g>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot2480"
-       style="font-style:normal;font-weight:bold;font-size:96.00000121px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'sans-serif Bold';font-stretch:normal;font-variant:normal;"
-       transform="scale(0.26458333)"><flowRegion
-         id="flowRegion2482"
-         style="font-size:96.00000121px;-inkscape-font-specification:'sans-serif Bold';font-family:sans-serif;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;"><rect
-           id="rect2484"
-           width="359.61432"
-           height="232.33508"
-           x="92.934036"
-           y="84.08287"
-           style="font-size:96px;-inkscape-font-specification:'sans-serif Bold';font-family:sans-serif;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;" /></flowRegion><flowPara
-         id="flowPara2486">TRAIN</flowPara><flowPara
-         id="flowPara2488">GAME</flowPara></flowRoot>  </g>
+    <g
+       aria-label="TRAIN
+GAME"
+       transform="scale(0.26458333)"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:96px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot2480">
+      <path
+         d="m 93.402344,99.035156 h 64.499996 v 13.640624 h -23.20312 v 56.34375 H 116.65234 V 112.67578 H 93.402344 Z"
+         style=""
+         id="path57" />
+      <path
+         d="m 192.82422,130.06641 q 5.67187,0 8.10937,-2.10938 2.48438,-2.10937 2.48438,-6.9375 0,-4.78125 -2.48438,-6.84375 -2.4375,-2.0625 -8.10937,-2.0625 h -7.59375 v 17.95313 z m -7.59375,12.46875 v 26.48437 H 167.18359 V 99.035156 h 27.5625 q 13.82813,0 20.25,4.640624 6.46875,4.64063 6.46875,14.67188 0,6.9375 -3.375,11.39062 -3.32812,4.45313 -10.07812,6.5625 3.70312,0.84375 6.60937,3.84375 2.95313,2.95313 5.95313,9 l 9.79687,19.875 h -19.21875 l -8.53125,-17.39062 q -2.57812,-5.25 -5.25,-7.17188 -2.625,-1.92187 -7.03125,-1.92187 z"
+         style=""
+         id="path59" />
+      <path
+         d="m 283.52734,156.26953 h -28.21875 l -4.45312,12.75 h -18.14063 l 25.92188,-69.984374 h 21.51562 l 25.92188,69.984374 h -18.14063 z m -23.71875,-12.98437 h 19.17188 l -9.5625,-27.84375 z"
+         style=""
+         id="path61" />
+      <path
+         d="m 315.30859,99.035156 h 18.04688 v 69.984374 h -18.04688 z"
+         style=""
+         id="path63" />
+      <path
+         d="m 351.12109,99.035156 h 20.15625 l 25.45313,48.000004 V 99.035156 h 17.10937 v 69.984374 h -20.15625 l -25.45312,-48 v 48 h -17.10938 z"
+         style=""
+         id="path65" />
+      <path
+         d="m 164.65234,283.81641 q -6.75,3.28125 -14.01562,4.92187 -7.26563,1.64063 -15,1.64063 -17.48438,0 -27.70313,-9.75 -10.218746,-9.79688 -10.218746,-26.53125 0,-16.92188 10.406246,-26.625 10.40625,-9.70313 28.5,-9.70313 6.98438,0 13.35938,1.3125 6.42187,1.3125 12.09375,3.89063 v 14.48437 q -5.85938,-3.32812 -11.67188,-4.96875 -5.76562,-1.64062 -11.57812,-1.64062 -10.78125,0 -16.64063,6.04687 -5.8125,6 -5.8125,17.20313 0,11.10937 5.625,17.15625 5.625,6.04687 15.98438,6.04687 2.8125,0 5.20312,-0.32812 2.4375,-0.375 4.35938,-1.125 v -13.59375 h -11.01563 v -12.09375 h 28.125 z"
+         style=""
+         id="path67" />
+      <path
+         d="m 222.96484,276.26953 h -28.21875 l -4.45312,12.75 h -18.14063 l 25.92188,-69.98437 h 21.51562 l 25.92188,69.98437 h -18.14063 z m -23.71875,-12.98437 h 19.17188 l -9.5625,-27.84375 z"
+         style=""
+         id="path69" />
+      <path
+         d="m 254.74609,219.03516 h 22.96875 l 15.9375,37.45312 16.03125,-37.45312 h 22.92188 v 69.98437 h -17.0625 v -51.1875 l -16.125,37.73438 h -11.4375 l -16.125,-37.73438 v 51.1875 h -17.10938 z"
+         style=""
+         id="path71" />
+      <path
+         d="m 350.37109,219.03516 h 48.70313 v 13.64062 h -30.65625 v 13.03125 h 28.82812 v 13.64063 h -28.82812 v 16.03125 h 31.6875 v 13.64062 h -49.73438 z"
+         style=""
+         id="path73" />
+    </g>
+  </g>
 </svg>
