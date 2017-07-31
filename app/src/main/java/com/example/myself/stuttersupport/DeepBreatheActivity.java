@@ -75,6 +75,8 @@ public class DeepBreatheActivity extends GameActivity {
         exhaleBg =
                 getResources().getDrawable(R.drawable.ic_deep_breathe_exhale);
         screen = new DeepBreatheView(this, this);
+        screen.setBackgroundImage(getResources().getDrawable(
+                R.drawable.ic_deep_breathe_instructions));
         setContentView(screen);
 
         //dummy speech recognizer just to roll the ball
@@ -88,6 +90,7 @@ public class DeepBreatheActivity extends GameActivity {
     @Override
     protected void startButtonPressed(){
         currentState = STATE.INHALE;
+        screen.setBackgroundImage(inhaleBg);
         resetTimer();
     }
 
