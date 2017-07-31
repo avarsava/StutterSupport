@@ -38,6 +38,8 @@ public class TrainGameActivity extends GameActivity{
         currentString = getString();
         displayString = currentString;
         screen = new TrainGameView(this, this);
+        screen.setBackgroundImage(
+                getResources().getDrawable(R.drawable.ic_train_game_instructions));
         setContentView(screen);
 
         //set up speech recognition
@@ -60,6 +62,7 @@ public class TrainGameActivity extends GameActivity{
     @Override
     protected void startButtonPressed(){
         currentState = STATE.CALL;
+        screen.setBackgroundImage(null);
         resetTimer();
     }
 
@@ -153,18 +156,22 @@ public class TrainGameActivity extends GameActivity{
         @Override
         protected void doDrawing(){
             //draw bg
-            canvas.drawRect(0,
-                    0,
-                    getScreenWidth(),
-                    getScreenHeight(),
-                    whitePaint);
+            if (background == null) {
+                canvas.drawRect(0,
+                        0,
+                        getScreenWidth(),
+                        getScreenHeight(),
+                        whitePaint);
+            }
 
             //Write current String
             //TODO: This should be more drawing stuff
-            canvas.drawText(displayString,
-                    getScreenWidth()/2,
-                    getScreenHeight()/2,
-                    blackPaint);
+            if (currentState != STATE.NOTREADY) {
+                canvas.drawText(displayString,
+                        getScreenWidth() / 2,
+                        getScreenHeight() / 2,
+                        blackPaint);
+            }
 
             //cycle end logic
             switchStateIfNecessary();

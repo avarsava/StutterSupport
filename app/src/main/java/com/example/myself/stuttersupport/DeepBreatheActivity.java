@@ -191,11 +191,6 @@ public class DeepBreatheActivity extends GameActivity {
          */
         @Override
         protected void doDrawing() {
-            //Draw the background
-            background.setBounds(0, 0,
-                    getScreenWidth(), getScreenHeight());
-            background.draw(canvas);
-
             //Draw a pink circle
             canvas.drawCircle(circleWidth, circleHeight, animatedRadius(), circlePaint);
 

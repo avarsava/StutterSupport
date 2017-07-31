@@ -139,6 +139,12 @@ public abstract class DrawView extends SurfaceView implements Runnable{
             //lock canvas to draw onto it
             canvas = surface.lockCanvas();
 
+            //draw the background
+            if(background != null) {
+                background.setBounds(0, 0, getScreenWidth(), getScreenHeight());
+                background.draw(canvas);
+            }
+
             //draw the picture
             doDrawing();
 
