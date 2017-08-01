@@ -18,34 +18,71 @@ import java.util.Date;
 import java.util.HashSet;
 
 /**
- * Created by Myself on 6/20/2017.
- * Takes inspiration from
- * https://github.com/ahmed-alamir/CalendarView
+ * @author  Alexis Varsava <av11sl@brocku.ca>
+ * @version 0.1
+ * @since   0.1
+ *
+ * Displays a calendar which highlights the current date with blue text, and highlights days on
+ * which at least one activity has been successfully completed with a red background.
+ * Takes inspiration from https://github.com/ahmed-alamir/CalendarView
  */
-
 public class TrackerCalendar extends LinearLayout
 {
+    /**
+     * How many days to display in total. Esnures 6 weeks are displayed.
+     */
     private static final int DAYS_COUNT = 42;
 
-    // internal components
-    private LinearLayout header;
+    /**
+     * Displays the date as Month + Year above the calendar.
+     */
     private TextView txtDate;
+
+    /**
+     * The grid which is the backbone of the calendar.
+     */
     private GridView grid;
+
+    /**
+     * Contain's today's date.
+     */
     private Calendar currentDate = Calendar.getInstance();
+
+    /**
+     * The application context.
+     */
     private Context context = getContext();
 
+    /**
+     * Constructor, creates RelativeLayout from inflates layout from XML.
+     *
+     * @param context The application context.
+     */
     public TrackerCalendar(Context context)
     {
         super(context);
         initControl(context);
     }
 
+    /**
+     * Constructor, creates RelativeLayout from inflates layout from XML.
+     *
+     * @param context The application context.
+     * @param attrs AttributeSet to pass to RelativeLayout constructor.
+     */
     public TrackerCalendar(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         initControl(context);
     }
 
+    /**
+     * Constructor, creates RelativeLayout from inflates layout from XML.
+     *
+     * @param context The application context.
+     * @param attrs AttributeSet to pass to RelativeLayout constructor.
+     * @param defStyle Style from Resources to pass to RelativeLayout constructor.
+     */
     public TrackerCalendar(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
@@ -53,7 +90,10 @@ public class TrackerCalendar extends LinearLayout
     }
 
     /**
-     * Load component XML layout
+     * Loads and inflates the Layout XML, then identifies and saves the Views used to display the
+     * current date and the calendar grid.
+     *
+     * @param context The application context.
      */
     private void initControl(Context context)
     {
@@ -63,15 +103,23 @@ public class TrackerCalendar extends LinearLayout
         inflater.inflate(R.layout.tracker_calendar, this);
 
         // layout is inflated, assign local variables to components
-        header = (LinearLayout)findViewById(R.id.calendar_header);
         txtDate = (TextView)findViewById(R.id.calendar_date_display);
         grid = (GridView)findViewById(R.id.calendar_grid);
     }
 
+    /**
+     * Refreshes the calendar.
+     */
     public void updateCalendar(){
         updateCalendar(null);
     }
 
+    /**
+     * Draws all the cells in the grid needed to create a calendar, then uses the CalendarAdapter
+     * to display highlighting on the dates specified in the HashSet passed in.
+     *
+     * @param dates The set of dates which should be highlighted on the calendar.
+     */
     public void updateCalendar(HashSet<Date> dates)
     {
         ArrayList<Date> cells = new ArrayList<>();
@@ -97,14 +145,30 @@ public class TrackerCalendar extends LinearLayout
         // update title
         txtDate.setText(getMonthAndYear());
     }
+
+    /**
+     * Internal class used to display calendar.
+     */
     private class CalendarAdapter extends ArrayAdapter<Date>
     {
-        // days with events
+        /**
+         * Days on which at least one activity has been successfully completed.
+         */
         private HashSet<Date> eventDays;
 
-        // for view inflation
+        /**
+         * Used for layout inflation.
+         */
         private LayoutInflater inflater;
 
+        /**
+         * Creates a new CalendarAdapter containing a specified set of dates, with highlighting on
+         * the secondary set of dates.
+         *
+         * @param context The application context
+         * @param days The full set of days to display on the calendar
+         * @param eventDays The set of days which should be highlighted to signal activity
+         */
         public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays)
         {
             super(context, R.layout.tracker_calendar_day, days);
@@ -112,6 +176,14 @@ public class TrackerCalendar extends LinearLayout
             inflater = LayoutInflater.from(context);
         }
 
+        /**
+         * Creates the calendar date square. Not called explicitly.
+         *
+         * @param position Used to find today's date
+         * @param view Calendar date square
+         * @param parent ViewGroup of cells that make up calendar
+         * @return Finished calendar date View
+         */
         @Override
         public View getView(int position, View view, ViewGroup parent)
         {
@@ -168,6 +240,11 @@ public class TrackerCalendar extends LinearLayout
         }
     }
 
+    /**
+     * Gets the month and year as text for use in the header.
+     *
+     * @return Month and year as String
+     */
     public String getMonthAndYear() {
         String[] monthNames = new String[]{context.getString(R.string.jan),
                 context.getString(R.string.feb),

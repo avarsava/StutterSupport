@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Array of strings to be used as a dictionary for the Train Game. Formatted as array to ease
+pulling all strings and pulling random strings programmatically. -->
+
 <resources>
     <string-array name="calls">
         <item>hello</item>

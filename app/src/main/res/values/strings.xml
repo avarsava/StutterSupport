@@ -1,3 +1,5 @@
+<!-- Strings for the English version of Stutter Support -->
+
 <resources>
     <string name="app_name">Stutter Support</string>
 
@@ -16,8 +18,8 @@
     <string name="firsttime_message">I just started practicing my speech using Stutter Support!</string>
     <string name="streak_pre_num_msg">I\'ve practiced my speech for</string>
     <string name="streak_post_num_msg">days using Stutter Support!</string>
-    <string name="current_streak">Current Streak:</string>
-    <string name="best_streak">Best Streak:</string>
+    <string name="current_streak">Current Streak: </string>
+    <string name="best_streak">Best Streak: </string>
     <string name="jan">January</string>
     <string name="feb">February</string>
     <string name="mar">March</string>

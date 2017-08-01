@@ -3,10 +3,21 @@ package com.example.myself.stuttersupport;
 import java.util.Random;
 
 /**
- * Created by Myself on 7/10/2017.
+ * @author  Alexis Varsava <av11sl@brocku.ca>
+ * @version 0.1
+ * @since   0.1
+ *
+ * Provides numeric functions.
  */
 
 public class Numbers {
+    /**
+     * Generates a random integer within a specified range.
+     *
+     * @param min Smallest integer result can be.
+     * @param max Largest integer result can be.
+     * @return Randomly generated integer
+     */
     public static int randInt(int min, int max) {
         int randomInt;
         Random random = new Random();
