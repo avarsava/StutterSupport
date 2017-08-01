@@ -32,26 +32,22 @@ public abstract class DrawView extends SurfaceView implements Runnable{
     /**
      * How many pixels from the left of the screen the Start Button begins.
      */
-    private final int BUTTON_LEFT = (int)
-            (25*getResources().getDisplayMetrics().scaledDensity);
+    private final int BUTTON_LEFT = getScaled(25);
 
     /**
      * How many pixels from the top of the screen the Start Button begins.
      */
-    private final int BUTTON_TOP = (int)
-            (getScreenHeight() - (100*getResources().getDisplayMetrics().scaledDensity));
+    private final int BUTTON_TOP = getScreenHeight() - getScaled(100);
 
     /**
      * How many pixels from the right of the screen the Start Button extends to.
      */
-    private final int BUTTON_RIGHT = (int)
-            (getScreenWidth() - (25*getResources().getDisplayMetrics().scaledDensity));
+    private final int BUTTON_RIGHT = getScreenWidth() - getScaled(25);
 
     /**
      * How many pixels from the bottom of the screen the Start Button extends to.
      */
-    private final int BUTTON_BOTTOM = (int)
-            (getScreenHeight() - (50*getResources().getDisplayMetrics().scaledDensity));
+    private final int BUTTON_BOTTOM = getScreenHeight() - getScaled(50);
 
     /**
      * Boolean used to control whether the run loop goes.
@@ -176,6 +172,16 @@ public abstract class DrawView extends SurfaceView implements Runnable{
     protected void drawButton(){
         startButtonImg.setBounds(BUTTON_LEFT, BUTTON_TOP, BUTTON_RIGHT, BUTTON_BOTTOM);
         startButtonImg.draw(canvas);
+    }
+
+    /**
+     * Gets a value scaled to the density of the device screen.
+     *
+     * @param i pixel position to scale
+     * @return scaled pixel value
+     */
+    public int getScaled(int i){
+        return (int)(i*getResources().getDisplayMetrics().scaledDensity);
     }
 
     /**

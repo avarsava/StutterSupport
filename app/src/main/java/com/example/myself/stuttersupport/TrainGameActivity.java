@@ -1,8 +1,10 @@
 package com.example.myself.stuttersupport;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
 
@@ -20,7 +22,7 @@ public class TrainGameActivity extends GameActivity{
 
     private enum STATE {NOTREADY, CALL, WAIT, RESP};
 
-    private String currentString, displayString;
+    private String currentString;
     private String[] usedStrings;
     private long waitDuration;
     private int passed = 0;
@@ -36,10 +38,8 @@ public class TrainGameActivity extends GameActivity{
         waitDuration = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
         currentState = STATE.NOTREADY;
         currentString = getString();
-        displayString = currentString;
         screen = new TrainGameView(this, this);
-        screen.setBackgroundImage(
-                getResources().getDrawable(R.drawable.ic_train_game_instructions));
+        screen.setBackgroundImage(((TrainGameView)screen).getInstructionBg());
         setContentView(screen);
 
         //set up speech recognition
@@ -62,12 +62,12 @@ public class TrainGameActivity extends GameActivity{
     @Override
     protected void startButtonPressed(){
         currentState = STATE.CALL;
-        screen.setBackgroundImage(null);
+        screen.setBackgroundImage(((TrainGameView)screen).getGameBg());
         resetTimer();
     }
 
     private String getString(){
-        String potentialString = "";
+        String potentialString;
         List<String> usedStringsList = Arrays.asList(usedStrings);
         int randId;
 
@@ -97,12 +97,11 @@ public class TrainGameActivity extends GameActivity{
     }
 
     private void processSpeech(){
+
         if(currentState == STATE.RESP){
-            displayString = "Good Job!";
             successful = true;
             passed++;
         } else {
-            displayString = "Hold on there bucko!";
             cancelCycle();
         }
     }
@@ -117,14 +116,12 @@ public class TrainGameActivity extends GameActivity{
             case CALL:
                 if(getElapsedTime()/CALL_DURATION >= 1.0){
                     currentState = STATE.WAIT;
-                    displayString = "";
                     resetTimer();
                 }
                 break;
             case WAIT:
                 if(getElapsedTime()/ waitDuration >= 1.0){
                     currentState = STATE.RESP;
-                    displayString = currentString;
                     resetTimer();
                 }
                 break;
@@ -137,7 +134,6 @@ public class TrainGameActivity extends GameActivity{
                     resetTimer();
                     cycleCount++;
                     if (cycleCount != maxCycles) currentString = getString();
-                    displayString = currentString;
                     resetRecognizer();
                     successful = false;
                 }
@@ -147,30 +143,50 @@ public class TrainGameActivity extends GameActivity{
 
     protected class TrainGameView extends DrawView {
         private Paint blackPaint, whitePaint;
+        private Drawable instructionBg, gameBg, gameFg;
+        private Drawable bgBalloon, fgBalloon, checkmark, qmark, car, happy, sad;
+
+        int screenWidth = getScreenWidth();
+        int screenHeight = getScreenHeight();
 
         public TrainGameView(Context context, GameActivity ga) {
             super(context, ga);
             setUpPaints();
+            getDrawables();
         }
 
         @Override
         protected void doDrawing(){
-            //draw bg
-            if (background == null) {
-                canvas.drawRect(0,
-                        0,
-                        getScreenWidth(),
-                        getScreenHeight(),
-                        whitePaint);
-            }
 
-            //Write current String
-            //TODO: This should be more drawing stuff
-            if (currentState != STATE.NOTREADY) {
-                canvas.drawText(displayString,
-                        getScreenWidth() / 2,
-                        getScreenHeight() / 2,
+            if(currentState == STATE.CALL){
+                bgBalloon.draw(canvas);
+                canvas.drawText(currentString,
+                        getScaled(120),
+                        getScaled(125),
                         blackPaint);
+                happy.draw(canvas);
+                gameFg.draw(canvas);
+
+            }else if (currentState == STATE.WAIT){
+                car.draw(canvas);
+                gameFg.draw(canvas);
+
+            } else if (currentState == STATE.RESP){
+                gameFg.draw(canvas);
+                bgBalloon.draw(canvas);
+                if(successful){
+                    fgBalloon.draw(canvas);
+                    canvas.drawText(currentString,
+                            screenWidth - getScaled(90),
+                            screenHeight - getScaled(140),
+                            blackPaint);
+                    happy.draw(canvas);
+                    checkmark.draw(canvas);
+                }else{
+                    sad.draw(canvas);
+                    qmark.draw(canvas);
+                }
+
             }
 
             //cycle end logic
@@ -178,11 +194,61 @@ public class TrainGameActivity extends GameActivity{
             killIfCountHigh(calculateSuccess());
         }
 
+        public Drawable getInstructionBg(){
+            return instructionBg;
+        }
+
+        public Drawable getGameBg(){
+            return gameBg;
+        }
+
         private void setUpPaints(){
             blackPaint = new Paint();
             whitePaint = new Paint();
             blackPaint.setColor(Color.BLACK);
             whitePaint.setColor(Color.WHITE);
+            blackPaint.setTextAlign(Paint.Align.CENTER);
+            blackPaint.setTextSize(100);
+        }
+
+        private void getDrawables(){
+            //Get Resources
+            Resources resources = getResources();
+
+            //Get drawables from Resources
+            instructionBg = resources.getDrawable(R.drawable.ic_train_game_instructions);
+            gameBg = resources.getDrawable(R.drawable.ic_train_game_1);
+            gameFg = resources.getDrawable(R.drawable.ic_train_game_foreground);
+            bgBalloon = resources.getDrawable(R.drawable.ic_bg_balloon);
+            fgBalloon = resources.getDrawable(R.drawable.ic_fg_balloon);
+            checkmark = resources.getDrawable(R.drawable.ic_checkmar);
+            qmark = resources.getDrawable(R.drawable.ic_q_mark);
+            car = resources.getDrawable(R.drawable.ic_train_car);
+            happy = resources.getDrawable(R.drawable.ic_train_game_happy_face);
+            sad = resources.getDrawable(R.drawable.ic_train_game_sad_face);
+
+            //Set boundaries for drawings
+            gameFg.setBounds(0, 0, screenWidth, screenHeight);
+            bgBalloon.setBounds(0, 0,
+                    screenWidth - getScaled(100),
+                    screenHeight - getScaled(400));
+            fgBalloon.setBounds(screenWidth - getScaled(175),
+                    screenHeight - getScaled(300),
+                    screenWidth,
+                    screenHeight);
+            happy.setBounds(screenWidth - getScaled(100),
+                    getScaled(80),
+                    screenWidth - getScaled(30),
+                    getScaled(180));
+            sad.setBounds(screenWidth - getScaled(100),
+                    getScaled(80),
+                    screenWidth - getScaled(30),
+                    getScaled(180));
+            car.setBounds(0, 0, screenWidth, screenHeight - getScaled(120));
+            checkmark.setBounds(getScaled(75), getScaled(50),
+                    getScaled(175), getScaled(155));
+            qmark.setBounds(getScaled(75), getScaled(50),
+                    getScaled(175), getScaled(155));
         }
     }
 }
