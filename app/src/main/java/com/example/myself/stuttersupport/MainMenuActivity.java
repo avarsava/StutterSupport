@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -152,8 +153,8 @@ public class MainMenuActivity extends FragmentActivity {
 
             //Show dialog if milestone is hit
             if(MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak)) {
-                showDialog(this, "Congratulations!", "You've hit a new milestone! " +
-                        "Want to share it with the world?");
+                showDialog(this, getString(R.string.milestone_header),
+                        getString(R.string.milestone_prompt));
             }
         }
     }
@@ -163,8 +164,8 @@ public class MainMenuActivity extends FragmentActivity {
      */
     private void showEncouragement() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("You're doing great! Keep up the good work!");
-        builder.setNeutralButton("Thanks!", null);
+        builder.setMessage(getString(R.string.encouragement_message));
+        builder.setNeutralButton(getString(R.string.encouragement_button), null);
         builder.show();
     }
 
@@ -202,8 +203,8 @@ public class MainMenuActivity extends FragmentActivity {
         if (title != null) builder.setTitle(title);
 
         builder.setMessage(message);
-        builder.setPositiveButton("OK", positiveListener);
-        builder.setNegativeButton("Cancel", null);
+        builder.setPositiveButton(getString(R.string.OK_button), positiveListener);
+        builder.setNegativeButton(getString(R.string.Cancel_button), null);
         builder.show();
     }
 
@@ -225,8 +226,9 @@ public class MainMenuActivity extends FragmentActivity {
      */
     private String generateShareMessage() {
         int streak = streakDbHelper.getCurrent();
-        if(streak == 1) return "I just started practicing my speech using Stutter Support!";
-        return "I've practiced my speech for " + streak + " days using Stutter Support!";
+        if(streak == 1) return getString(R.string.firsttime_message);
+        return getString(R.string.streak_pre_num_msg) + streak
+                + getString(R.string.streak_post_num_msg);
     }
 
     /**

@@ -254,7 +254,8 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
             protected void onPostExecute(Exception result){
                 if (result != null){
                     Toast.makeText(getApplicationContext(),
-                            "Failed to init recognizer!", Toast.LENGTH_SHORT).show();
+                            getResources().getString(R.string.recognizer_error),
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     recognizerReady();
                     recognizer.startListening(keyword);

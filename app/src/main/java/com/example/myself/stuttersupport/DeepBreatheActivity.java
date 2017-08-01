@@ -38,6 +38,11 @@ public class DeepBreatheActivity extends GameActivity {
     private enum STATE {NOTREADY, INHALE, EXHALE}
 
     /**
+     * Contains the breathe in and breathe out strings from Resources
+     */
+    private String breatheIn, breatheOut;
+
+    /**
      * How long in milliseconds each inhale should last. Defined in seconds in the Settings.
      */
     private long inhaleDuration;
@@ -74,6 +79,8 @@ public class DeepBreatheActivity extends GameActivity {
                 getResources().getDrawable(R.drawable.ic_deep_breathe_inhale);
         exhaleBg =
                 getResources().getDrawable(R.drawable.ic_deep_breathe_exhale);
+        breatheIn = getResources().getString(R.string.breathe_in);
+        breatheOut = getResources().getString(R.string.breathe_out);
         screen = new DeepBreatheView(this, this);
         screen.setBackgroundImage(getResources().getDrawable(
                 R.drawable.ic_deep_breathe_instructions));
@@ -105,10 +112,10 @@ public class DeepBreatheActivity extends GameActivity {
         String instruction = "";
         switch (currentState) {
             case INHALE:
-                instruction = "Breathe in...";
+                instruction = breatheIn;
                 break;
             case EXHALE:
-                instruction = "...Breathe out";
+                instruction = breatheOut;
                 break;
         }
         return instruction;

@@ -49,7 +49,7 @@ public class StreakDisplayer extends RelativeLayout {
     public void update(TrackerDbHelper tdbh, StreakDbHelper sdbh){
         tdbh.updateStreaks(sdbh);
 
-        currentStreakView.setText("Current Streak: " + sdbh.getCurrent());
-        bestStreakView.setText("Best Streak: " + sdbh.getBest());
+        currentStreakView.setText(getContext().getString(R.string.current_streak) + sdbh.getCurrent());
+        bestStreakView.setText(getContext().getString(R.string.best_streak) + sdbh.getBest());
     }
 }
