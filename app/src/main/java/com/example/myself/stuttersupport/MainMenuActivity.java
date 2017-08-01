@@ -146,10 +146,10 @@ public class MainMenuActivity extends FragmentActivity {
             showEncouragement();
 
             //Update streak
-            int currentStreak = streakDbHelper.getCurrent();
             trackerDbHelper.addDateToDb(streakDbHelper);
             trackerPage.refreshCalendar(trackerDbHelper);
             trackerPage.refreshStreak(trackerDbHelper, streakDbHelper);
+            int currentStreak = streakDbHelper.getCurrent();
 
             //Show dialog if milestone is hit
             if(MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak)) {
