@@ -10,7 +10,7 @@ import android.view.View;
  * @version 0.1
  * @since   0.1
  *
- * Displays the splash screen.
+ * Displays the splash screen, with a button to show the third party licenses
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -26,12 +26,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Handles clicking on the screen, launches the Main Menu
+     * Handles clicking on the screen, launches the Main Menu or the Licenses screen depending
+     * on which was clicked.
      *
-     * @param view the view which was clicked (in this case, the entire screen)
+     * @param view the view which was clicked (in this case, either the splash screen or licenses)
      */
     public void onClick(View view){
-        Intent intent = new Intent(this, MainMenuActivity.class);
+        Intent intent = null;
+        switch(view.getId()){
+            case R.id.splashButton:
+                intent = new Intent(this, MainMenuActivity.class);
+                break;
+            case R.id.licensesButton:
+                intent = new Intent(this, LicensesActivity.class);
+                break;
+        }
         startActivity(intent);
     }
 }

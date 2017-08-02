@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myself.stuttersupport">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -21,8 +22,9 @@
         <activity android:name=".MainMenuActivity" />
         <activity android:name=".CarGameActivity" />
         <activity android:name=".TrainGameActivity" />
-        <activity android:name=".DeepBreatheActivity"/>
+        <activity android:name=".DeepBreatheActivity" />
         <activity android:name=".SettingsScreenActivity" />
+        <activity android:name=".LicensesActivity"></activity>
     </application>
 
 </manifest>
