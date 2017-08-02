@@ -291,36 +291,36 @@ public class TrainGameActivity extends GameActivity{
          */
         @Override
         protected void doDrawing(){
-
-            if(currentState == STATE.CALL){
-                bgBalloon.draw(canvas);
-                canvas.drawText(currentString,
-                        getScaled(120),
-                        getScaled(125),
-                        blackPaint);
-                happy.draw(canvas);
-                gameFg.draw(canvas);
-
-            }else if (currentState == STATE.WAIT){
-                car.draw(canvas);
-                gameFg.draw(canvas);
-
-            } else if (currentState == STATE.RESP){
-                gameFg.draw(canvas);
-                bgBalloon.draw(canvas);
-                if(successful){
-                    fgBalloon.draw(canvas);
+            switch(currentState){
+                case CALL:
+                    bgBalloon.draw(canvas);
                     canvas.drawText(currentString,
-                            screenWidth - getScaled(90),
-                            screenHeight - getScaled(140),
+                            getScaled(120),
+                            getScaled(125),
                             blackPaint);
                     happy.draw(canvas);
-                    checkmark.draw(canvas);
-                }else{
-                    sad.draw(canvas);
-                    qmark.draw(canvas);
-                }
-
+                    gameFg.draw(canvas);
+                    break;
+                case WAIT:
+                    car.draw(canvas);
+                    gameFg.draw(canvas);
+                    break;
+                case RESP:
+                    gameFg.draw(canvas);
+                    bgBalloon.draw(canvas);
+                    if(successful){
+                        fgBalloon.draw(canvas);
+                        canvas.drawText(currentString,
+                                screenWidth - getScaled(90),
+                                screenHeight - getScaled(140),
+                                blackPaint);
+                        happy.draw(canvas);
+                        checkmark.draw(canvas);
+                    }else{
+                        sad.draw(canvas);
+                        qmark.draw(canvas);
+                    }
+                    break;
             }
 
             //cycle end logic
