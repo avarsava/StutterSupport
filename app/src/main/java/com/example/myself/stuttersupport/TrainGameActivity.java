@@ -103,9 +103,9 @@ public class TrainGameActivity extends GameActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        maxCycles = Integer.valueOf(prefs.getString("noOfPairs", "3"));
+        maxCycles = Integer.valueOf(prefs.getString("tg_noOfWords", "3"));
         usedStrings = new String[maxCycles];
-        waitDuration = Long.valueOf(prefs.getString("waitTime", "10"))*1000;
+        waitDuration = Long.valueOf(prefs.getString("tg_waitTime", "10"))*1000;
         currentState = STATE.NOTREADY;
         currentString = getString();
         screen = new TrainGameView(this, this);

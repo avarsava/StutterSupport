@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Number of pairs to go through -->
     <EditTextPreference android:title="Number of Rounds"
-        android:key="noOfPairs"
+        android:key="tg_noOfWords"
         android:defaultValue="3"
         android:inputType="number"
         android:numeric="integer"
@@ -10,7 +10,7 @@
 
     <!-- How long to wait before showing response -->
     <EditTextPreference android:title="Wait Time"
-        android:key="waitTime"
+        android:key="tg_waitTime"
         android:defaultValue="10"
         android:inputType="number"
         android:numeric="integer"
