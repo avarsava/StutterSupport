@@ -248,6 +248,9 @@ public class TrainGameActivity extends GameActivity{
         }
     }
 
+    /**
+     * Handles drawing the game to the screen.
+     */
     protected class TrainGameView extends DrawView {
         /**
          * Paint used to render the text
