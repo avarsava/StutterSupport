@@ -12,19 +12,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <uses-feature android:name="android.hardware.screen.portrait" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainMenuActivity" />
-        <activity android:name=".CarGameActivity" />
-        <activity android:name=".TrainGameActivity" />
-        <activity android:name=".DeepBreatheActivity" />
-        <activity android:name=".SettingsScreenActivity" />
-        <activity android:name=".LicensesActivity"></activity>
+        <activity android:name=".MainMenuActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CarGameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TrainGameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DeepBreatheActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SettingsScreenActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LicensesActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
