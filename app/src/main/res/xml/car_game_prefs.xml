@@ -23,4 +23,7 @@
         android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"/>
+
+    <Preference android:title="Back to Menu"
+        android:key="backButton" />
 </PreferenceScreen>

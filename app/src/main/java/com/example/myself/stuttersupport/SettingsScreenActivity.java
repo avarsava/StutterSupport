@@ -1,6 +1,7 @@
 package com.example.myself.stuttersupport;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 /**
@@ -26,5 +27,14 @@ public class SettingsScreenActivity extends PreferenceActivity {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(prefsFile);
+
+        Preference button = findPreference("backButton");
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                finish();
+                return true;
+            }
+        });
     }
 }
