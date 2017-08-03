@@ -24,6 +24,11 @@
         android:numeric="integer"
         android:maxLength="2"/>
 
+    <!-- Button to restore default preferences -->
+    <Preference android:title="Restore Defaults"
+        android:key="restoreDefaults" />
+
+    <!-- Button to go back to Main Menu -->
     <Preference android:title="Back to Menu"
         android:key="backButton" />
 </PreferenceScreen>
