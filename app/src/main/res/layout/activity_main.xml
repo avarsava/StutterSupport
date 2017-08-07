@@ -6,22 +6,26 @@
     android:layout_height="match_parent"
     tools:context="com.example.myself.stuttersupport.MainActivity">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/splashButton"
+        style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
+        android:background="@null"
         android:onClick="onClick"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_splash"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/licensesButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/licensesButton"
@@ -35,4 +39,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:text="Licenses" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/tapAnywhere"
+        app:layout_constraintBottom_toBottomOf="@+id/splashButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="@string/tapAnywhere" />
 </android.support.constraint.ConstraintLayout>

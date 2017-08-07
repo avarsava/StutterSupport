@@ -32,4 +32,5 @@
     <string name="oct">October</string>
     <string name="nov">November</string>
     <string name="dec">December</string>
+    <string name="tapAnywhere">Tap the screen to begin!</string>
 </resources>
