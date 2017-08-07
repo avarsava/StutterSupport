@@ -38,6 +38,12 @@ public class SettingsScreenActivity extends PreferenceActivity {
 
     }
 
+    /**
+     * Expands preferences from XML into a settings screen layout, then sets back and restore
+     * buttons to listen for click activity.
+     *
+     * @param preferencesResId Resoure ID of the preferences file to expand
+     */
     @Override
     public void addPreferencesFromResource(int preferencesResId){
         super.addPreferencesFromResource(preferencesResId);
