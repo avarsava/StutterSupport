@@ -1,5 +1,8 @@
 package com.example.myself.stuttersupport;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -39,6 +42,7 @@ public class SettingsScreenActivity extends PreferenceActivity {
     public void addPreferencesFromResource(int preferencesResId){
         super.addPreferencesFromResource(preferencesResId);
 
+        final Activity thisActivity = this;
         Preference backButton = findPreference("backButton");
         backButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -52,17 +56,52 @@ public class SettingsScreenActivity extends PreferenceActivity {
         restoreButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                SharedPreferences preferences =
-                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.commit();
-
-                setPreferenceScreen(null);
-                addPreferencesFromResource(prefsFile);
-
+                showDialog(thisActivity,
+                        "Restore Default Settings",
+                        "Are you sure? This will restore the default settings for ALL activities.");
                 return true;
             }
         });
+    }
+
+    /**
+     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
+     * restores the default settings for all activities in the app.
+     *
+     * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
+     * @param activity This activity
+     * @param title Title for the dialog
+     * @param message Message to display on dialog
+     */
+    public void showDialog(Activity activity, String title, CharSequence message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                restoreDefaults();
+            }
+        };
+
+        if (title != null) builder.setTitle(title);
+
+        builder.setMessage(message);
+        builder.setPositiveButton(getString(R.string.OK_button), positiveListener);
+        builder.setNegativeButton(getString(R.string.Cancel_button), null);
+        builder.show();
+    }
+
+    /**
+     * Restores the default settings for all activities, then refreshes the settings screen
+     * to reflect the changes.
+     */
+    private void restoreDefaults(){
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+
+        setPreferenceScreen(null);
+        addPreferencesFromResource(prefsFile);
     }
 }
