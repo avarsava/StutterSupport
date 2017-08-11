@@ -19,7 +19,7 @@
     <!-- Deep Breathe # of Breaths -->
     <EditTextPreference android:title="Number of Breaths"
         android:key="db_noOfBreaths"
-        android:defaultValue="1"
+        android:defaultValue="3"
         android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"/>

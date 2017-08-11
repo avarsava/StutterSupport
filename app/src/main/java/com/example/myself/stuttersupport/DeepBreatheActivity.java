@@ -72,7 +72,7 @@ public class DeepBreatheActivity extends GameActivity {
         super.onCreate(savedInstanceState);
         currentState = STATE.NOTREADY;
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        maxCycles = Integer.valueOf(prefs.getString("db_noOfBreaths", "1"));
+        maxCycles = Integer.valueOf(prefs.getString("db_noOfBreaths", "3"));
         inhaleDuration = Long.valueOf(prefs.getString("db_inhaleLength", "7")) * 1000;
         exhaleDuration = Long.valueOf(prefs.getString("db_exhaleLength", "11")) * 1000;
         inhaleBg =
