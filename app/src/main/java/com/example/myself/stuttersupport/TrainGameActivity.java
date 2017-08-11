@@ -185,6 +185,8 @@ public class TrainGameActivity extends GameActivity{
      */
     public void cancelCycle() {
         resetTimer();
+        currentState = STATE.RESP;
+        successful = false;
         while(getElapsedTime()/CANCEL_DURATION < 1.0){
             //TODO: Is there a cleaner way to wait?
         }
