@@ -5,9 +5,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.Arrays;
 import java.util.List;
+
+import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -34,9 +39,11 @@ public class CarGameActivity extends GameActivity {
      * NOTREADY - The voice recognition engine has not yet initialized, and the Start Button
      * has not been pressed.
      * WAIT - Waiting for a word to appear
-     * HOLD - Holding the woud as it shows on the screen
+     * HOLD - Holding the word as it shows on the screen
+     * GOOD - Player is holding the current word
+     * BAD - Player has dropped the word early
      */
-    private enum STATE {NOTREADY, WAIT, HOLD};
+    private enum STATE {NOTREADY, WAIT, HOLD, GOOD, BAD};
 
     /**
      * The current state of gameplay.
@@ -46,7 +53,7 @@ public class CarGameActivity extends GameActivity {
     /**
      * The current string from the word list which the voice recognizer is listening for.
      */
-    private String currentString;
+    private String currentString, displayString;
 
     /**
      * A list of the previously called words, to avoid calling the same word twice.
@@ -88,11 +95,11 @@ public class CarGameActivity extends GameActivity {
         holdDuration = Long.valueOf(prefs.getString("cg_holdTime", "5"))*1000;
         currentState = STATE.NOTREADY;
         currentString = getString();
+        displayString = currentString;
         screen = new CarGameView(this, this);
         setContentView(screen);
 
         //set up speech recognition
-        //TODO: should I use a different set of words for this game?
         runRecognizerSetup(currentString, getResources().getStringArray(R.array.calls));
     }
 
@@ -103,6 +110,44 @@ public class CarGameActivity extends GameActivity {
     protected void startButtonPressed(){
         currentState = STATE.WAIT;
         resetTimer();
+    }
+
+    /**
+     * On recognizing speech, processes the speech if the hypothesis matches the word called for
+     *
+     * @param hypothesis PocketSphinx's best guess about what is being said
+     */
+    @Override
+    public void onPartialResult(Hypothesis hypothesis){
+        if(hypothesis == null || currentState == STATE.WAIT || currentState == STATE.BAD){
+            return;
+        }
+
+        String text = hypothesis.getHypstr();
+        if(text.equals(currentString)){
+            currentState = STATE.GOOD;
+            displayString = "Good!";
+        } else{
+            currentState = STATE.BAD;
+            displayString = "Bad!";
+        }
+    }
+
+
+    /**
+     * When speech is finished, processes the speech if the hypothesis matches the world
+     * called for.
+     *
+     * @param hypothesis PocketSphinx's best guess about what was said.
+     */
+    @Override
+    public void onResult(Hypothesis hypothesis){
+        if(hypothesis == null || currentState != STATE.WAIT){
+            currentState = STATE.BAD;
+            return;
+        }
+
+        //TODO: Do I need to check again if the word is the right one?
     }
 
     /**
@@ -139,13 +184,21 @@ public class CarGameActivity extends GameActivity {
                     resetTimer();
                 }
                 break;
+            case GOOD:
+                if(getElapsedTime()/holdDuration >= 1.0){
+                    passed++;
+                }
+            case BAD:
             case HOLD:
                 if(getElapsedTime()/holdDuration >= 1.0){
                     currentState = STATE.WAIT;
                     resetTimer();
                     cycleCount++;
-                    if(cycleCount != maxCycles) currentString = getString();
-                    resetRecognizer();
+                    if(cycleCount != maxCycles) {
+                        currentString = getString();
+                        displayString = currentString;
+                        resetRecognizer();
+                    }
                 }
                 break;
         }
@@ -217,8 +270,10 @@ public class CarGameActivity extends GameActivity {
 
             //Draw text
             switch(currentState){
+                case GOOD:
+                case BAD:
                 case HOLD:
-                    canvas.drawText(currentString,
+                    canvas.drawText(displayString,
                             screenWidth/2,
                             screenHeight/2,
                             blackPaint);
