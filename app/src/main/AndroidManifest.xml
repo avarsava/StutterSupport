@@ -33,6 +33,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".LicensesActivity"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".ScriptReadingActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

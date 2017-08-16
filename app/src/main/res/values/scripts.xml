@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="scripts">
+        <item>Hello I would like to order a large pizza with pepperoni and extra cheese</item>
+    </string-array>
+</resources>
