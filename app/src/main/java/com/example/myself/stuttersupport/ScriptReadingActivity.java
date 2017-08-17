@@ -9,7 +9,14 @@ import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+
+import java.util.Arrays;
+
+import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -40,7 +47,17 @@ public class ScriptReadingActivity extends GameActivity {
     /**
      * The part of the script which the user has already read. Updated by voice recognition logic.
      */
-    private String highlightScript = "";
+    private String highlightScript;
+
+    /**
+     * currentScript as a String array, to get next word easier.
+     */
+    private String[] scriptWords;
+
+    /**
+     * Describes whether or not the voice recognition engine has been initialized.
+     */
+    private boolean recognizerInitialized;
 
     /**
      * Set up objects necessary for gameplay. Called automatically when Activity starts
@@ -52,11 +69,16 @@ public class ScriptReadingActivity extends GameActivity {
         super.onCreate(savedInstanceState);
 
         currentScript = getScriptFromResources();
+        scriptWords = currentScript.split(" ");
+        highlightScript = "";
+        recognizerInitialized = false;
+        maxCycles = scriptWords.length;
+        cycleCount = 0;
 
         screen = new ScriptReadingView(this, this);
         setContentView(screen);
 
-        runRecognizerSetup(null, null);
+        runRecognizerSetup(scriptWords[0].toLowerCase(), getScriptWords());
     }
 
     /**
@@ -64,8 +86,63 @@ public class ScriptReadingActivity extends GameActivity {
      */
     @Override
     protected void startButtonPressed() {
-
+        recognizerInitialized = true;
     }
+
+    /**
+     * When a word has been recognized, if the time is appropriate and the word is the current word
+     * in the script, change the highlighting on the screen and reset the recognizer to anticipate
+     * the next word in the script.
+     *
+     * If there are no more words in the script to be read, exit the game with a successful status.
+     *
+     * @param hypothesis PocketSphinx's best guess about what was said.
+     */
+    @Override
+    public void onPartialResult(Hypothesis hypothesis){
+        if (hypothesis == null){
+            return;
+        }
+
+        //If timing is appropriate
+        if(recognizerInitialized){
+            //get the current word
+            String currentWord = scriptWords[0];
+
+            //If hypothesis is current word in script
+            if(hypothesis.getHypstr().equals(currentWord.toLowerCase())){
+
+                //add this word to the highlighted script
+                highlightScript += currentWord + " ";
+
+                //remove this word from the unhighlighted script
+                //(add +1 to account for space)
+                currentScript = currentScript.substring(currentWord.length() + 1);
+
+                //if there is a word after this one
+                if(scriptWords[1] != null) {
+                    //reset the recognizer with the next word
+                    scriptWords = Arrays.copyOfRange(scriptWords, 1, scriptWords.length);
+
+                    cycleCount++;
+
+                //If there are no more words, exit with successful status
+                } else {
+                    killIfCountHigh(RESULT_OK);
+                }
+            }
+            resetRecognizer();
+        }
+    }
+
+    /**
+     * Resets the voice recognition engine.
+     */
+    private void resetRecognizer() {
+        recognizer.stop();
+        recognizer.startListening(scriptWords[0].toLowerCase());
+    }
+
 
     /**
      * Gets a random script from the XML file containing all possible scripts.
@@ -83,6 +160,23 @@ public class ScriptReadingActivity extends GameActivity {
         return newScript;
     }
 
+    /**
+     * Converts all the words in the script to lowercase for the sake of the voice engine.
+     *
+     * @return All words in script, in lowercase
+     */
+    private String[] getScriptWords(){
+        String[] allWords = currentScript.split(" ");
+        for(int i = 0; i < allWords.length; i++){
+            allWords[i] = allWords[i].toLowerCase();
+        }
+        return allWords;
+    }
+
+    /**
+     * Drawing class responsible for drawing text with highlighting to screen. Updates as new words
+     * become highlighted by the voice recognition.
+     */
     private class ScriptReadingView extends DrawView{
         /**
          * Used to wrap the text to the size of the device screen and update screen with new text
@@ -92,7 +186,7 @@ public class ScriptReadingActivity extends GameActivity {
         /**
          * For styling text on the canvas
          */
-        private TextPaint textPaint;
+        private TextPaint textPaint, highlightPaint;
 
         /**
          * Script to display in DynamicLayout. Needs to be SpannableStringBuilder
@@ -114,26 +208,23 @@ public class ScriptReadingActivity extends GameActivity {
         public ScriptReadingView(Context context, GameActivity ga) {
             super(context, ga);
 
-            textPaint = new TextPaint();
-            textPaint.setColor(Color.RED);
-            textPaint.setTextSize(50);
-            textPaint.setTextAlign(Paint.Align.CENTER);
-            textPaint.setAntiAlias(true);
-            whitePaint = new Paint();
-            whitePaint.setColor(Color.WHITE);
+            setUpPaints();
 
             scriptText = new SpannableStringBuilder(currentScript);
 
             textWrapper = new DynamicLayout(scriptText,
                     textPaint,
                     getScreenWidth() - getPaddingLeft() - getPaddingRight(),
-                    Layout.Alignment.ALIGN_NORMAL,
+                    Layout.Alignment.ALIGN_CENTER,
                     1,
                     0,
                     false);
 
         }
 
+        /**
+         * Draws game-specific graphics to the screen
+         */
         @Override
         protected void doDrawing() {
             //Draw background
@@ -144,9 +235,27 @@ public class ScriptReadingActivity extends GameActivity {
 
             //Draw text
             canvas.save();
-            canvas.translate(textWrapper.getWidth()/2, textWrapper.getHeight()/2);
+            canvas.translate(0, textWrapper.getHeight()/2);
             textWrapper.draw(canvas);
             canvas.restore();
+        }
+
+        /**
+         * Sets up paints for use in drawing to canvas
+         */
+        private void setUpPaints(){
+            textPaint = new TextPaint();
+            textPaint.setColor(Color.BLACK);
+            textPaint.setTextSize(50);
+            textPaint.setTextAlign(Paint.Align.LEFT);
+            textPaint.setAntiAlias(true);
+            highlightPaint = new TextPaint();
+            highlightPaint.setColor(Color.RED);
+            highlightPaint.setTextSize(50);
+            highlightPaint.setTextAlign(Paint.Align.CENTER);
+            highlightPaint.setAntiAlias(true);
+            whitePaint = new Paint();
+            whitePaint.setColor(Color.WHITE);
         }
 
         /**
@@ -154,7 +263,11 @@ public class ScriptReadingActivity extends GameActivity {
          */
         protected void updateScript(){
             scriptText.clear();
-            scriptText.append(highlightScript + currentScript);
+            scriptText.append(highlightScript);
+            scriptText.setSpan(new ForegroundColorSpan(Color.RED), 0, highlightScript.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            scriptText.append(currentScript);
+
+
         }
     }
 }
