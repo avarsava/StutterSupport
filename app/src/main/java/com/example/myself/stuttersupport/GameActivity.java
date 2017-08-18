@@ -224,17 +224,28 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
         startTime = System.currentTimeMillis();
     }
 
+    protected void runRecognizerSetup(final String keyword, final String[] dictionary){
+        if(keyword == null){
+            recognizerReady();
+            return;
+        }
+
+        String[]  newArray = {keyword};
+
+        runRecognizerSetup(newArray, dictionary);
+    }
+
     /**
      * Sets up the speech recognition engine in a background thread for speed and to not tie up
      * the UI. If no recognizer is required, a null keyword will cancel the action and toggle the
      * Start Button.
      *
-     * @param keyword The word which the recognizer will be listening for.
+     * @param keywords The words which the recognizer will be listening for.
      * @param dictionary The words which the recognizer should be prepared to listen for. This
      *                   allows for faster switching between keywords.
      */
-    protected void runRecognizerSetup(final String keyword, final String[] dictionary) {
-        if(keyword == null){
+    protected void runRecognizerSetup(final String[] keywords, final String[] dictionary) {
+        if(keywords == null){
             recognizerReady();
             return;
         }
@@ -258,7 +269,9 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
                             Toast.LENGTH_SHORT).show();
                 } else {
                     recognizerReady();
-                    recognizer.startListening(keyword);
+                    for (String keyword : keywords) {
+                        recognizer.startListening(keyword);
+                    }
                 }
             }
         }.execute();

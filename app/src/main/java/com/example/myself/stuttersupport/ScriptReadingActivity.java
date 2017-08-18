@@ -78,7 +78,8 @@ public class ScriptReadingActivity extends GameActivity {
         screen = new ScriptReadingView(this, this);
         setContentView(screen);
 
-        runRecognizerSetup(scriptWords[0].toLowerCase(), getScriptWords());
+        String[] words = getScriptWords();
+        runRecognizerSetup(words, words);
     }
 
     /**
