@@ -13,6 +13,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 
 import java.util.Arrays;
 
@@ -29,6 +30,11 @@ import edu.cmu.pocketsphinx.Hypothesis;
  */
 
 public class ScriptReadingActivity extends GameActivity {
+    /**
+     * Tag for debug logs.
+     */
+    private final String TAG = "ScriptReading";
+
     /**
      * The starting point to identify potential scripts to feed to the user.
      */
@@ -105,27 +111,35 @@ public class ScriptReadingActivity extends GameActivity {
             return;
         }
 
+        Log.d(TAG, "hypothesis == " + hypothesis.getHypstr());
         //If timing is appropriate
         if(recognizerInitialized){
             //get the current word
             String currentWord = scriptWords[0];
 
-            //If hypothesis is current word in script
-            if(hypothesis.getHypstr().equals(currentWord.toLowerCase())){
+            //If first word in hypothesis is current word in script
+            if(hypothesis.getHypstr().split(" ")[0]
+                    .equals(currentWord
+                            .toLowerCase().replaceAll("[^a-zA-Z ]", ""))){
 
                 //add this word to the highlighted script
                 highlightScript += currentWord + " ";
 
                 //remove this word from the unhighlighted script
                 //(add +1 to account for space)
-                currentScript = currentScript.substring(currentWord.length() + 1);
+                try {
+                    currentScript = currentScript.substring(currentWord.length() + 1);
+                }catch (StringIndexOutOfBoundsException e){
+                    currentScript = "";
+                }
+
+                cycleCount++;
 
                 //if there is a word after this one
-                if(scriptWords[1] != null) {
+                Log.d(TAG, "scriptWords.length == " + scriptWords.length);
+                if(!currentScript.equals("")) {
                     //reset the recognizer with the next word
                     scriptWords = Arrays.copyOfRange(scriptWords, 1, scriptWords.length);
-
-                    cycleCount++;
 
                 //If there are no more words, exit with successful status
                 } else {
@@ -141,7 +155,7 @@ public class ScriptReadingActivity extends GameActivity {
      */
     private void resetRecognizer() {
         recognizer.stop();
-        recognizer.startListening(scriptWords[0].toLowerCase());
+        recognizer.startListening(scriptWords[0].toLowerCase().replaceAll("[^a-zA-Z ]", ""));
     }
 
 
@@ -169,7 +183,7 @@ public class ScriptReadingActivity extends GameActivity {
     private String[] getScriptWords(){
         String[] allWords = currentScript.split(" ");
         for(int i = 0; i < allWords.length; i++){
-            allWords[i] = allWords[i].toLowerCase();
+            allWords[i] = allWords[i].toLowerCase().replaceAll("[^a-zA-Z ]", "");
         }
         return allWords;
     }
