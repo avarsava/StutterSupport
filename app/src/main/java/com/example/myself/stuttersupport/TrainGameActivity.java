@@ -47,16 +47,16 @@ public class TrainGameActivity extends GameActivity{
     private final long CANCEL_DURATION = 3000L;
 
     /**
-     * The starting point to identify potential words in the internal word list. Should probably
-     * always be 1.
+     * The starting point to identify potential words in the internal word list. Retrieved from
+     * the Difficulty object once the preferences have been read.
      */
-    private final int MIN_PAIR = 1;
+    private int minPair;
 
     /**
      * The ending point to identify potential words in the internal word list. Effectively, how
      * many words there are in the word list.
      */
-    private final int MAX_PAIR = 52;
+    private int maxPair;
 
     /**
      * The possible states in the game.
@@ -109,6 +109,9 @@ public class TrainGameActivity extends GameActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int difficulty = Integer.valueOf(prefs.getString("tg_Difficulty", "1"));
+        minPair = Difficulty.getMinForLevel(difficulty);
+        maxPair = Difficulty.getMaxForLevel(difficulty);
         maxCycles = Integer.valueOf(prefs.getString("tg_noOfWords", "3"));
         usedStrings = new String[maxCycles];
         waitDuration = Long.valueOf(prefs.getString("tg_waitTime", "10"))*1000;
@@ -165,7 +168,7 @@ public class TrainGameActivity extends GameActivity{
         int randId;
 
         do {
-            randId = Numbers.randInt(MIN_PAIR, MAX_PAIR) - 1;
+            randId = Numbers.randInt(minPair, maxPair) - 1;
             potentialString = allWords[randId];
         } while (usedStringsList.contains(potentialString));
 

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Level of word difficulty -->
+    <ListPreference android:title="Difficulty Level"
+        android:key="tg_Difficulty"
+        android:entries="@array/difficultyLevels"
+        android:entryValues="@array/levelValues" />
+
     <!-- Number of pairs to go through -->
     <EditTextPreference android:title="Number of Rounds"
         android:key="tg_noOfWords"
