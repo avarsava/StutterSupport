@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,11 @@ import edu.cmu.pocketsphinx.Hypothesis;
  * correct word at the right time.
  */
 public class TrainGameActivity extends GameActivity{
+    /**
+     * Tag for debug logs
+     */
+    private final String TAG = "TrainGame";
+
     /**
      * How long the 'call' phase of the cycle should last.
      */
@@ -50,7 +56,7 @@ public class TrainGameActivity extends GameActivity{
      * The ending point to identify potential words in the internal word list. Effectively, how
      * many words there are in the word list.
      */
-    private final int MAX_PAIR = 5;
+    private final int MAX_PAIR = 52;
 
     /**
      * The possible states in the game.
@@ -127,7 +133,8 @@ public class TrainGameActivity extends GameActivity{
             return;
         }
 
-        String text = hypothesis.getHypstr();
+        String text = hypothesis.getHypstr().split(" ")[0];
+        Log.d(TAG, "text = " + text + " currentString = " + currentString);
         if(text.equals(currentString)){
             processSpeech();
         }
@@ -162,7 +169,9 @@ public class TrainGameActivity extends GameActivity{
             potentialString = allWords[randId];
         } while (usedStringsList.contains(potentialString));
 
+        Log.d(TAG, "cycleCount = " + cycleCount);
         usedStrings[cycleCount] = potentialString;
+        Log.d(TAG, "usedStrings = " + usedStrings.toString());
         return potentialString;
     }
 
@@ -188,7 +197,7 @@ public class TrainGameActivity extends GameActivity{
         currentState = STATE.RESP;
         successful = false;
         while(getElapsedTime()/CANCEL_DURATION < 1.0){
-            //TODO: Is there a cleaner way to wait?
+            //waste time
         }
 
     }
@@ -204,6 +213,7 @@ public class TrainGameActivity extends GameActivity{
         if(currentState == STATE.RESP){
             successful = true;
             passed++;
+            Log.d(TAG, "passed = " + passed + ", successful should now be true");
         } else {
             cancelCycle();
         }
@@ -214,6 +224,7 @@ public class TrainGameActivity extends GameActivity{
      */
     private void resetRecognizer() {
         recognizer.stop();
+        Log.i(TAG, "Resetting recognizer to listen for " + currentString);
         recognizer.startListening(currentString);
     }
 
@@ -242,6 +253,7 @@ public class TrainGameActivity extends GameActivity{
                     currentState = STATE.CALL;
                     resetTimer();
                     cycleCount++;
+                    Log.d(TAG, "Cycle count  = " + cycleCount);
                     if (cycleCount != maxCycles) currentString = getString();
                     resetRecognizer();
                     successful = false;
@@ -314,6 +326,7 @@ public class TrainGameActivity extends GameActivity{
                     gameFg.draw(canvas);
                     bgBalloon.draw(canvas);
                     if(successful){
+                        Log.d(TAG, "successful is true, draw good result");
                         fgBalloon.draw(canvas);
                         canvas.drawText(currentString,
                                 screenWidth - getScaled(90),
