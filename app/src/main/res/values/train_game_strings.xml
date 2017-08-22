@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Array of strings to be used as a dictionary for the Train Game. Formatted as array to ease
-pulling all strings and pulling random strings programmatically. -->
+pulling all strings and pulling random strings programmatically.
+
+ Word lists taken and adjusted from:
+ http://www.home-speech-home.com/h-words.html
+ http://www.home-speech-home.com/vowels.html -->
 
 <resources>
     <string-array name="calls">
