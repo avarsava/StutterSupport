@@ -102,7 +102,7 @@ public class MainMenuActivity extends FragmentActivity {
                 TrainGameActivity.class, R.xml.train_game_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_deep_breathe_splash,
                 DeepBreatheActivity.class, R.xml.deep_breathe_prefs));
-        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_temp_menu,
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_script_splash,
                 ScriptReadingActivity.class, R.xml.script_reading_prefs));
 
         return fList;
