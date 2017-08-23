@@ -35,6 +35,11 @@ public class MainMenuActivity extends FragmentActivity {
     private final List<Integer> MILESTONES = new LinkedList<>(Arrays.asList(1, 7, 31, 50, 75, 100));
 
     /**
+     * Records whether the social media share message has been offered once already.
+     */
+    private boolean socialMediaOffered;
+
+    /**
      * Handles animation, allows swiping
      */
     private ViewPager mPager;
@@ -70,6 +75,7 @@ public class MainMenuActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        socialMediaOffered = false;
 
         //Get the Tracker & Streak DB Helpers
         trackerDbHelper = new TrackerDbHelper(this);
@@ -151,10 +157,12 @@ public class MainMenuActivity extends FragmentActivity {
             trackerPage.refreshStreak(trackerDbHelper, streakDbHelper);
             int currentStreak = streakDbHelper.getCurrent();
 
-            //Show dialog if milestone is hit
-            if(MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak)) {
+            //Show dialog if milestone is hit and social media offer hasn't been made yet
+            if((MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak))
+                    && !socialMediaOffered) {
                 showDialog(this, getString(R.string.milestone_header),
                         getString(R.string.milestone_prompt));
+                socialMediaOffered = true;
             }
         }
     }
