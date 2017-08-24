@@ -33,4 +33,7 @@
     <string name="nov">November</string>
     <string name="dec">December</string>
     <string name="tapAnywhere">Tap the screen to begin!</string>
+    <string name="str_current_streak">Current Streak</string>
+    <string name="str_best_streak">Best Streak</string>
+    <string name="str_encouragement">Keep Up the Good Work!</string>
 </resources>
