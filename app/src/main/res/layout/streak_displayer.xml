@@ -11,7 +11,9 @@
         android:text="@string/str_current_streak"
         android:textAlignment="center"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dip"
+        android:textSize="20sp"/>
 
     <!-- Best Streak -->
     <TextView
@@ -21,7 +23,8 @@
         android:layout_below="@+id/current_streak"
         android:layout_centerHorizontal="true"
         android:text="@string/str_best_streak"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textSize="20sp"/>
 
     <!-- Encouragement -->
     <TextView
@@ -30,6 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/best_streak"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dip"
         android:text="@string/str_encouragement"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="20sp"/>
 </RelativeLayout>

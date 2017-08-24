@@ -211,7 +211,7 @@ public class TrackerCalendar extends LinearLayout
                             eventDate.getYear() == year)
                     {
                         // mark this day for event
-                        view.setBackgroundColor(Color.RED);
+                        view.setBackgroundColor(Color.YELLOW);
                         break;
                     }
                 }
@@ -228,9 +228,8 @@ public class TrackerCalendar extends LinearLayout
             }
             else if (day == today.getDate())
             {
-                // if it is today, set it to blue/bold
+                // if it is today, set it to bold
                 ((TextView)view).setTypeface(null, Typeface.BOLD);
-                ((TextView)view).setTextColor(Color.BLUE);
             }
 
             // set text
