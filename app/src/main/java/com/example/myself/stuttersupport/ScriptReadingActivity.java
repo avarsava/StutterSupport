@@ -3,6 +3,7 @@ package com.example.myself.stuttersupport;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.DynamicLayout;
 import android.text.Layout;
@@ -82,6 +83,7 @@ public class ScriptReadingActivity extends GameActivity {
         cycleCount = 0;
 
         screen = new ScriptReadingView(this, this);
+        screen.setBackgroundImage(((ScriptReadingView)screen).getInstructionBg());
         setContentView(screen);
 
         String[] words = getScriptWords();
@@ -94,6 +96,7 @@ public class ScriptReadingActivity extends GameActivity {
     @Override
     protected void startButtonPressed() {
         recognizerInitialized = true;
+        screen.setBackgroundImage(((ScriptReadingView)screen).getGameBg());
     }
 
     /**
@@ -210,9 +213,14 @@ public class ScriptReadingActivity extends GameActivity {
         private SpannableStringBuilder scriptText;
 
         /**
-         * White paint for drawing background
+         * Instruction card to display while waiting for recognizer to initialize
          */
-        private Paint whitePaint;
+        private Drawable instructionBg;
+
+        /**
+         * Background image to display during gameplay.
+         */
+        private Drawable gameBg;
 
         /**
          * Sets up graphics-related objects.
@@ -224,6 +232,9 @@ public class ScriptReadingActivity extends GameActivity {
             super(context, ga);
 
             setUpPaints();
+
+            instructionBg = getResources().getDrawable(R.drawable.ic_script_instructions);
+            gameBg = getResources().getDrawable(R.drawable.ic_script_bg);
 
             scriptText = new SpannableStringBuilder(currentScript);
 
@@ -242,17 +253,34 @@ public class ScriptReadingActivity extends GameActivity {
          */
         @Override
         protected void doDrawing() {
-            //Draw background
-            canvas.drawRect(0, 0, getScreenWidth(), getScreenHeight(), whitePaint);
+            if(recognizerInitialized) {
+                //Update the script highlighting based on voice recognition
+                updateScript();
 
-            //Update the script highlighting based on voice recognition
-            updateScript();
+                //Draw text
+                canvas.save();
+                canvas.translate(0, textWrapper.getHeight() / 2);
+                textWrapper.draw(canvas);
+                canvas.restore();
+            }
+        }
 
-            //Draw text
-            canvas.save();
-            canvas.translate(0, textWrapper.getHeight()/2);
-            textWrapper.draw(canvas);
-            canvas.restore();
+        /**
+         * Returns the instruction card to display while waiting for start button press.
+         *
+         * @return Instruction card
+         */
+        public Drawable getInstructionBg(){
+            return instructionBg;
+        }
+
+        /**
+         * Returns the background to display during gameplay.
+         *
+         * @return gameplay background
+         */
+        public Drawable getGameBg(){
+            return gameBg;
         }
 
         /**
@@ -269,8 +297,6 @@ public class ScriptReadingActivity extends GameActivity {
             highlightPaint.setTextSize(50);
             highlightPaint.setTextAlign(Paint.Align.CENTER);
             highlightPaint.setAntiAlias(true);
-            whitePaint = new Paint();
-            whitePaint.setColor(Color.WHITE);
         }
 
         /**
