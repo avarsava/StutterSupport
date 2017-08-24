@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="scripts">
-        <item>Hello I would like to order a large pizza with pepperoni and extra cheese</item>
+        <item>Hello, I would like to order a large pizza with pepperoni and extra cheese.
+            I would like to pay by credit card.</item>
+        <item>Hello, I would like to book an appointment to see a doctor. I have a very bad
+            cold.</item>
+        <item>Hello, I am calling because I would like a different time for my dentist appointment.
+            Please let me know if Monday afternoon would be okay.</item>
+        <item>Hello Grandma, I got your message. I would love to see you on Saturday afternoon.
+            See you then.</item>
     </string-array>
 </resources>

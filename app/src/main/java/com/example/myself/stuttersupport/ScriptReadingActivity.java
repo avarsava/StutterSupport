@@ -43,7 +43,7 @@ public class ScriptReadingActivity extends GameActivity {
     /**
      * The ending point to identify potential scripts to feed to the user.
      */
-    private final int MAX_SCRIPT = 1;
+    private final int MAX_SCRIPT = 4;
 
     /**
      * The current script which the user must read out. Drawn from XML.
