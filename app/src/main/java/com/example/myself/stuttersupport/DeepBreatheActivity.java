@@ -104,8 +104,6 @@ public class DeepBreatheActivity extends GameActivity {
     /**
      * Gets the appropriate instruction to breathe in or breathe out based on the current state.
      *
-     * TODO: Move these strings to strings.xml
-     *
      * @return an instruction, either 'breathe in' or 'breathe out', based on current state
      */
     private String getInstructions() {

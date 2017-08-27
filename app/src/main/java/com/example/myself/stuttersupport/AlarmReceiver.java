@@ -48,6 +48,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setAutoCancel(true)
                     .build();
             NotificationManagerCompat.from(context).notify(0, notification);
-            }
         }
     }
+}

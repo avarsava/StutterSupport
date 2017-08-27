@@ -17,7 +17,9 @@ import android.preference.PreferenceManager;
  * Allows for the creation of a Settings page based on an XML preferences list.
  */
 public class SettingsScreenActivity extends PreferenceActivity {
-
+    /**
+     * Resource ID of settings file to expand into layout. Default value of 0 will be overwritten.
+     */
     private int prefsFile = 0;
 
     /**
@@ -63,8 +65,8 @@ public class SettingsScreenActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 showDialog(thisActivity,
-                        "Restore Default Settings",
-                        "Are you sure? This will restore the default settings for ALL activities.");
+                        getString(R.string.restore_defaults),
+                        getString(R.string.restore_defaults_warning));
                 return true;
             }
         });

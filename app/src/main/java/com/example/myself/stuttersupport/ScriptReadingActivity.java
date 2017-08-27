@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.text.DynamicLayout;
 import android.text.Layout;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -310,7 +307,8 @@ public class ScriptReadingActivity extends GameActivity {
         protected void updateScript(){
             scriptText.clear();
             scriptText.append(highlightScript);
-            scriptText.setSpan(new ForegroundColorSpan(Color.RED), 0, highlightScript.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            scriptText.setSpan(new ForegroundColorSpan(Color.RED),
+                    0, highlightScript.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             scriptText.append(currentScript);
         }
     }

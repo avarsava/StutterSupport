@@ -65,8 +65,10 @@ public class NotificationRegistrator {
         );
 
         if (shouldRegisterAlarm(ctx, intentToLaunch)) {
-            PendingIntent pendingIntent = PendingIntent.getService(ctx, 40, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager)ctx.getSystemService(MainActivity.ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getService(
+                    ctx, 40, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager =
+                    (AlarmManager)ctx.getSystemService(MainActivity.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
     }
