@@ -17,15 +17,6 @@ https://github.com/ahmed-alamir/CalendarView -->
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
-        <!-- prev button -->
-        <!-- <ImageView
-             android:id="@+id/calendar_prev_button"
-             android:layout_width="30dp"
-             android:layout_height="30dp"
-             android:layout_centerVertical="true"
-             android:layout_alignParentLeft="true"
-             android:src="@drawable/previous_icon"/> -->
-
         <!-- date title -->
         <TextView
             android:id="@+id/calendar_date_display"
@@ -37,17 +28,6 @@ https://github.com/ahmed-alamir/CalendarView -->
             android:text="current date"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-        <!-- android:layout_toRightOf="@+id/calendar_prev_button"
-            android:layout_toLeftOf="@+id/calendar_next_button" -->
-
-        <!-- next button -->
-        <!-- <ImageView
-            android:id="@+id/calendar_next_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/next_icon"/> -->
     </RelativeLayout>
 
     <!-- days header -->

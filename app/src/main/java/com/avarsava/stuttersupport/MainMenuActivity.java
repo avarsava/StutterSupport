@@ -1,4 +1,4 @@
-package com.example.myself.stuttersupport;
+package com.avarsava.stuttersupport;
 
 import android.app.Activity;
 import android.app.AlertDialog;

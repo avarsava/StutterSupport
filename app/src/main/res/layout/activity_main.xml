@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.myself.stuttersupport.MainActivity">
+    tools:context="com.avarsava.stuttersupport.MainActivity">
 
     <ImageView
         android:id="@+id/splashButton"

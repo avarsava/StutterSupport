@@ -1,4 +1,4 @@
-package com.example.myself.stuttersupport;
+package com.avarsava.stuttersupport;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

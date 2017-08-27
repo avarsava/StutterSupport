@@ -1,4 +1,4 @@
-package com.example.myself.stuttersupport;
+package com.avarsava.stuttersupport;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>

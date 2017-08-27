@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_tracker_bg"
-    tools:context="com.example.myself.stuttersupport.MainMenuActivity"
+    tools:context="com.avarsava.stuttersupport.MainMenuActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
-    <com.example.myself.stuttersupport.TrackerCalendar
+    <com.avarsava.stuttersupport.TrackerCalendar
         android:id="@+id/tracker_calendar"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -32,7 +32,7 @@
         tools:layout_editor_absoluteY="256dp"
         tools:layout_editor_absoluteX="0dp" />
 
-    <com.example.myself.stuttersupport.StreakDisplayer
+    <com.avarsava.stuttersupport.StreakDisplayer
         android:id="@+id/streak_displayer"
         android:layout_width="0dp"
         android:layout_height="0dp"

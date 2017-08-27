@@ -1,4 +1,4 @@
-package com.example.myself.stuttersupport;
+package com.avarsava.stuttersupport;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

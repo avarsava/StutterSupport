@@ -1,4 +1,4 @@
-package com.example.myself.stuttersupport;
+package com.avarsava.stuttersupport;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
