@@ -197,6 +197,11 @@ public class ScriptReadingActivity extends GameActivity {
      */
     private class ScriptReadingView extends DrawView{
         /**
+         * How far down to push the text from the top of the screen.
+         */
+        private final int TOP_OFFSET = getScaled(100);
+
+        /**
          * Used to wrap the text to the size of the device screen and update screen with new text
          */
         private DynamicLayout textWrapper;
@@ -259,7 +264,7 @@ public class ScriptReadingActivity extends GameActivity {
 
                 //Draw text
                 canvas.save();
-                canvas.translate(0, textWrapper.getHeight() / 2);
+                canvas.translate(0, (textWrapper.getHeight() / 2) + TOP_OFFSET);
                 textWrapper.draw(canvas);
                 canvas.restore();
             }
@@ -289,7 +294,7 @@ public class ScriptReadingActivity extends GameActivity {
         private void setUpPaints(){
             textPaint = new TextPaint();
             textPaint.setColor(Color.BLACK);
-            textPaint.setTextSize(50);
+            textPaint.setTextSize(70);
             textPaint.setTextAlign(Paint.Align.LEFT);
             textPaint.setAntiAlias(true);
             highlightPaint = new TextPaint();
@@ -307,8 +312,6 @@ public class ScriptReadingActivity extends GameActivity {
             scriptText.append(highlightScript);
             scriptText.setSpan(new ForegroundColorSpan(Color.RED), 0, highlightScript.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             scriptText.append(currentScript);
-
-
         }
     }
 }

@@ -11,21 +11,21 @@
         android:strokeWidth="2"
         android:strokeAlpha="1"/>
     <path
-        android:pathData="M11.58,8.84h187v283.14h-187z"
+        android:pathData="M-33.35,8.95l267.33,0l0,282.94l-267.33,0z"
         android:fillAlpha="1"
         android:strokeColor="#000000"
         android:fillColor="#ffffff"
         android:strokeWidth="2.50050759"
         android:strokeAlpha="1"/>
     <path
-        android:pathData="M31.9,10.79h1.97v278.2h-1.97z"
+        android:pathData="M-4.3,10.89l2.81,0l0,278l-2.81,0z"
         android:fillAlpha="1"
         android:strokeColor="#87decd"
         android:fillColor="#87decd"
         android:strokeWidth="2.32052898"
         android:strokeAlpha="1"/>
     <path
-        android:pathData="M13.3,48.47h183.53v2.32h-183.53z"
+        android:pathData="M-30.89,48.55l262.38,0l0,2.32l-262.38,0z"
         android:fillAlpha="1"
         android:strokeColor="#87decd"
         android:fillColor="#87decd"
