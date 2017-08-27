@@ -36,4 +36,5 @@
     <string name="str_current_streak">Current Streak</string>
     <string name="str_best_streak">Best Streak</string>
     <string name="str_encouragement">Keep Up the Good Work!</string>
+    <string name="reminder_text">Have you practiced your speech today?</string>
 </resources>

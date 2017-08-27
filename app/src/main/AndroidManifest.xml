@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <uses-feature android:name="android.hardware.screen.portrait" />
-        <activity android:name=".MainActivity"
+
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,18 +23,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainMenuActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TrainGameActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DeepBreatheActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SettingsScreenActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LicensesActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ScriptReadingActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".MainMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TrainGameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DeepBreatheActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LicensesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ScriptReadingActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".IntentHandler"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

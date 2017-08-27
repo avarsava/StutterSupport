@@ -10,10 +10,10 @@ import android.view.View;
  * @version 0.1
  * @since   0.1
  *
- * Displays the splash screen, with a button to show the third party licenses
+ * Displays the splash screen, with a button to show the third party licenses. Sets up the daily
+ * reminder notification.
  */
 public class MainActivity extends AppCompatActivity {
-
     /**
      * Creates the Activity and displays the splash screen layout.
      *
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RegisterAlarmBroadcast();
     }
 
     /**
@@ -42,5 +43,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         startActivity(intent);
+    }
+
+    /**
+     * Registers a new alarm for timing daily notifications
+     */
+    private void RegisterAlarmBroadcast(){
+        NotificationRegistrator register = new NotificationRegistrator(false);
+        register.register(this);
     }
 }
