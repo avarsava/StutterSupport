@@ -20,7 +20,7 @@ public class NotificationRegistrator {
     /**
      * Tag to identify logging.
      */
-    final String TAG = "NotificationRegistrator";
+    final String TAG = "DailyNotification";
 
     /**
      * Whether or not to override the indication from the alarm service that an alarm already
@@ -39,7 +39,7 @@ public class NotificationRegistrator {
 
     /**
      * Registers alarm to go off at 4PM every day with Android OS. When alarm sets off,
-     * alarm is heard by AlarmReceiver and a notification is created.
+     * alarm is heard by IntentHandler and a notification is created.
      *
      * @param ctx Context of caller
      */
