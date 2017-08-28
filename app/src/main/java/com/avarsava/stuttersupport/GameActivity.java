@@ -224,6 +224,13 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
         startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Sets up the speech recognition engine for just one keyword.
+     *
+     * @param keyword The word which the recognizer will be listening for.
+     * @param dictionary The words which the recognizer should be prepared to listen for. This
+     *                   allows for faster switching between keywords.
+     */
     protected void runRecognizerSetup(final String keyword, final String[] dictionary){
         if(keyword == null){
             recognizerReady();
