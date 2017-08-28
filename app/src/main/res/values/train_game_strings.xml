@@ -11,6 +11,15 @@ pulling all strings and pulling random strings programmatically.
         <!-- Level 1 Words -->
         <!-- single syllables, h and vowel sounds -->
         <!-- n = 52 -->
+        <item>age</item>
+        <item>aim</item>
+        <item>all</item>
+        <item>am</item>
+        <item>an</item>
+        <item>as</item>
+        <item>ash</item>
+        <item>edge</item>
+        <item>eight</item>
         <item>hall</item>
         <item>ham</item>
         <item>hand</item>
@@ -20,54 +29,74 @@ pulling all strings and pulling random strings programmatically.
         <item>head</item>
         <item>health</item>
         <item>heart</item>
+        <item>height</item>
         <item>help</item>
         <item>high</item>
         <item>hike</item>
         <item>hill</item>
         <item>hint</item>
+        <item>hire</item>
+        <item>hive</item>
+        <item>hog</item>
         <item>hold</item>
         <item>home</item>
         <item>hook</item>
+        <item>hoop</item>
         <item>hop</item>
         <item>hope</item>
         <item>horse</item>
         <item>house</item>
+        <item>how</item>
+        <item>hug</item>
         <item>hug</item>
         <item>hurt</item>
-        <item>whole</item>
-        <item>as</item>
-        <item>an</item>
-        <item>am</item>
-        <item>ash</item>
-        <item>aim</item>
-        <item>age</item>
-        <item>eight</item>
-        <item>edge</item>
         <item>I</item>
-        <item>hire</item>
-        <item>height</item>
-        <item>hive</item>
-        <item>off</item>
-        <item>hog</item>
-        <item>all</item>
-        <item>on</item>
-        <item>own</item>
         <item>oats</item>
+        <item>off</item>
+        <item>oil</item>
+        <item>on</item>
+        <item>oops</item>
+        <item>ounce</item>
+        <item>out</item>
+        <item>own</item>
         <item>up</item>
         <item>us</item>
-        <item>hug</item>
         <item>was</item>
-        <item>hoop</item>
-        <item>oops</item>
-        <item>how</item>
-        <item>out</item>
-        <item>ounce</item>
-        <item>oil</item>
-
+        <item>whole</item>
 
         <!-- Level 2 Words -->
         <!-- two syllables with vowels, 1 syllable w consonants -->
         <!-- n = 146 -->
+        <item>above</item>
+        <item>ahead</item>
+        <item>anchor</item>
+        <item>angel</item>
+        <item>angle</item>
+        <item>answer</item>
+        <item>aware</item>
+        <item>awesome</item>
+        <item>awful</item>
+        <item>easy</item>
+        <item>echo</item>
+        <item>edit</item>
+        <item>effect</item>
+        <item>eject</item>
+        <item>elbow</item>
+        <item>empty</item>
+        <item>even</item>
+        <item>every</item>
+        <item>eyeball</item>
+        <item>fake</item>
+        <item>fat</item>
+        <item>fear</item>
+        <item>feel</item>
+        <item>feet</item>
+        <item>fell</item>
+        <item>felt</item>
+        <item>fight</item>
+        <item>fin</item>
+        <item>fire</item>
+        <item>gnat</item>
         <item>hammer</item>
         <item>hamster</item>
         <item>handle</item>
@@ -75,281 +104,251 @@ pulling all strings and pulling random strings programmatically.
         <item>healthy</item>
         <item>helmet</item>
         <item>hornet</item>
-        <item>rack</item>
-        <item>sack</item>
-        <item>fat</item>
-        <item>mat</item>
-        <item>gnat</item>
-        <item>rat</item>
-        <item>sat</item>
-        <item>lap</item>
-        <item>map</item>
-        <item>rag</item>
-        <item>wag</item>
-        <item>ram</item>
-        <item>laugh</item>
-        <item>answer</item>
-        <item>angel</item>
-        <item>make</item>
-        <item>shake</item>
-        <item>wake</item>
-        <item>fake</item>
-        <item>lake</item>
-        <item>rake</item>
-        <item>stay</item>
-        <item>lay</item>
-        <item>say</item>
-        <item>ray</item>
-        <item>may</item>
-        <item>way</item>
-        <item>made</item>
-        <item>stayed</item>
-        <item>same</item>
-        <item>name</item>
-        <item>late</item>
-        <item>wait</item>
-        <item>angle</item>
-        <item>anchor</item>
-        <item>neck</item>
-        <item>wreck</item>
-        <item>red</item>
-        <item>said</item>
-        <item>met</item>
-        <item>let</item>
-        <item>net</item>
-        <item>set</item>
-        <item>wet</item>
-        <item>yet</item>
-        <item>yes</item>
-        <item>mess</item>
-        <item>less</item>
-        <item>rest</item>
-        <item>empty</item>
-        <item>edit</item>
-        <item>felt</item>
-        <item>melt</item>
-        <item>well</item>
-        <item>smell</item>
-        <item>fell</item>
-        <item>sell</item>
-        <item>elbow</item>
-        <item>echo</item>
-        <item>effect</item>
-        <item>every</item>
-        <item>leap</item>
-        <item>seem</item>
-        <item>stream</item>
-        <item>feet</item>
-        <item>meet</item>
-        <item>neat</item>
-        <item>seat</item>
-        <item>leak</item>
-        <item>seek</item>
-        <item>weak</item>
-        <item>steal</item>
-        <item>feel</item>
-        <item>meal</item>
-        <item>kneel</item>
-        <item>seal</item>
-        <item>mean</item>
-        <item>seen</item>
-        <item>fear</item>
-        <item>near</item>
-        <item>eject</item>
-        <item>easy</item>
-        <item>even</item>
-        <item>lick</item>
-        <item>sick</item>
-        <item>lid</item>
-        <item>still</item>
-        <item>fin</item>
-        <item>win</item>
-        <item>lip</item>
-        <item>rip</item>
-        <item>sip</item>
-        <item>zip</item>
-        <item>miss</item>
-        <item>sit</item>
-        <item>live</item>
         <item>ignore</item>
-        <item>inside</item>
         <item>inquire</item>
+        <item>inside</item>
         <item>instant</item>
+        <item>kneel</item>
+        <item>lake</item>
+        <item>lap</item>
+        <item>late</item>
+        <item>laugh</item>
+        <item>lay</item>
+        <item>leak</item>
+        <item>leap</item>
+        <item>less</item>
+        <item>let</item>
+        <item>lick</item>
+        <item>lid</item>
         <item>lie</item>
-        <item>my</item>
+        <item>lies</item>
+        <item>light</item>
         <item>like</item>
         <item>lime</item>
-        <item>rhyme</item>
-        <item>ripe</item>
-        <item>fire</item>
+        <item>lip</item>
+        <item>live</item>
+        <item>loose</item>
+        <item>lose</item>
+        <item>made</item>
+        <item>make</item>
+        <item>map</item>
+        <item>mat</item>
+        <item>may</item>
+        <item>meal</item>
+        <item>mean</item>
+        <item>meet</item>
+        <item>melt</item>
+        <item>mess</item>
+        <item>met</item>
         <item>mice</item>
+        <item>miss</item>
+        <item>moose</item>
+        <item>my</item>
+        <item>name</item>
+        <item>near</item>
+        <item>neat</item>
+        <item>neck</item>
+        <item>net</item>
         <item>nice</item>
-        <item>rice</item>
-        <item>fight</item>
-        <item>light</item>
         <item>night</item>
-        <item>right</item>
-        <item>sight</item>
-        <item>lies</item>
-        <item>rise</item>
-        <item>size</item>
-        <item>wise</item>
-        <item>eyeball</item>
-        <item>awesome</item>
-        <item>awful</item>
-        <item>office</item>
         <item>object</item>
         <item>ocean</item>
+        <item>office</item>
         <item>orange</item>
-        <item>owner</item>
-        <item>oval</item>
-        <item>undo</item>
-        <item>above</item>
-        <item>aware</item>
-        <item>ahead</item>
-        <item>loose</item>
-        <item>moose</item>
-        <item>root</item>
-        <item>whose</item>
-        <item>lose</item>
-        <item>stews</item>
         <item>outside</item>
+        <item>oval</item>
+        <item>owner</item>
+        <item>rack</item>
+        <item>rag</item>
+        <item>rake</item>
+        <item>ram</item>
+        <item>rat</item>
+        <item>ray</item>
+        <item>red</item>
+        <item>rest</item>
+        <item>rhyme</item>
+        <item>rice</item>
+        <item>right</item>
+        <item>rip</item>
+        <item>ripe</item>
+        <item>rise</item>
+        <item>root</item>
+        <item>sack</item>
+        <item>said</item>
+        <item>same</item>
+        <item>sat</item>
+        <item>say</item>
+        <item>seal</item>
+        <item>seat</item>
+        <item>seek</item>
+        <item>seem</item>
+        <item>seen</item>
+        <item>sell</item>
+        <item>set</item>
+        <item>shake</item>
+        <item>sick</item>
+        <item>sight</item>
+        <item>sip</item>
+        <item>sit</item>
+        <item>size</item>
+        <item>smell</item>
+        <item>stay</item>
+        <item>stayed</item>
+        <item>steal</item>
+        <item>stews</item>
+        <item>still</item>
+        <item>stream</item>
+        <item>undo</item>
+        <item>wag</item>
+        <item>wait</item>
+        <item>wake</item>
+        <item>way</item>
+        <item>weak</item>
+        <item>well</item>
+        <item>wet</item>
+        <item>whose</item>
+        <item>win</item>
+        <item>wise</item>
+        <item>wreck</item>
+        <item>yes</item>
+        <item>yet</item>
+        <item>zip</item>
 
         <!-- Level 3 Words -->
         <!-- Multisyllabic words and plosive consonants -->
         <!-- n = 132 -->
+        <item>alligator</item>
         <item>back</item>
-        <item>pack</item>
-        <item>bat</item>
-        <item>cat</item>
-        <item>pat</item>
-        <item>cake</item>
-        <item>take</item>
-        <item>bake</item>
-        <item>break</item>
-        <item>gray</item>
-        <item>day</item>
         <item>bag</item>
+        <item>bake</item>
+        <item>bat</item>
         <item>bay</item>
-        <item>braid</item>
-        <item>blame</item>
-        <item>beep</item>
-        <item>bed</item>
-        <item>beat</item>
-        <item>bet</item>
         <item>beak</item>
-        <item>bless</item>
-        <item>best</item>
         <item>bean</item>
-        <item>belt</item>
+        <item>beat</item>
+        <item>bed</item>
+        <item>beep</item>
         <item>bell</item>
+        <item>belt</item>
+        <item>best</item>
+        <item>bet</item>
         <item>bib</item>
-        <item>bye</item>
         <item>big</item>
         <item>bike</item>
-        <item>bite</item>
         <item>bit</item>
-        <item>box</item>
-        <item>bow</item>
-        <item>broke</item>
-        <item>bought</item>
-        <item>bug</item>
+        <item>bite</item>
+        <item>blame</item>
+        <item>bless</item>
         <item>boot</item>
-        <item>bus</item>
-        <item>brow</item>
+        <item>bought</item>
+        <item>bow</item>
+        <item>box</item>
         <item>boy</item>
+        <item>braid</item>
+        <item>break</item>
+        <item>broke</item>
+        <item>brow</item>
+        <item>bug</item>
+        <item>bus</item>
+        <item>bye</item>
+        <item>cake</item>
+        <item>cat</item>
         <item>cat</item>
         <item>date</item>
+        <item>day</item>
+        <item>deal</item>
+        <item>debt</item>
         <item>deck</item>
         <item>deep</item>
-        <item>dream</item>
-        <item>debt</item>
-        <item>deal</item>
         <item>deer</item>
         <item>did</item>
         <item>dig</item>
         <item>dime</item>
         <item>dive</item>
         <item>dock</item>
+        <item>does</item>
         <item>dog</item>
-        <item>duck</item>
-        <item>dug</item>
         <item>done</item>
         <item>dove</item>
-        <item>does</item>
-        <item>grass</item>
-        <item>gas</item>
-        <item>game</item>
-        <item>gate</item>
-        <item>gem</item>
-        <item>get</item>
-        <item>greet</item>
-        <item>guess</item>
-        <item>guest</item>
-        <item>gear</item>
-        <item>geese</item>
-        <item>grill</item>
-        <item>grin</item>
-        <item>give</item>
-        <item>go</item>
-        <item>globe</item>
-        <item>gone</item>
-        <item>goat</item>
-        <item>gum</item>
-        <item>goose</item>
-        <item>glove</item>
-        <item>keep</item>
-        <item>kick</item>
-        <item>kid</item>
-        <item>kite</item>
-        <item>kiss</item>
-        <item>pay</item>
-        <item>pass</item>
-        <item>pet</item>
-        <item>peak</item>
-        <item>peel</item>
-        <item>pest</item>
-        <item>peace</item>
-        <item>pick</item>
-        <item>pie</item>
-        <item>pig</item>
-        <item>pill</item>
-        <item>pin</item>
-        <item>poke</item>
-        <item>poem</item>
-        <item>pot</item>
-        <item>pool</item>
-        <item>tap</item>
-        <item>tag</item>
-        <item>tame</item>
-        <item>team</item>
-        <item>treat</item>
-        <item>tell</item>
-        <item>tie</item>
-        <item>time</item>
-        <item>tip</item>
-        <item>tight</item>
-        <item>talk</item>
-        <item>toe</item>
-        <item>toad</item>
-        <item>tall</item>
-        <item>top</item>
-        <item>toss</item>
-        <item>tub</item>
-        <item>tool</item>
-        <item>tough</item>
-        <item>tug</item>
-        <item>toy</item>
-        <item>alligator</item>
+        <item>dream</item>
+        <item>duck</item>
+        <item>dug</item>
         <item>elastic</item>
         <item>errand</item>
         <item>escape</item>
         <item>every</item>
         <item>example</item>
-        <item>incredible</item>
+        <item>game</item>
+        <item>gas</item>
+        <item>gate</item>
+        <item>gear</item>
+        <item>geese</item>
+        <item>gem</item>
+        <item>get</item>
+        <item>give</item>
+        <item>globe</item>
+        <item>glove</item>
+        <item>go</item>
+        <item>goat</item>
+        <item>gone</item>
+        <item>goose</item>
+        <item>grass</item>
+        <item>gray</item>
+        <item>greet</item>
+        <item>grill</item>
+        <item>grin</item>
+        <item>guess</item>
+        <item>guest</item>
+        <item>gum</item>
         <item>illustrate</item>
-        <item>understand</item>
+        <item>incredible</item>
+        <item>keep</item>
+        <item>kick</item>
+        <item>kid</item>
+        <item>kiss</item>
+        <item>kite</item>
         <item>outstanding</item>
+        <item>pack</item>
+        <item>pass</item>
+        <item>pat</item>
+        <item>pay</item>
+        <item>peace</item>
+        <item>peak</item>
+        <item>peel</item>
+        <item>pest</item>
+        <item>pet</item>
+        <item>pick</item>
+        <item>pie</item>
+        <item>pig</item>
+        <item>pill</item>
+        <item>pin</item>
+        <item>poem</item>
+        <item>poke</item>
+        <item>pool</item>
+        <item>pot</item>
+        <item>tag</item>
+        <item>take</item>
+        <item>talk</item>
+        <item>tall</item>
+        <item>tame</item>
+        <item>tap</item>
+        <item>team</item>
+        <item>tell</item>
+        <item>tie</item>
+        <item>tight</item>
+        <item>time</item>
+        <item>tip</item>
+        <item>toad</item>
+        <item>toe</item>
+        <item>tool</item>
+        <item>top</item>
+        <item>toss</item>
+        <item>tough</item>
+        <item>toy</item>
+        <item>treat</item>
+        <item>tub</item>
+        <item>tug</item>
+        <item>understand</item>
     </string-array>
 
 </resources>
