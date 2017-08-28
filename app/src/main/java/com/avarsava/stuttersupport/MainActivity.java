@@ -7,7 +7,7 @@ import android.view.View;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Displays the splash screen, with a button to show the third party licenses. Sets up the daily

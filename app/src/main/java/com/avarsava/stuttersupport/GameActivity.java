@@ -22,7 +22,7 @@ import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Parent class for the games. Handles time-based tasks and provides a simplified interface for

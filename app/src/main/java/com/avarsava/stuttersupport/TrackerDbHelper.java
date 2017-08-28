@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Eases access to database containing dates on which at least one activity was successfully

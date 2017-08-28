@@ -19,7 +19,7 @@ import java.util.HashSet;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Displays a calendar which highlights the current date with blue text, and highlights days on

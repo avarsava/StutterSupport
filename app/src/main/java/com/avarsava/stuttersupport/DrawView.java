@@ -11,7 +11,7 @@ import android.view.View;
 
 /**
  * @author Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since 0.1
  *
  * Heavily draws upon Sams Teach Yourself Android Game Programming in 24 Hours

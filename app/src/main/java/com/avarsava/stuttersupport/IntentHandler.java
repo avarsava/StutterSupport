@@ -12,7 +12,7 @@ import android.util.Log;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Listens for the intent fired by the alarm, and registers a notification.

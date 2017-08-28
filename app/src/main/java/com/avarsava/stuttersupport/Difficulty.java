@@ -2,7 +2,7 @@ package com.avarsava.stuttersupport;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Reports on word list boundaries for different difficulty levels.

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Uses a ViewPager to scroll multiple Fragments horizontally, providing a menu. The Fragments

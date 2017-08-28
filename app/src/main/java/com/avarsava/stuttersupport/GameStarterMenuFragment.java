@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 0.1
+ * @version 1.0
  * @since   0.1
  *
  * Fragments used in the ViewPager on the Main Menu to scroll between game options.
