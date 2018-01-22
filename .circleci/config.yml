@@ -15,7 +15,7 @@ jobs:
       # - image: circleci/postgres:9.4
 
       
-    working_directory: ~/repo
+    working_directory: ~/StutterSupport
 
 
     environment:
