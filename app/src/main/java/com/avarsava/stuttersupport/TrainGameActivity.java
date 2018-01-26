@@ -218,7 +218,11 @@ public class TrainGameActivity extends GameActivity{
             passed++;
             Log.d(TAG, "passed = " + passed + ", successful should now be true");
         } else {
-            cancelCycle();
+            if(currentState == STATE.NOTREADY){
+                return;
+            }else {
+                cancelCycle();
+            }
         }
     }
 
