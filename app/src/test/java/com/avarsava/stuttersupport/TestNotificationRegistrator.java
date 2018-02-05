@@ -3,6 +3,10 @@ package com.avarsava.stuttersupport;
 import android.content.Context;
 import android.content.Intent;
 
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import static junit.framework.Assert.*;
 
 
