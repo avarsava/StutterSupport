@@ -1,7 +1,6 @@
 package com.avarsava.stuttersupport;
 
 import android.content.Context;
-import android.content.Intent;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -16,11 +15,9 @@ import static junit.framework.Assert.*;
  * @since   1.1
  *
  * Tests validity of the NotificationRegistrator class.
- * TODO: This relies a lot on Android. Seems better as an integration test rather than a unit test?
  */
 
-public class TestNotificationRegistrator {
-
+public class IntegrationTestNotificationRegistrator {
     /**
      * NotificationRegistrator with which to test
      */
@@ -34,8 +31,7 @@ public class TestNotificationRegistrator {
     /**
      * Tag for Logger
      */
-    final String TAG = "TEST: NotificationRegistrator";
-
+    final String TAG = "UNIT TEST: NotificationRegistrator";
 
     /**
      * Before any tests are run, get a usable Context
@@ -44,102 +40,6 @@ public class TestNotificationRegistrator {
     public void setUpBeforeAll() {
         //TODO: How to get context in this setting?
         //context =
-    }
-
-    /**
-     * Test to ensure register() really does register an alarm with Android.
-     *
-     * TODO: This is nearly identical to testAlarmExistsReportsTrueWhenAlarmExists. Issue?
-     */
-    @Test
-    public void testRegisterSuccessfullyRegistersWithOS(){
-        //Create new NotificationRegistrator which will override previous alarm
-        nr = new NotificationRegistrator(true);
-
-        //Register a new alarm
-        nr.register(context);
-
-        boolean result = nr.alarmExists();
-
-        assertTrue(result);
-    }
-
-
-    /**
-     * Test to ensure that shouldRegisterAlarm() returns true when nr is created with
-     * overrideService = true
-     */
-    @Test
-    public void testShouldRegisterAlarmReturnsTrueWhenOverrideService(){
-        nr = new NotificationRegistrator(true);
-        //TODO: shouldRegisterAlarm is private, is that an issue?
-        boolean result = nr.shouldRegisterAlarm(context, new Intent());
-
-        assertTrue(result);
-
-    }
-
-    /**
-     * Test to ensure that when nr is created with NOT overrideService, and there is no
-     * existing alarm, shouldRegisterAlarm() reports true
-     */
-    @Test
-    public void testShouldRegisterAlarmReturnsTrueWhenNotOverrideServiceAndNoExistingAlarm(){
-        //Create NotificationRegistrator with NOT overrideService
-        nr = new NotificationRegistrator(false);
-
-        //Ensure no alarm exists
-        nr.deleteAlarm();
-
-        //get result of shouldRegisterAlarm given these variables
-        boolean result = nr.shouldRegisterAlarm(context, new Intent());
-
-        assertTrue(result);
-
-    }
-
-    /**
-     * Test to ensure that when nr is created with NOT overrideService, and an alarm already exists,
-     * shouldRegisterAlarm() reports false
-     */
-    @Test
-    public void testShouldRegisterAlarmReturnsFalseWhenNotOverrideServiceAndExistingAlarm(){
-        //Create NotificationRegistrator with overrideService
-        nr = new NotificationRegistrator(true);
-
-        //Ensure alarm exists
-        nr.register(context);
-
-        //get result of shouldRegisterAlarm given these variables
-        boolean result = nr.shouldRegisterAlarm(context, new Intent());
-
-        assertFalse(result);
-    }
-
-    /**
-     * Test to ensure that deleteAlarm() does delete an alarm with the Android OS.
-     * TODO: Same issue with this and testAlarmExistsReportsFalseWhenAlarmDoesNotExist
-     */
-    @Test
-    public void testDeleteAlarmShouldDeleteAlarm(){
-        nr = new NotificationRegistrator(true);
-
-        //delete alarm
-        nr.deleteAlarm(context);
-
-        //get result of alarmExists
-        boolean result = nr.alarmExists(context);
-
-        assertFalse(result);
-    }
-
-    /**
-     * Test to ensure that the time set within the alarm matches the time the user has
-     * requested in the Preferences.
-     */
-    @Test
-    public void testRegisteredAlarmTimeShouldMatchUserPreferences(){
-        //TODO: Find out how to get the time back from the alarm, if possible
     }
 
     /**
@@ -168,6 +68,23 @@ public class TestNotificationRegistrator {
         nr.deleteAlarm(context);
 
         boolean result = nr.alarmExists();
+
+        assertFalse(result);
+    }
+
+    /**
+     * Test to ensure that deleteAlarm() does delete an alarm with the Android OS.
+     * TODO: Same issue with this and testAlarmExistsReportsFalseWhenAlarmDoesNotExist
+     */
+    @Test
+    public void testDeleteAlarmShouldDeleteAlarm(){
+        nr = new NotificationRegistrator(true);
+
+        //delete alarm
+        nr.deleteAlarm(context);
+
+        //get result of alarmExists
+        boolean result = nr.alarmExists(context);
 
         assertFalse(result);
     }
