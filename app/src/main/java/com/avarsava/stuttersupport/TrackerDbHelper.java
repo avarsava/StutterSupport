@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -25,39 +26,46 @@ import java.util.HashSet;
 
 public class TrackerDbHelper extends DatabaseHelper {
     /**
-     * The name of the single column in the table, named 'date'.
+     * The names of the columns in the table.
      */
+    public static final String C_ACTIVITY = "activity";
     public static final String C_DATE = "date";
+    public static final String C_PERFORMANCE = "performance";
+    public static final String C_DIFFICULTY = "difficulty";
+
 
     /**
-     * Creates a new DatabaseHelper with the tracker database.
-     *
-     * @param context The application context.
-     */
-    public TrackerDbHelper(Context context) {
-        super(context, "tracker.db", "tracker");
-    }
-
-    /**
-     * Called when DB is first created. Creates a table of a single column labelled 'date', which
-     * will be added onto as new rows.
+     * Called when DB is first created. Creates a table consisting of a primary key id, activity
+     * name, date played, performance score, and activity difficulty.
      *
      * @param db Database to create table on.
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + TABLE + " (" + C_DATE + " DATE PRIMARY KEY)";
+        String sql = "CREATE TABLE " + TABLE + " (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + C_ACTIVITY + " TEXT NOT NULL, "
+                + C_DATE + " DATE NOT NULL, "
+                + C_PERFORMANCE + " INTEGER NOT NULL, "
+                + C_DIFFICULTY + " INTEGER)";
         db.execSQL(sql);
         Log.d("TrackerDbHelper", "onCreate w sql: " + sql);
     }
 
+
+    public TrackerDbHelper(Context context) {
+        super(context, "tracker.db", "tracker");
+    }
+
     /**
-     * Adds today's date to the database as a new row. Then updates the streaks on the Streak
+     * Adds activity tracking information to the database as a new row. Then updates the streaks on the Streak
      * Database, as this new row may imply a change in the information there.
      *
+     * @param activityName The name of the activity that was played
+     * @param performance The score the user received on the activity
+     * @param difficulty The difficulty that the activity was run on
      * @param sdbh StreakDatabaseHelper so that the streak update can be triggered.
      */
-    public void addDateToDb(StreakDbHelper sdbh) {
+    public void addToDb(String activityName, int performance, int difficulty, StreakDbHelper sdbh) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
@@ -65,7 +73,11 @@ public class TrackerDbHelper extends DatabaseHelper {
         Date currentDate = new Date();
         dateString = (currentDate.getYear() + 1900) + "-"
                 + (currentDate.getMonth()) + "-" + currentDate.getDate();
+
+        values.put(C_ACTIVITY, activityName);
         values.put(C_DATE, dateString);
+        values.put(C_PERFORMANCE, performance);
+        values.put(C_DIFFICULTY, difficulty);
         try {
             db.insertOrThrow(TABLE, null, values);
         } catch (SQLException e){
@@ -130,7 +142,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         Cursor cursor = db.query(true, TABLE, null, null, null, null, null, null, null);
         String strDate;
         int year, month, date;
-        final int COLUMN_INDEX = 0; //There's only 1 column in this table
+        final int COLUMN_INDEX = 2; //The column that dates are located in
 
         cursor.moveToFirst();
         try {

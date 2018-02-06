@@ -26,6 +26,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
  * correct word at the right time.
  */
 public class TrainGameActivity extends GameActivity{
+    public static final String ACTIVITY_NAME = "TrainGame";
     /**
      * Tag for debug logs
      */
@@ -350,7 +351,7 @@ public class TrainGameActivity extends GameActivity{
 
             //cycle end logic
             switchStateIfNecessary();
-            killIfCountHigh(calculateSuccess());
+            killIfCountHigh(ACTIVITY_NAME, calculateSuccess(), Integer.valueOf(prefs.getString("tg_Difficulty", "1")));
         }
 
         /**
