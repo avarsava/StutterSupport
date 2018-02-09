@@ -25,6 +25,11 @@ public class NotificationRegistrator {
     final String TAG = "DailyNotification";
 
     /**
+     * ID to use as requestCode when creating intents
+     */
+    final int ID = 40;
+
+    /**
      * Whether or not to override the indication from the alarm service that an alarm already
      * exists.
      */
@@ -84,7 +89,7 @@ public class NotificationRegistrator {
 
         if (shouldRegisterAlarm()) {
             PendingIntent pendingIntent = PendingIntent.getService(
-                    context, 40, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
+                    context, ID, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager =
                     (AlarmManager)context.getSystemService(MainActivity.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
@@ -111,7 +116,7 @@ public class NotificationRegistrator {
         );
 
         //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
-        return PendingIntent.getService(context, 40, intentToLaunch,
+        return PendingIntent.getService(context,  ID, intentToLaunch,
                 PendingIntent.FLAG_NO_CREATE) == null;
     }
 }
