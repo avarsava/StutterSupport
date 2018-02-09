@@ -44,6 +44,8 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
         super.addPreferencesFromResource(preferencesResId);
 
         final Preference disableAlarm = findPreference("notificationUserDisable");
+        final Preference changeHour = findPreference("notificationCustomHour");
+        final Preference changeMinute = findPreference("notificationCustomMinute");
         disableAlarm.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -56,28 +58,20 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             }
         });
 
-        disableAlarm.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        changeHour.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if(notificationRegistrator.alarmExists()){
-                    notificationRegistrator.deleteAlarm();
-                    notificationRegistrator.register();
-                }
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                notificationRegistrator.updateAlarm();
                 return true;
             }
         });
 
-        //TODO: Is there a way to cut down code re-use here?
-        disableAlarm.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        changeMinute.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if(notificationRegistrator.alarmExists()){
-                    notificationRegistrator.deleteAlarm();
-                    notificationRegistrator.register();
-                }
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                notificationRegistrator.updateAlarm();
                 return true;
             }
         });
     }
-
 }

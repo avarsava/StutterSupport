@@ -102,6 +102,16 @@ public class NotificationRegistrator {
     }
 
     /**
+     * Simplifies changing alarm settings.
+     */
+    public void updateAlarm(){
+        if(alarmExists()){
+            deleteAlarm();
+            register();
+        }
+    }
+
+    /**
      * Deletes the alarm registered with the OS
      * TODO: Will this break if there's no alarm? Worth it to add alarmExists() check?
      **/
