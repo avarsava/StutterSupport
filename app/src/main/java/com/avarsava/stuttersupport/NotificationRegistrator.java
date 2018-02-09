@@ -83,7 +83,7 @@ public class NotificationRegistrator {
             Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
         );
 
-        if (shouldRegisterAlarm(intentToLaunch)) {
+        if (shouldRegisterAlarm()) {
             PendingIntent pendingIntent = PendingIntent.getService(
                     context, 40, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager =
@@ -94,15 +94,12 @@ public class NotificationRegistrator {
 
     /**
      * Whether a new alarm should be registered with Android.
-     *
-     * @param intent Intent to create notification
      * @return true if new alarm should be registered.
      */
-    private boolean shouldRegisterAlarm(Intent intent) {
+    private boolean shouldRegisterAlarm() {
         if (overrideService) return true;
 
-        //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
-        return PendingIntent.getService(context, 40, intent, PendingIntent.FLAG_NO_CREATE) == null;
+        return alarmExists();
     }
 
     public void deleteAlarm(){
@@ -110,7 +107,12 @@ public class NotificationRegistrator {
     }
 
     public boolean alarmExists(){
-        //TODO: Implement alarmExists()
-        return false;
+        Intent intentToLaunch = new Intent(context, IntentHandler.class).addFlags(
+                Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
+        );
+
+        //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
+        return PendingIntent.getService(context, 40, intentToLaunch,
+                PendingIntent.FLAG_NO_CREATE) == null;
     }
 }
