@@ -218,22 +218,6 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
     }
 
     /**
-     * Game logic used to end the game when enough cycles of gameplay have been completed.
-     *
-     * @param name Name of the activity that finished
-     * @param performance Result code of activity
-     */
-    protected void killIfCountHigh(String name, int performance) {
-        if(cycleCount >= maxCycles) {
-            Intent intent = getIntent();
-            intent.putExtra("activityName", name);
-            intent.putExtra("activityPerformance", performance);
-            setResult(performance, intent);
-            finish();
-        }
-    }
-
-    /**
      * When the recognizer is ready, toggle the Start Button to show on screen.
      */
     protected void recognizerReady(){

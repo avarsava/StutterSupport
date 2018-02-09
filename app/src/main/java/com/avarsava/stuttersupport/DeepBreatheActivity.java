@@ -209,7 +209,7 @@ public class DeepBreatheActivity extends GameActivity {
 
             //Do some game logic
             switchStateIfNecessary();
-            killIfCountHigh(ACTIVITY_NAME, RESULT_OK);
+            killIfCountHigh(ACTIVITY_NAME, RESULT_OK,1);
         }
 
         /**
