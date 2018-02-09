@@ -20,7 +20,7 @@ public class SettingsScreenActivity extends PreferenceActivity {
     /**
      * Resource ID of settings file to expand into layout. Default value of 0 will be overwritten.
      */
-    private int prefsFile = 0;
+    protected int prefsFile = 0;
 
     /**
      * Creates a settings screen based on the preferences file carried in the Extras. Uses
