@@ -56,7 +56,6 @@ public class NotificationRegistrator {
      * Registers alarm to go off at 4PM every day with Android OS. When alarm sets off,
      * alarm is heard by IntentHandler and a notification is created.
      *
-     * TODO: Make so it pulls the time
      */
     public void register()  {
         int hour, minute;
