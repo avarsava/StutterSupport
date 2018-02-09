@@ -56,7 +56,6 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             }
         });
 
-        final Preference alarmHour = findPreference("notificationCustomHour");
         disableAlarm.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -69,7 +68,6 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
         });
 
         //TODO: Is there a way to cut down code re-use here?
-        final Preference alarmMinute = findPreference("notificationCustomMinute");
         disableAlarm.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

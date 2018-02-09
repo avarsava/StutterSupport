@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.licensesButton:
                 intent = new Intent(this, LicensesActivity.class);
                 break;
+            case R.id.notificationSettingsButton:
+                intent = new Intent(this,
+                        NotificationSettingsActivity.class);
+                intent.putExtra("prefs", R.xml.notifications_prefs);
+                break;
         }
         startActivity(intent);
     }
