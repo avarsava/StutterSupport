@@ -83,13 +83,8 @@ public class NotificationRegistrator {
         Log.d(TAG, "Alarm time in milliseconds: " + calendar.getTimeInMillis());
         Log.d(TAG, "System time in milliseconds: " + System.currentTimeMillis());
 
-        Intent intentToLaunch = new Intent(context, IntentHandler.class).addFlags(
-            Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
-        );
-
         if (shouldRegisterAlarm()) {
-            PendingIntent pendingIntent = PendingIntent.getService(
-                    context, ID, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = getPendingIntent();
             AlarmManager alarmManager =
                     (AlarmManager)context.getSystemService(MainActivity.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
@@ -108,16 +103,12 @@ public class NotificationRegistrator {
 
     /**
      * Deletes the alarm registered with the OS
-     * TODO: Refactor to remove repeat code
      * TODO: Will this break if there's no alarm? Worth it to add alarmExists() check?
      **/
     public void deleteAlarm(){
-        Intent intentToLaunch = new Intent(context, IntentHandler.class).addFlags(
-                Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
-        );
-        PendingIntent pendingIntent = PendingIntent.getService(
-                context, ID, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(MainActivity.ALARM_SERVICE);
+        PendingIntent pendingIntent = getPendingIntent();
+        AlarmManager alarmManager
+                = (AlarmManager)context.getSystemService(MainActivity.ALARM_SERVICE);
 
         alarmManager.cancel(pendingIntent);
     }
@@ -128,12 +119,31 @@ public class NotificationRegistrator {
      * @return true if alarm is registered for daily notification
      */
     public boolean alarmExists(){
-        Intent intentToLaunch = new Intent(context, IntentHandler.class).addFlags(
-                Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
-        );
+        Intent intentToLaunch = createLaunchingIntent();
 
         //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
         return PendingIntent.getService(context, ID, intentToLaunch,
                 PendingIntent.FLAG_NO_CREATE) == null;
+    }
+
+    /**
+     * Creates an intent with the proper flags for the kind of notification we want.
+     *
+     * @return Intent with custom flags
+     */
+    private Intent createLaunchingIntent(){
+        return new Intent(context, IntentHandler.class).addFlags(
+                Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
+        );
+    }
+
+    /**
+     * Creates a PendingIntent for the appropriate behaviour when the alarm goes off.
+     *
+     * @return PendingIntent with custom flags
+     */
+    private PendingIntent getPendingIntent(){
+        return PendingIntent.getService(
+                context, ID, createLaunchingIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
