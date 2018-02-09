@@ -29,7 +29,7 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        notificationRegistrator = new NotificationRegistrator(true);
+        notificationRegistrator = new NotificationRegistrator(true, this);
     }
 
     /**
@@ -48,7 +48,7 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if(true/* TODO: This should be like disableAlarm.isChecked*/) {
-                    notificationRegistrator.register(context);
+                    notificationRegistrator.register();
                 }else{
                     notificationRegistrator.deleteAlarm();
                 }
@@ -62,7 +62,7 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             public boolean onPreferenceClick(Preference preference) {
                 if(notificationRegistrator.alarmExists()){
                     notificationRegistrator.deleteAlarm();
-                    notificationRegistrator.register(context);
+                    notificationRegistrator.register();
                 }
                 return true;
             }
@@ -75,7 +75,7 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             public boolean onPreferenceClick(Preference preference) {
                 if(notificationRegistrator.alarmExists()){
                     notificationRegistrator.deleteAlarm();
-                    notificationRegistrator.register(context);
+                    notificationRegistrator.register();
                 }
                 return true;
             }

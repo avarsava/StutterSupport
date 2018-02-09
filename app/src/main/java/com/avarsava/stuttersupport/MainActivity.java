@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
      * Registers a new alarm for timing daily notifications
      */
     private void RegisterAlarmBroadcast(){
-        NotificationRegistrator register = new NotificationRegistrator(false);
-        register.register(this);
+        NotificationRegistrator register
+                = new NotificationRegistrator(false, this);
+        register.register();
     }
 }
