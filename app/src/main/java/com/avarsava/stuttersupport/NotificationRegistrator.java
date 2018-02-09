@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.1
  * @since   0.1
  *
  * Registers daily notifications with the Android OS.
@@ -106,17 +106,34 @@ public class NotificationRegistrator {
         return alarmExists();
     }
 
+    /**
+     * Deletes the alarm registered with the OS
+     * TODO: Refactor to remove repeat code
+     * TODO: Will this break if there's no alarm? Worth it to add alarmExists() check?
+     **/
     public void deleteAlarm(){
-        //TODO: Implement deleteAlarm()
+        Intent intentToLaunch = new Intent(context, IntentHandler.class).addFlags(
+                Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
+        );
+        PendingIntent pendingIntent = PendingIntent.getService(
+                context, ID, intentToLaunch, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(MainActivity.ALARM_SERVICE);
+
+        alarmManager.cancel(pendingIntent);
     }
 
+    /**
+     * Tests whether an alarm exists within the OS
+     *
+     * @return true if alarm is registered for daily notification
+     */
     public boolean alarmExists(){
         Intent intentToLaunch = new Intent(context, IntentHandler.class).addFlags(
                 Intent.FLAG_DEBUG_LOG_RESOLUTION | Intent.FLAG_FROM_BACKGROUND
         );
 
         //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
-        return PendingIntent.getService(context,  ID, intentToLaunch,
+        return PendingIntent.getService(context, ID, intentToLaunch,
                 PendingIntent.FLAG_NO_CREATE) == null;
     }
 }
