@@ -42,6 +42,7 @@ public class NotificationRegistrator {
      * alarm is heard by IntentHandler and a notification is created.
      *
      * @param ctx Context of caller
+     * TODO: Make so it pulls the time
      */
     public void register(Context ctx)  {
 
@@ -85,5 +86,14 @@ public class NotificationRegistrator {
 
         //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
         return PendingIntent.getService(ctx, 40, intent, PendingIntent.FLAG_NO_CREATE) == null;
+    }
+
+    public void deleteAlarm(){
+        //TODO: Implement deleteAlarm()
+    }
+
+    public boolean alarmExists(){
+        //TODO: Implement alarmExists()
+        return false;
     }
 }
