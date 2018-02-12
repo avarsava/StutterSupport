@@ -25,7 +25,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Version of database. Not really used for anything but required.
      */
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     /**
      * Database helper constructor. Saves information to object and creates SQLite helper.

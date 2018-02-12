@@ -18,6 +18,8 @@ import android.preference.PreferenceManager;
  * game.
  */
 public class DeepBreatheActivity extends GameActivity {
+    public static final String ACTIVITY_NAME = "DeepBreathe";
+
     /**
      * A picture of a man breathing in.
      */
@@ -207,7 +209,7 @@ public class DeepBreatheActivity extends GameActivity {
 
             //Do some game logic
             switchStateIfNecessary();
-            killIfCountHigh(RESULT_OK);
+            killIfCountHigh(ACTIVITY_NAME, RESULT_OK,1);
         }
 
         /**

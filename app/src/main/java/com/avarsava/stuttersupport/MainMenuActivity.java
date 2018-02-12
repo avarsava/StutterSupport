@@ -146,12 +146,19 @@ public class MainMenuActivity extends FragmentActivity {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(data == null || data.getStringExtra("activityName") == null) {
+            return;
+        }
+        String activityName = data.getStringExtra("activityName");
+        int activityPerformance = data.getIntExtra("activityPerformance", -1);
+        int activityDifficulty = data.getIntExtra("activityDifficulty", 1);
+
         if(resultCode == RESULT_OK){
             //Show encouragement
             showEncouragement();
 
             //Update streak
-            trackerDbHelper.addDateToDb(streakDbHelper);
+            trackerDbHelper.addToDb(activityName, activityPerformance, activityDifficulty, streakDbHelper);
             trackerPage.refreshCalendar(trackerDbHelper);
             trackerPage.refreshStreak(trackerDbHelper, streakDbHelper);
             int currentStreak = streakDbHelper.getCurrent();

@@ -1,6 +1,7 @@
 package com.avarsava.stuttersupport;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -201,11 +202,17 @@ public abstract class GameActivity extends AppCompatActivity implements Recognit
     /**
      * Game logic used to end the game when enough cycles of gameplay have been completed.
      *
-     * @param result Result code of activity
+     * @param name Name of the activity that finished
+     * @param performance Result code of activity
+     * @param difficulty Difficulty that the activity is set to
      */
-    protected void killIfCountHigh(int result) {
+    protected void killIfCountHigh(String name, int performance, int difficulty) {
         if(cycleCount >= maxCycles) {
-            setResult(result);
+            Intent intent = getIntent();
+            intent.putExtra("activityName", name);
+            intent.putExtra("activityPerformance", performance);
+            intent.putExtra("activityDifficulty", difficulty);
+            setResult(performance, intent);
             finish();
         }
     }

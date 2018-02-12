@@ -28,6 +28,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
  */
 
 public class ScriptReadingActivity extends GameActivity {
+    public static final String ACTIVITY_NAME = "ScriptReading";
     /**
      * Tag for debug logs.
      */
@@ -143,7 +144,7 @@ public class ScriptReadingActivity extends GameActivity {
 
                 //If there are no more words, exit with successful status
                 } else {
-                    killIfCountHigh(RESULT_OK);
+                    killIfCountHigh(ACTIVITY_NAME, RESULT_OK,1);
                 }
             }
             resetRecognizer();
