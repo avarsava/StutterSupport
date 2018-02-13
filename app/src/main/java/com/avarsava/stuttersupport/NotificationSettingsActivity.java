@@ -76,7 +76,11 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
         changeHour.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                notificationRegistrator.updateAlarm();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                int newHour = Integer.valueOf(o.toString());
+                int oldMinute =
+                        Integer.valueOf(sp.getString("notificationCustomMinute", "00"));
+                notificationRegistrator.updateAlarm(newHour, oldMinute);
                 return true;
             }
         });
@@ -84,7 +88,11 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
         changeMinute.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener(){
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                notificationRegistrator.updateAlarm();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                int newMinute = Integer.valueOf(o.toString());
+                int oldHour =
+                        Integer.valueOf(sp.getString("notificationCustomHour", "16"));
+                notificationRegistrator.updateAlarm(oldHour, newMinute);
                 return true;
             }
         });

@@ -58,26 +58,42 @@ public class NotificationRegistrator {
     }
 
     /**
-     * Registers alarm to go off at 4PM every day with Android OS. When alarm sets off,
+     * Registers alarm to go off at time set in Preferences every day with Android OS.
+     * When alarm sets off, alarm is heard by IntentHandler and a notification is created.
+     */
+    public void register(){
+        int newHour = Integer.valueOf(prefs.getString("notificationCustomHour", "16"));
+        int newMinute = Integer.valueOf(prefs.getString("notificationCustomMinute", "00"));
+        register(newHour, newMinute);
+    }
+
+    /**
+     * Registers alarm to go off at custom time every day with Android OS. When alarm sets off,
      * alarm is heard by IntentHandler and a notification is created.
      *
+     * @param h Hour to register new alarm
+     * @param m Minute to register new alarm
      */
-    public void register()  {
+    public void register(int h, int m)  {
         int hour, minute;
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        hour = Integer.valueOf(prefs.getString("notificationCustomHour", "16"));
-        minute = Integer.valueOf(prefs.getString("notificationCustomMinute", "00"));
+        hour = h;
+        minute = m;
 
-        if (calendar.get(Calendar.HOUR_OF_DAY) >= hour) calendar.add(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
         calendar.add(Calendar.SECOND, 2);
+
+        //If we've created an alarm in the past, make it go off tomorrow.
+        if(System.currentTimeMillis() > calendar.getTimeInMillis()){
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
         Log.d(TAG, "Setting alarm to go off at " + calendar.getTime());
         Log.d(TAG, "Alarm time in milliseconds: " + calendar.getTimeInMillis());
@@ -88,6 +104,8 @@ public class NotificationRegistrator {
             AlarmManager alarmManager =
                     (AlarmManager)context.getSystemService(MainActivity.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            Log.i(TAG, "New alarm set.");
+            Log.d(TAG, "alarmExists is now " + alarmExists());
         }
     }
 
@@ -98,29 +116,39 @@ public class NotificationRegistrator {
     private boolean shouldRegisterAlarm() {
         if (overrideService) return true;
 
-        return alarmExists();
+        return !alarmExists();
     }
 
     /**
      * Simplifies changing alarm settings.
      */
     public void updateAlarm(){
-        if(alarmExists()){
-            deleteAlarm();
-            register();
-        }
+        deleteAlarm();
+        register();
+    }
+
+    /**
+     * Simplifies changing alarm settings.
+     *
+     * @param h Hour to register new alarm
+     * @param m Minute to register new alarm
+     */
+    public void updateAlarm(int h, int m){
+        deleteAlarm();
+        register(h, m);
     }
 
     /**
      * Deletes the alarm registered with the OS
-     * TODO: Will this break if there's no alarm? Worth it to add alarmExists() check?
      **/
     public void deleteAlarm(){
         PendingIntent pendingIntent = getPendingIntent();
         AlarmManager alarmManager
                 = (AlarmManager)context.getSystemService(MainActivity.ALARM_SERVICE);
-
         alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+        Log.i(TAG, "Alarm deleted.");
+        Log.d(TAG, "alarmExists is now " + alarmExists());
     }
 
     /**
@@ -132,8 +160,10 @@ public class NotificationRegistrator {
         Intent intentToLaunch = createLaunchingIntent();
 
         //getService with FLAG_NO_CREATE returns null if it cannot find an existing alarm
-        return PendingIntent.getService(context, ID, intentToLaunch,
-                PendingIntent.FLAG_NO_CREATE) == null;
+        boolean exists = PendingIntent.getService(context, ID, intentToLaunch,
+                PendingIntent.FLAG_NO_CREATE) != null;
+        Log.i(TAG, "alarmExists found to be " + exists);
+        return exists;
     }
 
     /**
