@@ -15,7 +15,7 @@
         android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"
-        android:dependency="db_notificationUserDisable"/>
+        android:dependency="notificationUserDisable"/>
 
     <!-- Minute at hour for alarm to fire -->
     <EditTextPreference android:title="Minute"
@@ -24,7 +24,7 @@
         android:inputType="number"
         android:numeric="integer"
         android:maxLength="2"
-        android:dependency="db_notificationUserDisable"/>
+        android:dependency="notificationUserDisable"/>
 
     <!-- Button to restore default preferences -->
     <Preference android:title="Restore Defaults"
