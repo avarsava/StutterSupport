@@ -1,9 +1,11 @@
 package com.avarsava.stuttersupport;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -15,8 +17,19 @@ import android.preference.PreferenceActivity;
 
 public class NotificationSettingsActivity extends SettingsScreenActivity{
 
+    /**
+     * Tag for logger
+     */
+    private final String TAG = "NotificationSettings";
+
+    /**
+     * Context for passing to methods which require it
+     */
     Context context = this;
 
+    /**
+     * Manages notifications with the OS
+     */
     NotificationRegistrator notificationRegistrator;
 
     /**
@@ -49,9 +62,11 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
         disableAlarm.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if(true/* TODO: This should be like disableAlarm.isChecked*/) {
+                if(isEnableChecked()){
+                    Log.i(TAG, "Enable was checked, registering new alarm");
                     notificationRegistrator.register();
                 }else{
+                    Log.i(TAG, "Enable was unchecked, deleting existing alarm");
                     notificationRegistrator.deleteAlarm();
                 }
                 return true;
@@ -73,5 +88,15 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
                 return true;
             }
         });
+    }
+
+    /**
+     * Checks whether the 'Enable' checkbox is currently checked
+     * @return true if 'Enable' is currently checked
+     */
+    private boolean isEnableChecked(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean enabled = sp.getBoolean("notificationUserDisable", true);
+        return enabled;
     }
 }
