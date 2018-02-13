@@ -1,6 +1,9 @@
 package com.avarsava.stuttersupport;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -21,6 +24,17 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
      * Tag for logger
      */
     private final String TAG = "NotificationSettings";
+
+    /**
+     * Activity for showing dialogs on.
+     */
+    private final Activity THIS_ACTIVITY = this;
+
+    /**
+     * The latest one can set an alarm is 23:59. Reject changes outside this range.
+     */
+    private final int MAX_HOUR = 23;
+    private final int MAX_MINUTE = 59;
 
     /**
      * Context for passing to methods which require it
@@ -78,6 +92,20 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             public boolean onPreferenceChange(Preference preference, Object o) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
                 int newHour = Integer.valueOf(o.toString());
+                if(newHour < 0 || newHour > MAX_HOUR){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(THIS_ACTIVITY);
+                    builder.setMessage("Please enter an hour between 0 and " + MAX_HOUR + ".")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //Do nothing
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return false;
+                }
+
                 int oldMinute =
                         Integer.valueOf(sp.getString("notificationCustomMinute", "00"));
                 notificationRegistrator.updateAlarm(newHour, oldMinute);
@@ -90,6 +118,20 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
             public boolean onPreferenceChange(Preference preference, Object o) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
                 int newMinute = Integer.valueOf(o.toString());
+                if(newMinute < 0 || newMinute > MAX_MINUTE){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(THIS_ACTIVITY);
+                    builder.setMessage("Please enter a minute between 0 and " + MAX_MINUTE + ".")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //Do nothing
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return false;
+                }
+
                 int oldHour =
                         Integer.valueOf(sp.getString("notificationCustomHour", "16"));
                 notificationRegistrator.updateAlarm(oldHour, newMinute);
