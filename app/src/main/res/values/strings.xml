@@ -39,4 +39,5 @@
     <string name="reminder_text">Have you practiced your speech today?</string>
     <string name="restore_defaults">Restore Default Settings</string>
     <string name="restore_defaults_warning">Are you sure? This will restore the default settings for ALL activities.</string>
+    <string name="licenses_button">Licenses</string>
 </resources>

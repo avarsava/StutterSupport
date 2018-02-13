@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.licensesButton:
                 intent = new Intent(this, LicensesActivity.class);
                 break;
+            case R.id.notificationSettingsButton:
+                intent = new Intent(this,
+                        NotificationSettingsActivity.class);
+                intent.putExtra("prefs", R.xml.notifications_prefs);
+                break;
         }
         startActivity(intent);
     }
@@ -49,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
      * Registers a new alarm for timing daily notifications
      */
     private void RegisterAlarmBroadcast(){
-        NotificationRegistrator register = new NotificationRegistrator(false);
-        register.register(this);
+        NotificationRegistrator register
+                = new NotificationRegistrator(false, this);
+        register.register();
     }
 }

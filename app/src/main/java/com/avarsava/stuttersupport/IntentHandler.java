@@ -64,7 +64,8 @@ public class IntentHandler extends IntentService {
             NotificationManagerCompat.from(this).notify(0, notification);
         }
 
-        NotificationRegistrator register = new NotificationRegistrator(true);
-        register.register(this);
+        NotificationRegistrator register
+                = new NotificationRegistrator(true, this);
+        register.register();
     }
 }

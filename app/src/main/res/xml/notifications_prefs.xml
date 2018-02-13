@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Whether notifications are enabled -->
+    <CheckBoxPreference android:title="Enable"
+        android:key="notificationUserDisable"
+        android:defaultValue="true"
+        android:disableDependentsState="false"/>
+
+    <!-- TODO: Max out at 23:59 -->
+    <!-- Hour in 24h time for alarm to fire -->
+    <EditTextPreference android:title="Hour"
+        android:key="notificationCustomHour"
+        android:defaultValue="16"
+        android:inputType="number"
+        android:numeric="integer"
+        android:maxLength="2"
+        android:dependency="notificationUserDisable"/>
+
+    <!-- Minute at hour for alarm to fire -->
+    <EditTextPreference android:title="Minute"
+        android:key="notificationCustomMinute"
+        android:defaultValue="00"
+        android:inputType="number"
+        android:numeric="integer"
+        android:maxLength="2"
+        android:dependency="notificationUserDisable"/>
+
+    <!-- Button to restore default preferences -->
+    <Preference android:title="Restore Defaults"
+        android:key="restoreDefaults" />
+
+    <!-- Button to go back to Main Menu -->
+    <Preference android:title="Back to Menu"
+        android:key="backButton" />
+</PreferenceScreen>

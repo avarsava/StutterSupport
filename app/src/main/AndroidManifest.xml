@@ -43,6 +43,9 @@
         <activity
             android:name="com.avarsava.stuttersupport.ScriptReadingActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.avarsava.stuttersupport.NotificationSettingsActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.avarsava.stuttersupport.IntentHandler"
