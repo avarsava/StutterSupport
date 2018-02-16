@@ -282,7 +282,7 @@ public class TrainGameActivity extends GameActivity{
         /**
          * Game scenery
          */
-        private Drawable instructionBg, gameBg, gameFg;
+        private Drawable instructionBg, gameBg, gameFg, person;
 
         /**
          * Game objects used to denote gameplay progression.
@@ -318,6 +318,7 @@ public class TrainGameActivity extends GameActivity{
         protected void doDrawing(){
             switch(currentState){
                 case CALL:
+                    person.draw(canvas);
                     bgBalloon.draw(canvas);
                     canvas.drawText(currentString,
                             getScaled(120),
@@ -332,6 +333,7 @@ public class TrainGameActivity extends GameActivity{
                     break;
                 case RESP:
                     gameFg.draw(canvas);
+                    person.draw(canvas);
                     bgBalloon.draw(canvas);
                     if(successful){
                         Log.d(TAG, "successful is true, draw good result");
@@ -401,6 +403,8 @@ public class TrainGameActivity extends GameActivity{
             happy = resources.getDrawable(R.drawable.ic_train_game_happy_face);
             sad = resources.getDrawable(R.drawable.ic_train_game_sad_face);
 
+            person = resources.getDrawable(R.drawable.ic_train_game_person);
+
             //Set boundaries for drawings
             gameFg.setBounds(0, 0, screenWidth, screenHeight);
             bgBalloon.setBounds(0, 0,
@@ -418,6 +422,10 @@ public class TrainGameActivity extends GameActivity{
                     getScaled(80),
                     screenWidth - getScaled(30),
                     getScaled(180));
+            person.setBounds(screenWidth - getScaled(115),
+                    getScaled(75),
+                    screenWidth - getScaled(10),
+                    getScaled(325));
             car.setBounds(0, 0, screenWidth, screenHeight - getScaled(120));
             checkmark.setBounds(getScaled(75), getScaled(50),
                     getScaled(175), getScaled(155));
