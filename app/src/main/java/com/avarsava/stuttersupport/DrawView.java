@@ -178,7 +178,9 @@ public abstract class DrawView extends SurfaceView implements Runnable{
      * @return scaled pixel value
      */
     public int getScaled(int i){
-        return (int)(i*getResources().getDisplayMetrics().scaledDensity);
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        return (int)(i * scale + 0.5f);
+        //return (int)(i*getResources().getDisplayMetrics().scaledDensity);
     }
 
     /**
