@@ -16,7 +16,7 @@ import android.preference.PreferenceManager;
  *
  * Allows for the creation of a Settings page based on an XML preferences list.
  */
-public class SettingsScreenActivity extends PreferenceActivity {
+public class SettingsScreenActivity extends PreferenceActivity{
     /**
      * Resource ID of settings file to expand into layout. Default value of 0 will be overwritten.
      */
@@ -42,15 +42,19 @@ public class SettingsScreenActivity extends PreferenceActivity {
 
     /**
      * Expands preferences from XML into a settings screen layout, then sets back and restore
-     * buttons to listen for click activity.
+     * buttons to listen for click activity. Then sets certain difficulty-related preferences as
+     * enabled or disabled based on parent settings.
      *
-     * @param preferencesResId Resoure ID of the preferences file to expand
+     * @param preferencesResId Resource ID of the preferences file to expand
      */
     @Override
     public void addPreferencesFromResource(int preferencesResId){
         super.addPreferencesFromResource(preferencesResId);
 
         final Activity thisActivity = this;
+        SharedPreferences sharedPrefs
+                = PreferenceManager.getDefaultSharedPreferences(thisActivity);
+
         Preference backButton = findPreference("backButton");
         backButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -70,6 +74,17 @@ public class SettingsScreenActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        switch(preferencesResId){
+            case R.xml.train_game_prefs:
+                Preference tgDifficulty = findPreference("tg_Difficulty");
+                Boolean tgLocked
+                        = Boolean.valueOf(sharedPrefs.getBoolean("tg_override", false));
+
+                //If Train Game is NOT locked, enable the preference.
+                tgDifficulty.setEnabled(!tgLocked);
+                break;
+        }
     }
 
     /**
