@@ -381,7 +381,7 @@ public class TrainGameActivity extends GameActivity{
             blackPaint = new Paint();
             blackPaint.setColor(Color.BLACK);
             blackPaint.setTextAlign(Paint.Align.CENTER);
-            blackPaint.setTextSize(100);
+            blackPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.font_size));
         }
 
         /**
