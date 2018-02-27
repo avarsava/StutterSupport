@@ -427,10 +427,12 @@ public class TrainGameActivity extends GameActivity{
                     screenWidth - getScaled(10),
                     getScaled(325));
             car.setBounds(0, 0, screenWidth, screenHeight - getScaled(120));
-            checkmark.setBounds(getScaled(75), getScaled(50),
-                    getScaled(175), getScaled(155));
-            qmark.setBounds(getScaled(75), getScaled(50),
-                    getScaled(175), getScaled(155));
+            checkmark.setBounds(0, 0,
+                    screenWidth - getScaled(100),
+                    screenHeight - getScaled(400));
+            qmark.setBounds(0, 0,
+                    screenWidth - getScaled(100),
+                    screenHeight - getScaled(400));
         }
     }
 }
