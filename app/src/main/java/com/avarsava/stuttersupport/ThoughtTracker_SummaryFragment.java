@@ -11,5 +11,5 @@ import android.app.Fragment;
  * Part of the Thought Tracker activity.
  */
 
-public class ThoughtTracker_SummaryFragment extends Fragment {
+public class ThoughtTracker_SummaryFragment extends ThoughtTracker_Fragment {
 }
