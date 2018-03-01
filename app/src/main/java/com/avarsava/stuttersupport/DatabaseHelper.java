@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Date;
+
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
  * @version 1.0
@@ -63,5 +65,18 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
         //and recreate it from scratch
         onCreate(db);
+    }
+
+    /**
+     * Gets the current date and formats it for universal acceptance in
+     * the app's multiple databases.
+     *
+     * @return Properly formatted current-date String.
+     */
+    protected String getDateString(){
+        Date currentDate = new Date();
+        String dateString = (currentDate.getYear() + 1900) + "-"
+                + (currentDate.getMonth()) + "-" + currentDate.getDate();
+        return dateString;
     }
 }

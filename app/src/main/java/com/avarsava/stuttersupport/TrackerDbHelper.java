@@ -25,6 +25,7 @@ import java.util.HashSet;
  */
 
 public class TrackerDbHelper extends DatabaseHelper {
+
     /**
      * The names of the columns in the table.
      */
@@ -69,10 +70,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
-        String dateString = "";
-        Date currentDate = new Date();
-        dateString = (currentDate.getYear() + 1900) + "-"
-                + (currentDate.getMonth()) + "-" + currentDate.getDate();
+        String dateString = getDateString();
 
         values.put(C_ACTIVITY, activityName);
         values.put(C_DATE, dateString);
