@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="moods">
+        <item>HAPPY</item>
+        <item>SAD</item>
+        <item>ANGRY</item>
+        <item>TIRED</item>
+        <item>EMBARRASSED</item>
+        <item>EXCITED</item>
+        <item>NERVOUS</item>
+        <item>ONE</item>
+        <item>TWO</item>
+        <item>THREE</item>
+        <item>FOUR</item>
+        <item>FIVE</item>
+        <item>SIX</item>
+        <item>SEVEN</item>
+        <item>EIGHT</item>
+        <item>NINE</item>
+        <item>TEN</item>
+    </string-array>
+</resources>
