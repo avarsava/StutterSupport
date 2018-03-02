@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +57,7 @@ public class ThoughtTrackerActivity extends FragmentActivity {
         mPagerAdapter =
                 new ThoughtTrackerPagerAdapter(getSupportFragmentManager(),
                         getFragments());
+        mPager.setAdapter(mPagerAdapter);
     }
 
     /**
