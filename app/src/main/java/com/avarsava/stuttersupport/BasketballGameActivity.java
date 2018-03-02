@@ -88,6 +88,11 @@ public class BasketballGameActivity extends GameActivity {
     private int stateInfo = 0;
 
     /**
+     * Similar to stateInfo, this variable stores extra info for the resetting state only
+     */
+    private int resetInfo = 0;
+
+    /**
      * A list of the previously called words, to avoid calling the same word twice.
      */
     private String[] usedStrings;
@@ -101,6 +106,11 @@ public class BasketballGameActivity extends GameActivity {
      * True if the currentString has changed, false otherwise. Used for speed increase
      */
     private boolean textChanged = true;
+
+    /**
+     * Counts how many successful cycles were passed for the database
+     */
+    private int successfulCycles = 0;
 
     /**
      * Called on the creation of the Activity. Sets up the values needed for the initial state
@@ -179,29 +189,33 @@ public class BasketballGameActivity extends GameActivity {
                 else currentState = STATE.DRIBBLE_2; //Check that time is right
                 break;
             case DRIBBLE_2:
-                //If syllable mistake, then go to resetting state with stateInfo = 1
+                //If syllable mistake, then go to resetting state with resetInfo = 1
                 stateInfo++;
                 currentState = STATE.DRIBBLE_1;
                 break;
             case SHOOTING:
                 if (stateInfo == 1) {
-                    //If word mistake, then stateInfo = 2
-                    //If no mistake, then stateInfo = 3
+                    if (false) resetInfo = 2; //If word mistake
+                    else resetInfo = 3;       //If no mistake
                     currentState = STATE.RESETTING;
                     stateInfo = 0;
                 }
                 else stateInfo++;
                 break;
             case RESETTING:
-                if (stateInfo == 3) {
-                    currentState = STATE.COUNTDOWN;
-                    getString();
-                    stateInfo = 0;
+                if (stateInfo == 2) {
+                    cycleCount++;
+                    if (resetInfo == 3) successfulCycles++;
+                    killIfCountHigh(TAG, successfulCycles, difficulty);
+                    if (cycleCount < maxCycles) {
+                        currentState = STATE.COUNTDOWN;
+                        getString();
+                        stateInfo = 0;
+                    }
+                    else stateInfo++;
                 }
                 else stateInfo++;
         }
-
-        killIfCountHigh(TAG, 0, difficulty);
     }
 
     /**
@@ -366,17 +380,17 @@ public class BasketballGameActivity extends GameActivity {
                     net.draw(canvas);
                     dribble_ball_2.draw(canvas);
                     drawWord();
-                    if (stateInfo == 0) { // fumbled (during dribble_1 state)
+                    if (resetInfo == 1) { // fumbled (during dribble_1 state)
                         sad.draw(canvas);
-                        //Draw ball bouncing along ground
+                        //Draw ball bouncing along ground after fumble
                     }
-                    else if (stateInfo == 1) { // missed net (during shooting state)
-                        concentrate.draw(canvas);
-                        //Draw ball bouncing after hitting rim of net
+                    else if (resetInfo == 2) { // missed net (during shooting state)
+                        sad.draw(canvas);
+                        //Draw ball hitting rim then bouncing
                     }
-                    else if (stateInfo == 2) { // went in net (during shooting state)
+                    else if (resetInfo == 3) { // went in net (during shooting state)
                         happy.draw(canvas);
-                        //Draw ball bouncing below net
+                        //Draw ball in net, then draw ball bouncing below net
                     }
             }
         }
@@ -444,8 +458,8 @@ public class BasketballGameActivity extends GameActivity {
             net.setBounds(getScaled(25),
                     screenHeight - getScaled(500),
                     getScaled(200),
-                    screenHeight - getScaled(100));
 
+            screenHeight - getScaled(100));
             concentrate.setBounds(screenWidth - getScaled(100),
                     screenHeight - getScaled(360),
                     screenWidth - getScaled(30),
@@ -487,3 +501,11 @@ public class BasketballGameActivity extends GameActivity {
         }
     }
 }
+
+/** Left to do
+ *    - Create words xml file and read in words and syllables
+ *    - Implement PocketSphinx
+ *    - Use PocketSphinx to determine words said and use that to transition states
+ *    - Tidy up the graphics
+ *    - Keep track of the successful cycles and pass that back to the database
+ */
