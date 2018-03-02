@@ -13,5 +13,9 @@ public enum MOOD {
     HAPPY, SAD, ANGRY, TIRED, EMBARRASSED, EXCITED, NERVOUS,
 
     //Rating of one to ten
-    ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN
+    ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
+
+    public String toString(){
+        return this.name();
+    }
 }
