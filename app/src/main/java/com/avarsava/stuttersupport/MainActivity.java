@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
                         NotificationSettingsActivity.class);
                 intent.putExtra("prefs", R.xml.notifications_prefs);
                 break;
+            case R.id.parentTeacherInterfaceButton:
+                intent = new Intent(this,
+                        ParentTeacherInterfaceActivity.class);
+                break;
         }
         startActivity(intent);
     }
