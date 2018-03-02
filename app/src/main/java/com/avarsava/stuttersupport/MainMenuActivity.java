@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -32,6 +34,11 @@ public class MainMenuActivity extends FragmentActivity {
      * Important milestones in the streak count, in days.
      */
     private final List<Integer> MILESTONES = new LinkedList<>(Arrays.asList(1, 7, 31, 50, 75, 100));
+
+    /**
+     * Age at which social media begins to be appropriate.
+     */
+    private final int SOCIAL_MEDIA_AGE = 13;
 
     /**
      * Records whether the social media share message has been offered once already.
@@ -153,7 +160,7 @@ public class MainMenuActivity extends FragmentActivity {
         int activityPerformance = data.getIntExtra("activityPerformance", -1);
         int activityDifficulty = data.getIntExtra("activityDifficulty", 1);
 
-        if(resultCode == RESULT_OK){
+        if(resultCode >= 1){
             //Show encouragement
             showEncouragement();
 
@@ -165,12 +172,28 @@ public class MainMenuActivity extends FragmentActivity {
 
             //Show dialog if milestone is hit and social media offer hasn't been made yet
             if((MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak))
-                    && !socialMediaOffered) {
+                    && socialMediaAppropriate()) {
                 showDialog(this, getString(R.string.milestone_header),
                         getString(R.string.milestone_prompt));
                 socialMediaOffered = true;
             }
         }
+    }
+
+    /**
+     * Determines whether it is appropriate to trigger the social media prompt.
+     *
+     * @return true if user is of age, social media has not been disabled, and the social media
+     *          prompt has not yet been shown today. False otherwise.
+     */
+    private boolean socialMediaAppropriate(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int userAge = Integer.valueOf(prefs.getString("pti_userAge", "13"));
+        boolean socialMediaEnabled = prefs.getBoolean("pti_socialMediaIntegration", true);
+
+        return (userAge >= SOCIAL_MEDIA_AGE)
+                && socialMediaEnabled
+                && !socialMediaOffered;
     }
 
     /**
