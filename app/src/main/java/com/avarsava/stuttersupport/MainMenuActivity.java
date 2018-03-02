@@ -153,7 +153,7 @@ public class MainMenuActivity extends FragmentActivity {
         int activityPerformance = data.getIntExtra("activityPerformance", -1);
         int activityDifficulty = data.getIntExtra("activityDifficulty", 1);
 
-        if(resultCode == RESULT_OK){
+        if(resultCode >= 1){
             //Show encouragement
             showEncouragement();
 
