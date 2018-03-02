@@ -68,9 +68,13 @@ public class ThoughtTrackerActivity extends FragmentActivity {
     public List<Fragment> getFragments() {
         List<Fragment> fList = new ArrayList<>();
 
-        fList.add(ThoughtTracker_PastFragment.newInstance(thoughtDbHelper));
-        fList.add(ThoughtTracker_TodayFragment.newInstance(thoughtDbHelper));
-        fList.add(ThoughtTracker_SummaryFragment.newInstance(thoughtDbHelper));
+        fList.add(ThoughtTracker_PastFragment.newInstance(R.layout.fragment_thought_tracker_past,
+                thoughtDbHelper));
+        fList.add(ThoughtTracker_TodayFragment.newInstance(R.layout.fragment_thought_tracker_today,
+                thoughtDbHelper));
+        fList.add(ThoughtTracker_SummaryFragment.newInstance
+                (R.layout.fragment_thought_tracker_summary,
+                thoughtDbHelper));
 
         return fList;
     }
