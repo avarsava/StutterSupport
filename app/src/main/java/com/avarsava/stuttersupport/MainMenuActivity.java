@@ -188,11 +188,11 @@ public class MainMenuActivity extends FragmentActivity {
      */
     private boolean socialMediaAppropriate(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int userAge = Integer.valueOf(prefs.getString("userAge", "13"));
-        boolean socialMediaDisabled = prefs.getBoolean("disableSocialMedia", false);
+        int userAge = Integer.valueOf(prefs.getString("pti_userAge", "13"));
+        boolean socialMediaEnabled = prefs.getBoolean("pti_socialMediaIntegration", true);
 
         return (userAge >= SOCIAL_MEDIA_AGE)
-                && !socialMediaDisabled
+                && socialMediaEnabled
                 && !socialMediaOffered;
     }
 
