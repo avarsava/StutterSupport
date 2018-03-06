@@ -78,22 +78,12 @@ public class SettingsScreenActivity extends PreferenceActivity{
         //Render based on Parent/Teacher difficulty locks
         switch(preferencesResId){
             case R.xml.train_game_prefs:
-//                Preference tgDifficulty = findPreference("tg_Difficulty");
-//                Boolean tgLocked
-//                        = Boolean.valueOf(sharedPrefs.getBoolean("pti_tg_override", false));
-//
-//                //If Train Game is NOT locked, enable the preference.
-//                tgDifficulty.setEnabled(!tgLocked);
+                Preference tgDifficulty = findPreference("tg_Difficulty");
+                Boolean tgLocked
+                        = Boolean.valueOf(sharedPrefs.getBoolean("pti_tg_override", false));
 
-                for (String prefName : sharedPrefs.getAll().keySet()){
-                    if(prefName.equals("restoreDefaults") || prefName.equals("backButton")){
-                        continue;
-                    }
-
-                    Preference pref = findPreference(prefName);
-                    
-                }
-
+                //If Train Game is NOT locked, enable the preference.
+                tgDifficulty.setEnabled(!tgLocked);
                 break;
         }
     }
