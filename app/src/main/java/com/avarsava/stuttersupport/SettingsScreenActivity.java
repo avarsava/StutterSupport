@@ -46,7 +46,8 @@ public class SettingsScreenActivity extends PreferenceActivity{
 
     /**
      * Expands preferences from XML into a settings screen layout, then sets back and restore
-     * buttons to listen for click activity. Then sets certain difficulty-related preferences as
+     * buttons to listen for click activity. Disables the Restore Defaults button if the parent
+     * has locked any settings. Then sets certain difficulty-related preferences as
      * enabled or disabled based on parent settings.
      *
      * @param preferencesResId Resource ID of the preferences file to expand
@@ -56,7 +57,7 @@ public class SettingsScreenActivity extends PreferenceActivity{
         super.addPreferencesFromResource(preferencesResId);
 
         final Activity thisActivity = this;
-        SharedPreferences sharedPrefs
+        final SharedPreferences sharedPrefs
                 = PreferenceManager.getDefaultSharedPreferences(thisActivity);
 
         Preference backButton = findPreference("backButton");
@@ -69,6 +70,14 @@ public class SettingsScreenActivity extends PreferenceActivity{
         });
 
         Preference restoreButton = findPreference("restoreDefaults");
+
+        //If any of the preferences are locked by the parent, disable restoring the defaults
+        Boolean prefsLocked = Boolean.valueOf(sharedPrefs.getBoolean("pti_tg_override",
+                false))
+                || Boolean.valueOf(sharedPrefs.getBoolean("pti_override_deepBreathing",
+                false));
+        if (prefsLocked) restoreButton.setEnabled(false);
+
         restoreButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
