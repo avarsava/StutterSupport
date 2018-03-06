@@ -36,31 +36,36 @@
             android:key="tg_Difficulty"
             android:title="Train Game Difficulty"
             android:dependency="pti_tg_override"/>
+
         <SwitchPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="false"
             android:key="pti_override_deepBreathing"
-            android:title="Override Deep Breathing Settings" />
+            android:title="Override Deep Breathing Settings"
+            android:disableDependentsState="false"/>
         <EditTextPreference
             android:defaultValue="7"
             android:inputType="number"
-            android:key="pti_db_inhaleLength"
+            android:key="db_inhaleLength"
             android:maxLength="2"
             android:numeric="integer"
-            android:title="Inhale Length" />
+            android:title="Inhale Length"
+            android:dependency="pti_override_deepBreathing"/>
         <EditTextPreference android:title="Exhale Length"
-            android:key="pti_db_exhaleLength"
+            android:key="db_exhaleLength"
             android:defaultValue="11"
             android:inputType="number"
             android:numeric="integer"
-            android:maxLength="2"/>
+            android:maxLength="2"
+            android:dependency="pti_override_deepBreathing"/>
         <EditTextPreference android:title="Number of Breaths"
-            android:key="pti_db_noOfBreaths"
+            android:key="db_noOfBreaths"
             android:defaultValue="3"
             android:inputType="number"
             android:numeric="integer"
-            android:maxLength="2"/>
+            android:maxLength="2"
+            android:dependency="pti_override_deepBreathing"/>
 
 
     </PreferenceCategory>

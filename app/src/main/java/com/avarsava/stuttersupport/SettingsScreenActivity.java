@@ -9,6 +9,10 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
  * @version 1.0
@@ -84,6 +88,24 @@ public class SettingsScreenActivity extends PreferenceActivity{
 
                 //If Train Game is NOT locked, enable the preference.
                 tgDifficulty.setEnabled(!tgLocked);
+                break;
+            case R.xml.deep_breathe_prefs:
+                Boolean dbLocked =
+                        Boolean.valueOf(sharedPrefs.getBoolean("pti_override_deepBreathing",
+                                false));
+                Preference dbInhaleLength = findPreference("db_inhaleLength");
+                Preference dbExhaleLength = findPreference("db_exhaleLength");
+                Preference dbNumBreaths = findPreference("db_noOfBreaths");
+
+                List<Preference> prefs = new LinkedList<>();
+                prefs.add(dbInhaleLength);
+                prefs.add(dbExhaleLength);
+                prefs.add(dbNumBreaths);
+
+                //If Deep Breathe is NOT locked, enable the preferences.
+                for(Preference pref : prefs){
+                    pref.setEnabled(!dbLocked);
+                }
                 break;
         }
     }
