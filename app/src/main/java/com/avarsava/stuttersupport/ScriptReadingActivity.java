@@ -144,7 +144,7 @@ public class ScriptReadingActivity extends GameActivity {
 
                 //If there are no more words, exit with successful status
                 } else {
-                    killIfCountHigh(ACTIVITY_NAME, RESULT_OK,1);
+                    killIfCountHigh(ACTIVITY_NAME, 1,1);
                 }
             }
             resetRecognizer();

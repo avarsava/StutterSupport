@@ -180,20 +180,6 @@ public class TrainGameActivity extends GameActivity{
     }
 
     /**
-     * Determines whether the user passed all the cycles of gameplay and returns the appropriate
-     * result code for Android.
-     *
-     * @return RESULT_OK if the user has successfully completed the Activity, else RESULT_CANCELED
-     */
-    private int calculateSuccess(){
-        if (passed == maxCycles){
-            return RESULT_OK;
-        } else {
-            return RESULT_CANCELED;
-        }
-    }
-
-    /**
      * Cancels the cycle, causing the game to wait for the specified duration.
      */
     public void cancelCycle() {
@@ -351,7 +337,7 @@ public class TrainGameActivity extends GameActivity{
 
             //cycle end logic
             switchStateIfNecessary();
-            killIfCountHigh(ACTIVITY_NAME, calculateSuccess(), Integer.valueOf(prefs.getString("tg_Difficulty", "1")));
+            killIfCountHigh(ACTIVITY_NAME, passed, Integer.valueOf(prefs.getString("tg_Difficulty", "1")));
         }
 
         /**

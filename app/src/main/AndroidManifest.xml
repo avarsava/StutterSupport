@@ -49,6 +49,9 @@
         <activity
             android:name="com.avarsava.stuttersupport.ThoughtTrackerActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.avarsava.stuttersupport.ParentTeacherInterfaceActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.avarsava.stuttersupport.IntentHandler"
