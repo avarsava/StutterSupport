@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -173,8 +174,14 @@ public class MainMenuActivity extends FragmentActivity {
             //Show dialog if milestone is hit and social media offer hasn't been made yet
             if((MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak))
                     && socialMediaAppropriate()) {
-                showDialog(this, getString(R.string.milestone_header),
-                        getString(R.string.milestone_prompt));
+                Dialog.showDialogWithPosListener(this, getString(R.string.milestone_header),
+                        getString(R.string.milestone_prompt),
+                        new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                return createSocialIntent();
+                            }
+                        });
                 socialMediaOffered = true;
             }
         }
@@ -219,41 +226,15 @@ public class MainMenuActivity extends FragmentActivity {
     }
 
     /**
-     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
-     * creates an intent which the OS uses to post a message to whatever social media app installed
-     * on the device the user chooses.
-     *
-     * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
-     * @param activity This activity
-     * @param title Title for the dialog
-     * @param message Message to display on dialog
-     */
-    public void showDialog(Activity activity, String title, CharSequence message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                createSocialIntent();
-            }
-        };
-
-        if (title != null) builder.setTitle(title);
-
-        builder.setMessage(message);
-        builder.setPositiveButton(getString(R.string.OK_button), positiveListener);
-        builder.setNegativeButton(getString(R.string.Cancel_button), null);
-        builder.show();
-    }
-
-    /**
      * Creates an implicit Intent which the OS uses to send a message to any social media app
      * that the user may have on their device.
      */
-    private void createSocialIntent() {
+    private boolean createSocialIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, generateShareMessage());
         startActivity(Intent.createChooser(shareIntent, "Share..."));
+        return true;
     }
 
     /**
