@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -19,6 +20,11 @@ public class ThoughtTracker_Fragment extends Fragment {
      * Connects to the Thought Tracker database for information storage.
      */
     private ThoughtDbHelper thoughtDbHelper;
+
+    /**
+     * Used for some of its utility functions.
+     */
+    private static TrackerCalendar trackerCalendar;
 
     /**
      * Internal ID of the layout XML for this Fragment.
@@ -50,6 +56,14 @@ public class ThoughtTracker_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(layoutId, container, false);
+
+        switch(layoutId){
+            case R.layout.fragment_thought_tracker_today:
+                TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
+                dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
+                break;
+        }
+
         return rootView;
     }
 }

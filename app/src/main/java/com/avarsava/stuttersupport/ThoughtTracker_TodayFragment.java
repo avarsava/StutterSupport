@@ -1,8 +1,8 @@
 package com.avarsava.stuttersupport;
 
-import android.content.Context;
-import android.support.constraint.ConstraintLayout;
-import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -15,4 +15,13 @@ import android.view.LayoutInflater;
 
 public class ThoughtTracker_TodayFragment extends ThoughtTracker_Fragment {
 
+    /**
+     * Defines actions for button presses on this Fragment.
+     * @param view Android uses this to convey information about the current view.
+     */
+    public void buttonClick(View view){
+        String newThought = ((EditText)view.findViewById(R.id.thoughtInput)).getText().toString();
+        MOOD newMood = MOOD.valueOf(
+                ((Spinner)view.findViewById(R.id.moodSelect)).getSelectedItem().toString());
+    }
 }

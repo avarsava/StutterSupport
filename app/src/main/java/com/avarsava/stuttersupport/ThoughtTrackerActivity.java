@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,12 @@ public class ThoughtTrackerActivity extends FragmentActivity {
                 thoughtDbHelper));
 
         return fList;
+    }
+
+    public void buttonClick(View view){
+        //TODO: have this call the fragment's buttonClick
+
+        //String s = mPager.getCurrentItem();
     }
 
 

@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/moodSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -54,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:onClick="buttonClick"
         android:text="Submit"
         app:layout_constraintTop_toBottomOf="@+id/thoughtInput"
         tools:layout_editor_absoluteX="148dp"
