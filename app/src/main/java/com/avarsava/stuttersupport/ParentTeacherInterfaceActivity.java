@@ -34,6 +34,8 @@ public class ParentTeacherInterfaceActivity extends Activity {
     public static Button settingsButton;
     public static Button exportDataButton;
 
+    //TODO: Add password check
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

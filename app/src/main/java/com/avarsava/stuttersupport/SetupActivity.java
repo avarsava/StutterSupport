@@ -42,7 +42,7 @@ public class SetupActivity extends PreferenceActivity {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(prefsFile);
-        
+
         showDialog(this, "Welcome!", "Please set your initial settings before beginning" +
                 " to use this app.");
     }
@@ -62,6 +62,8 @@ public class SetupActivity extends PreferenceActivity {
 
         final Activity thisActivity = this;
         Preference submitButton = findPreference("submitButton");
+
+        //TODO: check for blank entries and reject submission
         submitButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

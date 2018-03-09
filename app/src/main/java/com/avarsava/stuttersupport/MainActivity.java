@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -29,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new SetupDbHelper(this, "setup.db", "SETUP");
+        if(!dbHelper.setupIsDone()){
+            View notifPrefs = findViewById(R.id.notificationSettingsButton);
+            View ptInterface = findViewById(R.id.parentTeacherInterfaceButton);
+            notifPrefs.setEnabled(false);
+            ptInterface.setEnabled(false);
+        }
         RegisterAlarmBroadcast();
     }
 
@@ -42,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = null;
         switch(view.getId()){
             case R.id.splashButton:
-                if(dbHelper.setupIsDone()){
+                if(!dbHelper.setupIsDone()){
                     intent = new Intent(this, SetupActivity.class);
                 }else {
                     intent = new Intent(this, MainMenuActivity.class);
