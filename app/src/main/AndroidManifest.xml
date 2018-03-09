@@ -51,6 +51,8 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.avarsava.stuttersupport.SetupActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.avarsava.stuttersupport.PTIPasswordActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.avarsava.stuttersupport.IntentHandler"

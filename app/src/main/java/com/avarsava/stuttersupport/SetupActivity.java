@@ -71,7 +71,7 @@ public class SetupActivity extends PreferenceActivity {
 
         final Activity thisActivity = this;
         Preference submitButton = findPreference("submitButton");
-        
+
         submitButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.parentTeacherInterfaceButton:
                 intent = new Intent(this,
-                        ParentTeacherInterfaceActivity.class);
+                        PTIPasswordActivity.class);
                 break;
         }
         startActivity(intent);
