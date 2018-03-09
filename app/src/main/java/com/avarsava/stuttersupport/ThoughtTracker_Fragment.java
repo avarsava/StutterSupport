@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -71,8 +72,15 @@ public class ThoughtTracker_Fragment extends Fragment {
     public void onClick(View view){
         switch(view.getId()){
             case R.id.submitThought:
-                EditText newThought = (EditText)getActivity().findViewById(R.id.thoughtInput);
-                Dialog.showDialog(getActivity(), "Woot", newThought.getText().toString());
+                String newThought = ((EditText)getActivity().findViewById(R.id.thoughtInput))
+                        .getText()
+                        .toString();
+                MOOD newMood = MOOD.valueOf(
+                        ((Spinner)(getActivity().findViewById(R.id.moodSelect)))
+                        .getSelectedItem()
+                        .toString());
+
+                thoughtDbHelper.addToDb(newThought, newMood);
         }
     }
 }
