@@ -43,8 +43,9 @@ public class SetupActivity extends PreferenceActivity {
         // Load the preferences from an XML resource
         addPreferencesFromResource(prefsFile);
 
-        showDialog(this, "Welcome!", "Please set your initial settings before beginning" +
-                " to use this app.");
+        //TODO: Make strings not hardcoded
+        showDialog(this, "Welcome!", "Please set your initial settings before" +
+                " beginning to use this app.");
     }
 
     /**

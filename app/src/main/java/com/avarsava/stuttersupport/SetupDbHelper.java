@@ -20,7 +20,7 @@ public class SetupDbHelper extends DatabaseHelper {
     public static final String C_NAME = "name";
     public static final String C_VALUE = "value";
     public static final String R_DONE = "done";
-    public static final int TRUE = 0;
+    public static final int TRUE = 1;
     public static final int FALSE = 0;
 
     /**
