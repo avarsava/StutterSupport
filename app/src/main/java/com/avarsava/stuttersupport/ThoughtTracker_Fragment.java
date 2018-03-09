@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -65,5 +66,13 @@ public class ThoughtTracker_Fragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.submitThought:
+                EditText newThought = (EditText)getActivity().findViewById(R.id.thoughtInput);
+                Dialog.showDialog(getActivity(), "Woot", newThought.getText().toString());
+        }
     }
 }

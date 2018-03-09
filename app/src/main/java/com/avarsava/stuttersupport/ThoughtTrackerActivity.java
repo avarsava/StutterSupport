@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,11 +71,11 @@ public class ThoughtTrackerActivity extends FragmentActivity {
     public List<Fragment> getFragments() {
         List<Fragment> fList = new ArrayList<>();
 
-        fList.add(ThoughtTracker_PastFragment.newInstance(R.layout.fragment_thought_tracker_past,
+        fList.add(ThoughtTracker_Fragment.newInstance(R.layout.fragment_thought_tracker_past,
                 thoughtDbHelper));
-        fList.add(ThoughtTracker_TodayFragment.newInstance(R.layout.fragment_thought_tracker_today,
+        fList.add(ThoughtTracker_Fragment.newInstance(R.layout.fragment_thought_tracker_today,
                 thoughtDbHelper));
-        fList.add(ThoughtTracker_SummaryFragment.newInstance
+        fList.add(ThoughtTracker_Fragment.newInstance
                 (R.layout.fragment_thought_tracker_summary,
                 thoughtDbHelper));
 
@@ -81,9 +83,14 @@ public class ThoughtTrackerActivity extends FragmentActivity {
     }
 
     public void buttonClick(View view){
-        //TODO: have this call the fragment's buttonClick
+        ThoughtTracker_Fragment currentFragment = (ThoughtTracker_Fragment)mPagerAdapter
+                .instantiateItem(mPager, mPager.getCurrentItem());
 
-        //String s = mPager.getCurrentItem();
+        //Handle each button
+        switch(view.getId()){
+            case R.id.submitThought:
+                currentFragment.onClick(view);
+        }
     }
 
 
