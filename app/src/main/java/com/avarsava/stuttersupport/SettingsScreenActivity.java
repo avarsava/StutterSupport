@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -81,9 +82,15 @@ public class SettingsScreenActivity extends PreferenceActivity{
         restoreButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                showDialog(thisActivity,
+                Dialog.showDialogWithPosListener(thisActivity,
                         getString(R.string.restore_defaults),
-                        getString(R.string.restore_defaults_warning));
+                        getString(R.string.restore_defaults_warning),
+                        new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                return restoreDefaults();
+                            }
+                        });
                 return true;
             }
         });
@@ -120,36 +127,10 @@ public class SettingsScreenActivity extends PreferenceActivity{
     }
 
     /**
-     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
-     * restores the default settings for all activities in the app.
-     *
-     * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
-     * @param activity This activity
-     * @param title Title for the dialog
-     * @param message Message to display on dialog
-     */
-    public void showDialog(Activity activity, String title, CharSequence message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                restoreDefaults();
-            }
-        };
-
-        if (title != null) builder.setTitle(title);
-
-        builder.setMessage(message);
-        builder.setPositiveButton(getString(R.string.OK_button), positiveListener);
-        builder.setNegativeButton(getString(R.string.Cancel_button), null);
-        builder.show();
-    }
-
-    /**
      * Restores the default settings for all activities, then refreshes the settings screen
      * to reflect the changes.
      */
-    private void restoreDefaults(){
+    private boolean restoreDefaults(){
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
@@ -158,5 +139,7 @@ public class SettingsScreenActivity extends PreferenceActivity{
 
         setPreferenceScreen(null);
         addPreferencesFromResource(prefsFile);
+
+        return true;
     }
 }

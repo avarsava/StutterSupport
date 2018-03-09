@@ -42,29 +42,8 @@ public class PTIPasswordActivity extends Activity {
             Intent cont = new Intent(this, ParentTeacherInterfaceActivity.class);
             startActivity(cont);
         } else {
-            showDialog(this, "Sorry!", "Your password did not match" +
+            Dialog.showDialog(this, "Sorry!", "Your password did not match" +
                     " the one we have saved. Please try again.");
         }
-    }
-
-    /**
-     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
-     * restores the default settings for all activities in the app.
-     *
-     * TODO: Abstract to own file, this appears in 3 files now.
-     *
-     * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
-     * @param activity This activity
-     * @param title Title for the dialog
-     * @param message Message to display on dialog
-     */
-    public void showDialog(Activity activity, String title, CharSequence message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-
-        if (title != null) builder.setTitle(title);
-
-        builder.setMessage(message);
-        builder.setPositiveButton(getString(R.string.OK_button), null);
-        builder.show();
     }
 }

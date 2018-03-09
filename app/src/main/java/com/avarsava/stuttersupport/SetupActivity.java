@@ -52,7 +52,7 @@ public class SetupActivity extends PreferenceActivity {
         addPreferencesFromResource(prefsFile);
 
         //TODO: Make strings not hardcoded
-        showDialog(this, "Welcome!", "Please set your initial settings before" +
+        Dialog.showDialog(this, "Welcome!", "Please set your initial settings before" +
                 " beginning to use this app.");
     }
 
@@ -81,7 +81,7 @@ public class SetupActivity extends PreferenceActivity {
                     return true;
                 } else {
                     //TODO: Make strings not hardcoded
-                    showDialog(thisActivity, "Sorry!", "Please fill out every" +
+                    Dialog.showDialog(thisActivity, "Sorry!", "Please fill out every" +
                             " setting before pressing Submit.");
                     return false;
                 }
@@ -109,24 +109,5 @@ public class SetupActivity extends PreferenceActivity {
         }
 
         return true;
-    }
-
-    /**
-     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
-     * restores the default settings for all activities in the app.
-     *
-     * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
-     * @param activity This activity
-     * @param title Title for the dialog
-     * @param message Message to display on dialog
-     */
-    public void showDialog(Activity activity, String title, CharSequence message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-
-        if (title != null) builder.setTitle(title);
-
-        builder.setMessage(message);
-        builder.setPositiveButton(getString(R.string.OK_button), null);
-        builder.show();
     }
 }
