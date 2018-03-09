@@ -36,8 +36,7 @@
             android:entries="@array/difficultyLevels"
             android:entryValues="@array/levelValues"
             android:key="tg_Difficulty"
-            android:title="Train Game Difficulty"
-            android:dependency="pti_tg_override"/>
+            android:title="Train Game Difficulty" />
 
         <SwitchPreference
             android:layout_width="wrap_content"
@@ -52,22 +51,19 @@
             android:key="db_inhaleLength"
             android:maxLength="2"
             android:numeric="integer"
-            android:title="Inhale Length"
-            android:dependency="pti_override_deepBreathing"/>
+            android:title="Inhale Length"/>
         <EditTextPreference android:title="Exhale Length"
             android:key="db_exhaleLength"
             android:defaultValue="11"
             android:inputType="number"
             android:numeric="integer"
-            android:maxLength="2"
-            android:dependency="pti_override_deepBreathing"/>
+            android:maxLength="2"/>
         <EditTextPreference android:title="Number of Breaths"
             android:key="db_noOfBreaths"
             android:defaultValue="3"
             android:inputType="number"
             android:numeric="integer"
-            android:maxLength="2"
-            android:dependency="pti_override_deepBreathing"/>
+            android:maxLength="2"/>
 
 
     </PreferenceCategory>
