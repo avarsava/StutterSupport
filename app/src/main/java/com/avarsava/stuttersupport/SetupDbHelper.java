@@ -2,6 +2,7 @@ package com.avarsava.stuttersupport;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -60,5 +61,20 @@ public class SetupDbHelper extends DatabaseHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.update(TABLE, existingRow, C_NAME+"=?", new String[]{R_DONE});
         db.close();
+    }
+
+    public boolean setupIsDone(){
+        int value;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE,
+                new String[]{C_VALUE},
+                C_NAME+"=?",
+                new String[]{R_DONE},
+                null, null, null);
+        cursor.moveToFirst();
+        value = cursor.getInt(0);
+        db.close();
+
+        return value == 1;
     }
 }

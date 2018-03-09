@@ -15,6 +15,11 @@ import android.view.View;
  */
 public class MainActivity extends AppCompatActivity {
     /**
+     * Helps check if Setup needs to be shown.
+     */
+    private SetupDbHelper dbHelper;
+
+    /**
      * Creates the Activity and displays the splash screen layout.
      *
      * @param savedInstanceState used for internal Android communication.
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new SetupDbHelper(this, "setup.db", "SETUP");
         RegisterAlarmBroadcast();
     }
 
@@ -36,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = null;
         switch(view.getId()){
             case R.id.splashButton:
-                intent = new Intent(this, MainMenuActivity.class);
+                if(dbHelper.setupIsDone()){
+                    intent = new Intent(this, SetupActivity.class);
+                }else {
+                    intent = new Intent(this, MainMenuActivity.class);
+                }
                 break;
             case R.id.licensesButton:
                 intent = new Intent(this, LicensesActivity.class);
