@@ -11,6 +11,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
+import java.util.Arrays;
+import java.util.List;
+
 import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
@@ -49,18 +52,6 @@ public class BasketballGameActivity extends GameActivity {
      * RESETTING - The shot is complete, and either the shot went in if correct, or missed if incorrect
      */
     private enum STATE {NOTREADY, COUNTDOWN, DRIBBLE_1, DRIBBLE_2, SHOOTING, RESETTING};
-	
-	/**
-     * The starting point to identify potential words in the internal word list. Retrieved from
-     * the Difficulty object once the preferences have been read.
-     */
-    private int minPair;
-
-    /**
-     * The ending point to identify potential words in the internal word list. Effectively, how
-     * many words there are in the word list.
-     */
-    private int maxPair;
 
     /**
      * The difficulty of the game, either 1, 2 or 3
@@ -124,8 +115,6 @@ public class BasketballGameActivity extends GameActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         currentState = STATE.NOTREADY;
 		difficulty = Integer.valueOf(prefs.getString("bb_difficulty", "1"));
-        minPair = Difficulty.getMinForLevel(difficulty);
-        maxPair = Difficulty.getMaxForLevel(difficulty);
         maxCycles = Integer.valueOf(prefs.getString("bb_max_cycles", "3"));
         usedStrings = new String[maxCycles];
         gameSpeed = Integer.valueOf(prefs.getString("bb_speed", "4"));
@@ -133,7 +122,10 @@ public class BasketballGameActivity extends GameActivity {
 		screen = new BasketballGameView(this, this);
         screen.setBackgroundImage(((BasketballGameView)screen).getInstructionBg());
         setContentView(screen);
-        screen.toggleButton();
+        setNewString();
+        //Changing the keywords may have an effect on the accuracy
+        //  - Set the keywords to a list of all the possible words and syllables
+        runRecognizerSetup(currentSyllable, getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName())));
     }
 
     /**
@@ -141,9 +133,22 @@ public class BasketballGameActivity extends GameActivity {
      *
      * @return a new string that has not been picked yet
      */
-    private String getString () {
+    private void setNewString () {
+        String potentialString;
+        String[] allWords = getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName()));
+        String[] allSyll = getResources().getStringArray(getResources().getIdentifier("basketball_syllables_" + difficulty, "array", getPackageName()));
+        List<String> usedStringsList = Arrays.asList(usedStrings);
+        int randId;
+
+        do {
+            randId = Numbers.randInt(0, allWords.length) - 1;
+            potentialString = allWords[randId];
+        } while (usedStringsList.contains(potentialString));
+
+        currentString = potentialString;
+        currentSyllable = allSyll[randId];
+        usedStrings[cycleCount] = currentString;
         textChanged = true;
-        return "";
     }
 
     /**
@@ -168,6 +173,15 @@ public class BasketballGameActivity extends GameActivity {
     }
 
     /**
+     * Resets the voice recognition engine.
+     */
+    private void resetRecognizer(String keyword) {
+        recognizer.stop();
+        Log.i(TAG, "Resetting recognizer to listen for " + keyword);
+        recognizer.startListening(keyword);
+    }
+
+    /**
      * Progresses the state to the next state depending on the current status of the game
      */
     public void switchState () {
@@ -183,15 +197,27 @@ public class BasketballGameActivity extends GameActivity {
                 break;
             case DRIBBLE_1:
                 if (stateInfo == 3) {
+                    resetRecognizer(currentString);
                     currentState = STATE.SHOOTING;
                     stateInfo = 0;
                 }
-                else currentState = STATE.DRIBBLE_2; //Check that time is right
+                else {
+                    resetRecognizer(currentSyllable);
+                    currentState = STATE.DRIBBLE_2; //Check that time is right
+                }
+
                 break;
             case DRIBBLE_2:
-                //If syllable mistake, then go to resetting state with resetInfo = 1
-                stateInfo++;
-                currentState = STATE.DRIBBLE_1;
+                if (false) { //Syllable mistake, ball is fumbled
+                    stateInfo = 0;
+                    resetInfo = 1;
+                    currentState = STATE.RESETTING;
+                }
+                else {
+                    stateInfo++;
+                    currentState = STATE.DRIBBLE_1;
+                }
+
                 break;
             case SHOOTING:
                 if (stateInfo == 1) {
@@ -209,7 +235,7 @@ public class BasketballGameActivity extends GameActivity {
                     killIfCountHigh(TAG, successfulCycles, difficulty);
                     if (cycleCount < maxCycles) {
                         currentState = STATE.COUNTDOWN;
-                        getString();
+                        setNewString();
                         stateInfo = 0;
                     }
                     else stateInfo++;
@@ -318,7 +344,8 @@ public class BasketballGameActivity extends GameActivity {
                     gameBg.draw(canvas);
                     hold_ball.draw(canvas);
                     net.draw(canvas);
-                    happy.draw(canvas);
+                    if (cycleCount == 0 || resetInfo == 3) happy.draw(canvas);
+                    else concentrate.draw(canvas);
                     drawWord();
 
                     String text = (3 - stateInfo) + "";
@@ -360,7 +387,6 @@ public class BasketballGameActivity extends GameActivity {
                     concentrate.draw(canvas);
                     net.draw(canvas);
                     drawWord();
-                    //May need a picture of the net with the ball going through the basket
                     if (stateInfo == 0) {
                         ball.setBounds(screenWidth - getScaled(160),
                                 screenHeight - getScaled(375),
@@ -382,15 +408,69 @@ public class BasketballGameActivity extends GameActivity {
                     drawWord();
                     if (resetInfo == 1) { // fumbled (during dribble_1 state)
                         sad.draw(canvas);
-                        //Draw ball bouncing along ground after fumble
+                        if (stateInfo == 0) { //Ball bounces away from person
+                            ball.setBounds(screenWidth - getScaled(230),
+                                    screenHeight - getScaled(250),
+                                    screenWidth - getScaled(182),
+                                    screenHeight - getScaled(190));
+                        }
+                        else if (stateInfo == 1) { //Ball bounces off ground further
+                            ball.setBounds(screenWidth - getScaled(280),
+                                    screenHeight - getScaled(120),
+                                    screenWidth - getScaled(232),
+                                    screenHeight - getScaled(60));
+                        }
+                        else if (stateInfo == 2) { //Ball rolls on ground away
+                            ball.setBounds(screenWidth - getScaled(320),
+                                    screenHeight - getScaled(150),
+                                    screenWidth - getScaled(272),
+                                    screenHeight - getScaled(90));
+                        }
+                        ball.draw(canvas);
                     }
                     else if (resetInfo == 2) { // missed net (during shooting state)
                         sad.draw(canvas);
-                        //Draw ball hitting rim then bouncing
+                        if (stateInfo == 0) { //Ball hits rim
+                            ball.setBounds(screenWidth - getScaled(240),
+                                    screenHeight - getScaled(465),
+                                    screenWidth - getScaled(192),
+                                    screenHeight - getScaled(405));
+                        }
+                        else if (stateInfo == 1) { //Ball high in air
+                            ball.setBounds(screenWidth - getScaled(200),
+                                    screenHeight - getScaled(500),
+                                    screenWidth - getScaled(152),
+                                    screenHeight - getScaled(440));
+                        }
+                        else if (stateInfo == 2) { //Ball going towards person
+                            ball.setBounds(screenWidth - getScaled(180),
+                                    screenHeight - getScaled(360),
+                                    screenWidth - getScaled(132),
+                                    screenHeight - getScaled(300));
+                        }
+                        ball.draw(canvas);
                     }
                     else if (resetInfo == 3) { // went in net (during shooting state)
                         happy.draw(canvas);
-                        //Draw ball in net, then draw ball bouncing below net
+                        if (stateInfo == 0) { //Ball in net
+                            ball.setBounds(screenWidth - getScaled(270),
+                                    screenHeight - getScaled(475),
+                                    screenWidth - getScaled(222),
+                                    screenHeight - getScaled(415));
+                        }
+                        else if (stateInfo == 1) { //Ball below net
+                            ball.setBounds(screenWidth - getScaled(260),
+                                    screenHeight - getScaled(335),
+                                    screenWidth - getScaled(212),
+                                    screenHeight - getScaled(275));
+                        }
+                        else if (stateInfo == 2) { //Ball on ground
+                            ball.setBounds(screenWidth - getScaled(260),
+                                    screenHeight - getScaled(125),
+                                    screenWidth - getScaled(212),
+                                    screenHeight - getScaled(65));
+                        }
+                        ball.draw(canvas);
                     }
             }
         }
@@ -400,9 +480,8 @@ public class BasketballGameActivity extends GameActivity {
          */
         protected void drawWord () {
             //Try to decide if it is possible to have a red highlight on an error
-            //String text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
-            String text = "This is a test";
-            if (textChanged || currentState == STATE.COUNTDOWN) blackPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth, text));
+            String text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
+            if (textChanged || currentState == STATE.COUNTDOWN) blackPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth - 30, text));
             Rect temp = new Rect();
             blackPaint.getTextBounds(text, 0, text.length(), temp);
             canvas.drawText(text,
@@ -428,7 +507,7 @@ public class BasketballGameActivity extends GameActivity {
             paint.getTextBounds(text, 0, text.length(), bounds);
 
             textChanged = false;
-            return testTextSize * (width - 20) / bounds.width();
+            return testTextSize * width / bounds.width();
         }
 
         /**
@@ -452,8 +531,6 @@ public class BasketballGameActivity extends GameActivity {
 
             instructionBg.setBounds(0, 0, screenWidth, screenHeight);
             gameBg.setBounds(0, 0, screenWidth, screenHeight);
-
-            //ball.setBounds(0, 0, screenWidth, screenHeight); //Will be constantly changing
 
             net.setBounds(getScaled(25),
                     screenHeight - getScaled(500),
@@ -503,9 +580,9 @@ public class BasketballGameActivity extends GameActivity {
 }
 
 /** Left to do
- *    - Create words xml file and read in words and syllables
+ *    - Add to dictionary all words and syllables
+ *      - Add syllables to global dictionary
  *    - Implement PocketSphinx
  *    - Use PocketSphinx to determine words said and use that to transition states
- *    - Tidy up the graphics
- *    - Keep track of the successful cycles and pass that back to the database
+ *    - Highlight letters as they are said
  */
