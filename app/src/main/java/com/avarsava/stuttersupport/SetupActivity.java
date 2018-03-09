@@ -2,10 +2,13 @@ package com.avarsava.stuttersupport;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+
+import java.util.Map;
 
 /**
  * @author Alexis Varsava <av11sl@brocku.ca>
@@ -17,6 +20,11 @@ import android.preference.PreferenceActivity;
  */
 
 public class SetupActivity extends PreferenceActivity {
+    /**
+     * Number of settings present in XML
+     */
+    private final int NUM_OF_SETTINGS = 12;
+
     /**
      * Resource ID of settings file to expand into layout.
      */
@@ -63,16 +71,44 @@ public class SetupActivity extends PreferenceActivity {
 
         final Activity thisActivity = this;
         Preference submitButton = findPreference("submitButton");
-
-        //TODO: check for blank entries and reject submission
+        
         submitButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                dbHelper.setDone();
-                finish();
-                return true;
+                if(allPrefsSet()) {
+                    dbHelper.setDone();
+                    finish();
+                    return true;
+                } else {
+                    //TODO: Make strings not hardcoded
+                    showDialog(thisActivity, "Sorry!", "Please fill out every" +
+                            " setting before pressing Submit.");
+                    return false;
+                }
+
             }
         });
+    }
+
+    /**
+     * Determines whether all preferences in Setup have a value if applicable.
+     *
+     * @return true if all preferences have been set appropriately.
+     */
+    private boolean allPrefsSet(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Map<String, ?> allprefs = preferences.getAll();
+
+        if(allprefs.size() != NUM_OF_SETTINGS) return false;
+
+        for(Map.Entry<String, ?> entry : allprefs.entrySet()){
+            String prefValue = entry.getValue().toString();
+            if (prefValue == null){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
