@@ -63,7 +63,7 @@ public class ThoughtDbHelper extends DatabaseHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
-        String dateString = getDateString();
+        String dateString = DbDate.getDateString();
 
         values.put(C_THOUGHT, thought);
         values.put(C_MOOD, mood.toString());

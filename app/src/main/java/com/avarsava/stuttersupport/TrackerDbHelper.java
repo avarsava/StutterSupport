@@ -70,7 +70,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
-        String dateString = getDateString();
+        String dateString = DbDate.getDateString();
 
         values.put(C_ACTIVITY, activityName);
         values.put(C_DATE, dateString);

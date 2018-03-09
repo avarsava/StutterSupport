@@ -51,4 +51,17 @@ public class DbDate {
 
         return Integer.toString(date) + " " + getMonthAndYear(context);
     }
+
+    /**
+     * Gets the current date and formats it for universal acceptance in
+     * the app's multiple databases.
+     *
+     * @return Properly formatted current-date String.
+     */
+    protected static String getDateString(){
+        Date currentDate = new Date();
+        String dateString = (currentDate.getYear() + 1900) + "-"
+                + (currentDate.getMonth()) + "-" + currentDate.getDate();
+        return dateString;
+    }
 }
