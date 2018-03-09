@@ -2,6 +2,7 @@ package com.avarsava.stuttersupport;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.view.LayoutInflater;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -14,17 +15,4 @@ import android.support.constraint.ConstraintLayout;
 
 public class ThoughtTracker_TodayFragment extends ThoughtTracker_Fragment {
 
-    protected class NewThoughtView extends ConstraintLayout{
-
-        public NewThoughtView(Context context) {
-            super(context);
-        }
-    }
-
-    protected class TodaysThoughtsView extends ConstraintLayout{
-
-        public TodaysThoughtsView(Context context) {
-            super(context);
-        }
-    }
 }

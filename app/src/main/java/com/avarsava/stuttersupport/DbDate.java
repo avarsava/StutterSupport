@@ -39,4 +39,16 @@ public class DbDate {
 
         return month + " " + year;
     }
+
+    /**
+     * Gets the current day, month and year as text.
+     *
+     * @return Date, Month, and Year as String
+     */
+    public static String getDayMonthAndYear(Context context){
+        Date currentDate = new Date();
+        int date = currentDate.getDate();
+
+        return Integer.toString(date) + " " + getMonthAndYear(context);
+    }
 }
