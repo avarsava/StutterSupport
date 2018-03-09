@@ -3,6 +3,8 @@ package com.avarsava.stuttersupport;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -181,6 +183,25 @@ public abstract class DrawView extends SurfaceView implements Runnable{
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int)(i * scale + 0.5f);
         //return (int)(i*getResources().getDisplayMetrics().scaledDensity);
+    }
+
+    /**
+     * Sets the text size for a Paint object so a given string of text will be a given width.
+     *
+     * @param paint the Paint to set the text size for
+     * @param text the text that should be that width
+     *
+     * @return float - the font size the text should be to fit the width
+     */
+    protected float getTextSizeForWidth(Paint paint, int width, String text) {
+        final float testTextSize = 48f;
+
+        // Get the bounds of the text, using our testTextSize.
+        paint.setTextSize(testTextSize);
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+
+        return testTextSize * width / bounds.width();
     }
 
     /**

@@ -320,9 +320,10 @@ public class TrainGameActivity extends GameActivity{
                 case CALL:
                     person.draw(canvas);
                     bgBalloon.draw(canvas);
+                    blackPaint.setTextSize(getTextSizeForWidth(blackPaint, Math.min(getScaled(345) - getScaled(115) - getScaled(60), getResources().getDimensionPixelSize(R.dimen.font_size)), currentString));
                     canvas.drawText(currentString,
+                            screenWidth - getScaled(230),
                             getScaled(120),
-                            getScaled(125),
                             blackPaint);
                     happy.draw(canvas);
                     gameFg.draw(canvas);
@@ -381,7 +382,7 @@ public class TrainGameActivity extends GameActivity{
             blackPaint = new Paint();
             blackPaint.setColor(Color.BLACK);
             blackPaint.setTextAlign(Paint.Align.CENTER);
-            blackPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.font_size));
+            //blackPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.font_size));
         }
 
         /**
@@ -407,9 +408,9 @@ public class TrainGameActivity extends GameActivity{
 
             //Set boundaries for drawings
             gameFg.setBounds(0, 0, screenWidth, screenHeight);
-            bgBalloon.setBounds(0, 0,
-                    screenWidth - getScaled(100),
-                    screenHeight - getScaled(400));
+            bgBalloon.setBounds(screenWidth - getScaled(345), getScaled(35),
+                    screenWidth - getScaled(115),
+                    getScaled(210));
             fgBalloon.setBounds(screenWidth - getScaled(175),
                     screenHeight - getScaled(300),
                     screenWidth,
