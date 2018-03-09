@@ -9,11 +9,12 @@
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:defaultValue="13"
             android:inputType="number"
             android:key="pti_userAge"
             android:maxLength="3"
             android:numeric="integer"
-            android:title="User Age" />
+            android:title="Child's Age" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="pti_socialMediaIntegration"
@@ -51,6 +52,7 @@
             android:layout_height="wrap_content"
             android:entries="@array/difficultyLevels"
             android:entryValues="@array/levelValues"
+            android:defaultValue="1"
             android:key="tg_Difficulty"
             android:title="Train Game Difficulty" />
 
