@@ -66,7 +66,7 @@ public class ThoughtDbHelper extends DatabaseHelper {
         String dateString = getDateString();
 
         values.put(C_THOUGHT, thought);
-        values.put(C_MOOD, mood.name());
+        values.put(C_MOOD, mood.toString());
         values.put(C_DATE, dateString);
 
         try {
