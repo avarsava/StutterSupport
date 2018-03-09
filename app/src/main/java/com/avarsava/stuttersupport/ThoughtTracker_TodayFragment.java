@@ -23,5 +23,7 @@ public class ThoughtTracker_TodayFragment extends ThoughtTracker_Fragment {
         String newThought = ((EditText)view.findViewById(R.id.thoughtInput)).getText().toString();
         MOOD newMood = MOOD.valueOf(
                 ((Spinner)view.findViewById(R.id.moodSelect)).getSelectedItem().toString());
+
+        thoughtDbHelper.addToDb(newThought, newMood);
     }
 }

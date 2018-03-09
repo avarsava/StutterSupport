@@ -19,7 +19,7 @@ public class ThoughtTracker_Fragment extends Fragment {
     /**
      * Connects to the Thought Tracker database for information storage.
      */
-    private ThoughtDbHelper thoughtDbHelper;
+    protected ThoughtDbHelper thoughtDbHelper;
 
     /**
      * Used for some of its utility functions.
