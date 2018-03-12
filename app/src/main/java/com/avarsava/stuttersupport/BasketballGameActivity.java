@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -125,7 +126,9 @@ public class BasketballGameActivity extends GameActivity {
         setNewString();
         //Changing the keywords may have an effect on the accuracy
         //  - Set the keywords to a list of all the possible words and syllables
-        runRecognizerSetup(currentSyllable, getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName())));
+        ArrayList<String> dict = new ArrayList(Arrays.asList(getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName()))));
+        dict.addAll(Arrays.asList(getResources().getStringArray(getResources().getIdentifier("basketball_syllables_" + difficulty, "array", getPackageName()))));
+        runRecognizerSetup(currentString, dict.toArray(new String[0]));
     }
 
     /**
@@ -162,13 +165,23 @@ public class BasketballGameActivity extends GameActivity {
         resetTimer();
     }
 
+    /**
+     * On recognizing speech, processes the speech if the hypothesis matches the word called for.
+     *
+     * @param hypothesis PocketSphinx's best guess about what is being said.
+     */
     @Override
-    public void onBeginningOfSpeech () {
+    public void onResult (Hypothesis hypothesis) {
 
     }
 
+    /**
+     * On recognizing speech, processes the speech if the hypothesis matches the word called for.
+     *
+     * @param hypothesis PocketSphinx's best guess about what is being said.
+     */
     @Override
-    public void onEndOfSpeech () {
+    public void onPartialResult (Hypothesis hypothesis) {
 
     }
 
@@ -205,7 +218,6 @@ public class BasketballGameActivity extends GameActivity {
                     resetRecognizer(currentSyllable);
                     currentState = STATE.DRIBBLE_2; //Check that time is right
                 }
-
                 break;
             case DRIBBLE_2:
                 if (false) { //Syllable mistake, ball is fumbled
@@ -242,26 +254,6 @@ public class BasketballGameActivity extends GameActivity {
                 }
                 else stateInfo++;
         }
-    }
-
-    /**
-     * On recognizing speech, processes the speech if the hypothesis matches the word called for.
-     *
-     * @param hypothesis PocketSphinx's best guess about what is being said.
-     */
-    @Override
-    public void onResult (Hypothesis hypothesis) {
-
-    }
-
-    /**
-     * On recognizing speech, processes the speech if the hypothesis matches the word called for.
-     *
-     * @param hypothesis PocketSphinx's best guess about what is being said.
-     */
-    @Override
-    public void onPartialResult (Hypothesis hypothesis) {
-
     }
 
     /**
