@@ -197,7 +197,7 @@ public class ScriptReadingActivity extends GameActivity {
         /**
          * How far down to push the text from the top of the screen.
          */
-        private final int TOP_OFFSET = getScaled(100);
+        private final int TOP_OFFSET = getScaled(60);
 
         /**
          * Used to wrap the text to the size of the device screen and update screen with new text
