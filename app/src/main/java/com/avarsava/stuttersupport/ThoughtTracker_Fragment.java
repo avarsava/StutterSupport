@@ -12,14 +12,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.List;
-
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
  * @version 1.1
  * @since   1.1
  *
  * Parent class for Fragments in Thought Tracker.
+ * TODO: Create Summary Calendar class
+ * TODO: Create Layout & View elements for Past
  */
 
 public class ThoughtTracker_Fragment extends Fragment {
@@ -69,6 +69,8 @@ public class ThoughtTracker_Fragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(layoutId, container, false);
 
+        //TODO: Populate Past view's elements
+        //TODO: Populate Summary view's elements
         switch(layoutId){
             case R.layout.fragment_thought_tracker_today:
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
@@ -84,6 +86,8 @@ public class ThoughtTracker_Fragment extends Fragment {
     }
 
     public void onClick(View view){
+        //TODO: Handle Past view's buttons
+        //TODO: Handle Summary view's buttons
         switch(view.getId()){
             case R.id.submitThought:
                 String newThought = ((EditText)getActivity().findViewById(R.id.thoughtInput))
@@ -104,6 +108,11 @@ public class ThoughtTracker_Fragment extends Fragment {
 
         today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
                 list));
+    }
+
+    //TODO: Implement updateSummaryCalendar();
+    private void updateSummaryCalendar(){
+
     }
 
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{

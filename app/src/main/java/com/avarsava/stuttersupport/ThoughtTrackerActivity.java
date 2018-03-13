@@ -26,6 +26,8 @@ import java.util.List;
  * This activity is rooted in Cognitive Behavioural Therapy and is used to identify common patterns
  * of negative thinking in order to target and reduce that thought pattern. This helps make the
  * user proactive against anxiety- or depression-triggering thought patterns.
+ *
+ * TODO: Art for Main Menu
  */
 
 public class ThoughtTrackerActivity extends FragmentActivity {
@@ -71,9 +73,9 @@ public class ThoughtTrackerActivity extends FragmentActivity {
     public List<Fragment> getFragments() {
         List<Fragment> fList = new ArrayList<>();
 
-        fList.add(ThoughtTracker_Fragment.newInstance(R.layout.fragment_thought_tracker_past,
-                thoughtDbHelper));
         fList.add(ThoughtTracker_Fragment.newInstance(R.layout.fragment_thought_tracker_today,
+                thoughtDbHelper));
+        fList.add(ThoughtTracker_Fragment.newInstance(R.layout.fragment_thought_tracker_past,
                 thoughtDbHelper));
         fList.add(ThoughtTracker_Fragment.newInstance
                 (R.layout.fragment_thought_tracker_summary,
@@ -95,7 +97,7 @@ public class ThoughtTrackerActivity extends FragmentActivity {
      * Pager adapter that represents 3 Thought Tracker related Fragments
      * in sequence.
      *
-     * TODO: Refactor this and ScreenSlidePagerAdapter to reduce code repetition
+     * TODO: Refactor this and ScreenSlidePagerAdapter to reduce code repetition,  potentially
      */
     private class ThoughtTrackerPagerAdapter extends FragmentStatePagerAdapter {
         /**
