@@ -9,7 +9,7 @@ package com.avarsava.stuttersupport;
  */
 
 public enum MOOD {
-    ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
+    HAPPY, SAD, ANGRY, TIRED, EMBARRASSED, EXCITED, NERVOUS;
 
     public String toString(){
 //        String emoji = "";

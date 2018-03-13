@@ -87,10 +87,7 @@ public class ThoughtTrackerActivity extends FragmentActivity {
                 .instantiateItem(mPager, mPager.getCurrentItem());
 
         //Handle each button
-        switch(view.getId()){
-            case R.id.submitThought:
-                currentFragment.onClick(view);
-        }
+        currentFragment.onClick(view);
     }
 
 

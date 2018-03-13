@@ -1,13 +1,18 @@
 package com.avarsava.stuttersupport;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -32,6 +37,11 @@ public class ThoughtTracker_Fragment extends Fragment {
      * Internal ID of the layout XML for this Fragment.
      */
     private int layoutId;
+
+    /**
+     * List at top of Today view
+     */
+    ListView today_thoughtList;
 
     /**
      * Creates a new TrackerFragment and saves database helpers as local variables.
@@ -63,6 +73,8 @@ public class ThoughtTracker_Fragment extends Fragment {
             case R.layout.fragment_thought_tracker_today:
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
                 dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
+                today_thoughtList = (ListView)getActivity().findViewById(R.id.todaysThoughts);
+                updateThoughtList();
                 break;
         }
 
@@ -81,6 +93,31 @@ public class ThoughtTracker_Fragment extends Fragment {
                         .toString());
 
                 thoughtDbHelper.addToDb(newThought, newMood);
+                updateThoughtList();
+        }
+    }
+
+    private void updateThoughtList(){
+        List<ThoughtDbHelper.DBEntry> list = thoughtDbHelper.getTodaysThoughts();
+
+        //today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
+        //        (ThoughtDbHelper.DBEntry[])list.toArray()));
+    }
+
+    private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{
+        ThoughtDbHelper.DBEntry[] entries;
+
+        public ThoughtListAdapter(Context context, ThoughtDbHelper.DBEntry[] list){
+            super(context, -1, -1, list);
+            entries = list;
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View newView = new ThoughtView(getContext(), entries[position].getThought(),
+                    entries[position].getMood());
+            return newView;
         }
     }
 }

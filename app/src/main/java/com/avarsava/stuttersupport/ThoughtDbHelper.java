@@ -2,10 +2,14 @@ package com.avarsava.stuttersupport;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -76,5 +80,46 @@ public class ThoughtDbHelper extends DatabaseHelper {
             e.printStackTrace();
         }
         db.close();
+    }
+
+    public List<DBEntry> getTodaysThoughts(){
+        LinkedList<DBEntry> list = new LinkedList<>();
+        String dateString = DbDate.getDateString();
+        String sql = "SELECT * FROM "
+                + TABLE +
+                " WHERE "
+                + C_DATE +
+                " = \""
+                + dateString +"\";";
+        String thought, mood;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        cursor.moveToFirst();
+        while(cursor.moveToNext()){
+            thought = cursor.getString(cursor.getColumnIndex(C_THOUGHT));
+            mood = cursor.getString(cursor.getColumnIndex(C_MOOD));
+
+            list.add(new DBEntry(thought, mood));
+        }
+
+        return list;
+    }
+
+    public class DBEntry{
+        String thought;
+        String mood;
+
+        public DBEntry(String t, String m){
+            this.thought = t;
+            this.mood = m;
+        }
+
+        public String getThought() {
+            return thought;
+        }
+
+        public String getMood(){
+            return mood;
+        }
     }
 }
