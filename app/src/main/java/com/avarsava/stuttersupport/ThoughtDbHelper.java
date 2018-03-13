@@ -112,16 +112,19 @@ public class ThoughtDbHelper extends DatabaseHelper {
         return list;
     }
 
+    //TODO: Implement me!
     public DBEntry[] mostCommonThoughts(){
 
     }
 
+    //TODO: Implement me!
     public DBEntry[] lastThirtyDaysThoughts(){
 
     }
 
+    //TODO: Implement me!
     public int averageMoodOnDate(String dateString){
-        
+
     }
 
     public class DBEntry{

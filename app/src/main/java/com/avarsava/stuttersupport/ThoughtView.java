@@ -3,6 +3,7 @@ package com.avarsava.stuttersupport;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -18,5 +19,9 @@ public class ThoughtView extends View {
         LayoutInflater layoutInflater
                 = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.view_thought, null);
+        TextView thought = (TextView)findViewById(R.id.thought);
+        TextView mood = (TextView)findViewById(R.id.mood);
+        thought.setText(t);
+        mood.setText(m);
     }
 }
