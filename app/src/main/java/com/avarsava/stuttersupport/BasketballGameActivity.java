@@ -48,7 +48,7 @@ public class BasketballGameActivity extends GameActivity {
      *     - The full word displayed is to be spoken during this state
      * RESETTING - The shot is complete, and either the shot went in if correct, or missed if incorrect
      */
-    private enum STATE {NOTREADY, COUNTDOWN, DRIBBLE_1, DRIBBLE_2, SHOOTING, RESETTING};
+    public enum STATE {NOTREADY, COUNTDOWN, DRIBBLE_1, DRIBBLE_2, SHOOTING, RESETTING};
 	
 	/**
      * The starting point to identify potential words in the internal word list. Retrieved from

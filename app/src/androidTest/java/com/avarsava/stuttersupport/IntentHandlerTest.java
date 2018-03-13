@@ -2,7 +2,6 @@ package com.avarsava.stuttersupport;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +15,7 @@ import static org.junit.Assert.*;
  *
  */
 
-public class TestMainMenuActivity {
+public class IntentHandlerTest extends IntentsTestRule {
     @Before
     public void setUp() throws Exception {
     }
@@ -24,31 +23,5 @@ public class TestMainMenuActivity {
     @After
     public void tearDown() throws Exception {
     }
-
-    @Test
-    public void testOnCreate(){
-
-    }
-
-    @Test
-    public void testGetFragments(){
-
-    }
-
-    @Test
-    public void testOnActivityResult(){
-
-    }
-
-    @Test
-    public void testGetItem(){
-
-    }
-
-    @Test
-    public void testShowDialog(){
-
-    }
-
 
 }

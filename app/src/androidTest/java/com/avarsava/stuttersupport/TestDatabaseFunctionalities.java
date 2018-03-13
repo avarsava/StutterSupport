@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
  */
 
 
-//test updatestreak in trackerdbhelper
+//test updateStreak in trackerdbhelper
 @RunWith(AndroidJUnit4.class)
 public class TestDatabaseFunctionalities {
 
@@ -102,5 +102,7 @@ public class TestDatabaseFunctionalities {
 
         int updatedBestValue = streakDbHelper.getBest();
         assertEquals(5, updatedBestValue);
+
+
     }
 }

@@ -4,7 +4,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 
 import org.junit.Rule;
 import org.junit.Test;

@@ -64,6 +64,7 @@ public class ScriptReadingActivity extends GameActivity {
      */
     private boolean recognizerInitialized;
 
+
     /**
      * Set up objects necessary for gameplay. Called automatically when Activity starts
      *
