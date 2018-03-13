@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="moods">
-        <!--<item>HAPPY</item>
+        <item>HAPPY</item>
         <item>SAD</item>
         <item>ANGRY</item>
         <item>TIRED</item>
         <item>EMBARRASSED</item>
         <item>EXCITED</item>
-        <item>NERVOUS</item> -->
-        <item>😭</item>
+        <item>NERVOUS</item>
+        <!--<item>😭</item>
         <item>😩</item>
         <item>☹</item>
         <item>🙁</item>
@@ -17,6 +17,6 @@
         <item>😊</item>
         <item>😀</item>
         <item>😄</item>
-        <item>🤣</item>
+        <item>🤣</item> -->
     </string-array>
 </resources>
