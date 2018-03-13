@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -82,8 +84,8 @@ public class ThoughtDbHelper extends DatabaseHelper {
         db.close();
     }
 
-    public List<DBEntry> getTodaysThoughts(){
-        LinkedList<DBEntry> list = new LinkedList<>();
+    public DBEntry[] getTodaysThoughts(){
+        DBEntry[] list;
         String dateString = DbDate.getDateString();
         String sql = "SELECT * FROM "
                 + TABLE +
@@ -95,14 +97,31 @@ public class ThoughtDbHelper extends DatabaseHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
-        while(cursor.moveToNext()){
+        int size = cursor.getCount();
+        list = new DBEntry[size];
+        for(int i = 0; i < size; i++){
             thought = cursor.getString(cursor.getColumnIndex(C_THOUGHT));
             mood = cursor.getString(cursor.getColumnIndex(C_MOOD));
 
-            list.add(new DBEntry(thought, mood));
+            list[i] = new DBEntry(thought, mood);
+
+            cursor.moveToNext();
         }
+        db.close();
 
         return list;
+    }
+
+    public DBEntry[] mostCommonThoughts(){
+
+    }
+
+    public DBEntry[] lastThirtyDaysThoughts(){
+
+    }
+
+    public int averageMoodOnDate(String dateString){
+        
     }
 
     public class DBEntry{

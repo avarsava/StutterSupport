@@ -73,8 +73,8 @@ public class ThoughtTracker_Fragment extends Fragment {
             case R.layout.fragment_thought_tracker_today:
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
                 dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
-                today_thoughtList = (ListView)getActivity().findViewById(R.id.todaysThoughts);
-                updateThoughtList();
+                //today_thoughtList = (ListView)getActivity().findViewById(R.id.todaysThoughts);
+                //updateThoughtList();
                 break;
         }
 
@@ -98,10 +98,10 @@ public class ThoughtTracker_Fragment extends Fragment {
     }
 
     private void updateThoughtList(){
-        List<ThoughtDbHelper.DBEntry> list = thoughtDbHelper.getTodaysThoughts();
+        ThoughtDbHelper.DBEntry[] list = thoughtDbHelper.getTodaysThoughts();
 
-        //today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
-        //        (ThoughtDbHelper.DBEntry[])list.toArray()));
+        today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
+                list));
     }
 
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{
