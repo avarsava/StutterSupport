@@ -59,9 +59,19 @@ public class DbDate {
      * @return Properly formatted current-date String.
      */
     protected static String getDateString(){
-        Date currentDate = new Date();
-        String dateString = (currentDate.getYear() + 1900) + "-"
-                + (currentDate.getMonth()) + "-" + currentDate.getDate();
+        return getDateString(new Date());
+    }
+
+    /**
+     * Takes in a Java Date and formats it for universal acceptance in
+     * the app's multiple databases.
+     *
+     * @param date Java Date to format
+     * @return Properly formatted date String
+     */
+    protected static String getDateString(Date date){
+        String dateString = (date.getYear() + 1900) + "-"
+                + (date.getMonth()) + "-" + date.getDate();
         return dateString;
     }
 }
