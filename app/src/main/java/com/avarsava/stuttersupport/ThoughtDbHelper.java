@@ -90,7 +90,7 @@ public class ThoughtDbHelper extends DatabaseHelper {
         try {
             db.insertOrThrow(TABLE, null, values);
         } catch (SQLException e){
-            Log.e("DATABASE", "ERROR when adding to DB");
+            Log.e(TAG, "ERROR when adding to DB");
             e.printStackTrace();
         }
         db.close();
@@ -111,6 +111,9 @@ public class ThoughtDbHelper extends DatabaseHelper {
                 + " ORDER BY "
                 + C_DATE + " ASC;";
         String thought, mood;
+
+        Log.d(TAG, "Getting thoughts on date: " + dateString);
+
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
@@ -122,6 +125,8 @@ public class ThoughtDbHelper extends DatabaseHelper {
 
             list[i] = new DBEntry(thought, mood);
 
+            Log.d(TAG, "Retrieved: " + list[i]);
+
             cursor.moveToNext();
         }
         db.close();
@@ -132,14 +137,17 @@ public class ThoughtDbHelper extends DatabaseHelper {
     public List<String> mostCommonThoughts(){
         //Set up data
         List<String> sortedThoughts = new ArrayList<>();
-
         String currentThought;
         Map<String, Integer> thoughtList = new HashMap<>();
         List<DBCounter> dbCounterList = new ArrayList<>();
+
+        Log.d(TAG, "Getting thoughts sorted by frequency...");
+
         String sql = "SELECT "
                 + C_THOUGHT +
                 " FROM "
-                + TABLE + ";";
+                + TABLE + "" +
+                " LIMIT 25;";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
@@ -151,26 +159,31 @@ public class ThoughtDbHelper extends DatabaseHelper {
             if (thoughtList.containsKey(currentThought)) {
                 thoughtList.put(currentThought, ((Integer) thoughtList.get(currentThought)) + 1);
             } else {
-                thoughtList.put(currentThought, 0);
+                thoughtList.put(currentThought, 1);
             }
         }
 
         db.close();
 
         for(Map.Entry<String, Integer> e : thoughtList.entrySet()){
-            dbCounterList.add(new DBCounter(e.getKey(), e.getValue()));
+            DBCounter dbc = new DBCounter(e.getKey(), e.getValue());
+            dbCounterList.add(dbc);
+            Log.d(TAG, "Calculated: " + dbc);
         }
 
         //Sort by count
         Collections.sort(dbCounterList, new Comparator<DBCounter>() {
             @Override
             public int compare(DBCounter o1, DBCounter o2) {
-                return o1.getCount() - o2.getCount();
+                return o2.getCount() - o1.getCount();
             }
         });
 
         for(DBCounter d : dbCounterList){
-            sortedThoughts.add(d.getThought());
+            String t = d.getThought();
+            sortedThoughts.add(t);
+            Log.d(TAG, "Added to sorted list:" + d);
+
         }
 
         return sortedThoughts;
@@ -179,6 +192,7 @@ public class ThoughtDbHelper extends DatabaseHelper {
 
     public List<DBEntry> lastThirtyDaysThoughts(){
         List<DBEntry> sortedList = new ArrayList<>();
+        Log.d(TAG, "Getting last 30 days' thoughts...");
 
         for(int offset = 0; offset <= 30; offset++){
             Date currentDate = new Date();
@@ -188,6 +202,7 @@ public class ThoughtDbHelper extends DatabaseHelper {
             sortedList.addAll(newList);
         }
 
+        Log.d(TAG, "Got list: " + sortedList);
         return sortedList;
     }
 
@@ -200,17 +215,24 @@ public class ThoughtDbHelper extends DatabaseHelper {
                 + C_DATE +
                 " = \""
                 + dateString + "\";";
+        Log.d(TAG, "Calculating average mood on date: " + dateString);
+
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
 
         int count = cursor.getCount();
+        if(count == 0) return 0;
+
         int sum = 0;
 
         while(cursor.moveToNext()){
-            sum += cursor.getInt(0);
+            sum += MOOD.valueOf(cursor.getString(0)).getIntValue();
         }
-
+        Log.d(TAG, "Sum = " + sum
+        + " Count = " +
+        count +
+        " Mean = " + sum/count);
         return sum / count;
     }
 
@@ -231,6 +253,11 @@ public class ThoughtDbHelper extends DatabaseHelper {
             return mood;
         }
 
+        @Override
+        public String toString(){
+            return thought + ", " + mood;
+        }
+
     }
 
     public class DBCounter{
@@ -248,6 +275,11 @@ public class ThoughtDbHelper extends DatabaseHelper {
 
         public Integer getCount(){
             return count;
+        }
+
+        @Override
+        public String toString(){
+            return thought + ", x" + count;
         }
     }
 }

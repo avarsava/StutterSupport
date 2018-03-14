@@ -24,6 +24,11 @@ import android.widget.TextView;
 
 public class ThoughtTracker_Fragment extends Fragment {
     /**
+     * Tag for debug logs
+     */
+    private final String TAG = "ThoughtTracker_Fragment";
+
+    /**
      * Connects to the Thought Tracker database for information storage.
      */
     protected ThoughtDbHelper thoughtDbHelper;
@@ -69,6 +74,12 @@ public class ThoughtTracker_Fragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(layoutId, container, false);
 
+        //for testing purposes only
+        thoughtDbHelper.getTodaysThoughts();
+        thoughtDbHelper.lastThirtyDaysThoughts();
+        thoughtDbHelper.mostCommonThoughts();
+        thoughtDbHelper.averageMoodOnDate(DbDate.getDateString());
+
         //TODO: Populate Past view's elements
         //TODO: Populate Summary view's elements
         switch(layoutId){
@@ -106,8 +117,8 @@ public class ThoughtTracker_Fragment extends Fragment {
     private void updateThoughtList(){
         ThoughtDbHelper.DBEntry[] list = thoughtDbHelper.getTodaysThoughts();
 
-        today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
-                list));
+        //today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
+          //      list));
     }
 
     //TODO: Implement updateSummaryCalendar();
