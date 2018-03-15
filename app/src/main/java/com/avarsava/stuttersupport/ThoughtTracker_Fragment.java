@@ -80,8 +80,7 @@ public class ThoughtTracker_Fragment extends Fragment {
             case R.layout.fragment_thought_tracker_today:
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
                 dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
-
-                //TODO: There's some onFinishInflate() method this should be in instead??
+                
                 today_thoughtList = (ListView)rootView.findViewById(R.id.todaysThoughts);
                 ThoughtDbHelper.DBEntry[] list = thoughtDbHelper.getTodaysThoughts();
                 today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
