@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
-        android:hint="Type new thought here..."
-        android:text="TextView"
+        android:hint="@string/type_new_thought_here"
+        android:text="@string/type_new_thought_here"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date"
         android:background="@android:color/background_light"/>

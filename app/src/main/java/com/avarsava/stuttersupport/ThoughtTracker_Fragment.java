@@ -2,10 +2,12 @@ package com.avarsava.stuttersupport;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -47,9 +49,9 @@ public class ThoughtTracker_Fragment extends Fragment {
     private int layoutId;
 
     /**
-     * List at top of Today view
+     * Lists at top and bottom of Today view
      */
-    ListView today_thoughtList;
+    ListView today_thoughtList, today_commonList;
 
     /**
      * Creates a new TrackerFragment and saves database helpers as local variables.
@@ -85,10 +87,16 @@ public class ThoughtTracker_Fragment extends Fragment {
                 dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
 
                 today_thoughtList = (ListView)rootView.findViewById(R.id.todaysThoughts);
-                ArrayList<ThoughtDbHelper.DBEntry> list =
+                today_commonList = (ListView)rootView.findViewById(R.id.commonThoughts);
+                ArrayList<ThoughtDbHelper.DBEntry> tlist =
                         new ArrayList<>(Arrays.asList(thoughtDbHelper.getTodaysThoughts()));
+                ArrayList<String> clist =
+                        new ArrayList<>(thoughtDbHelper.mostCommonThoughts());
                 today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
-                        list));
+                        tlist));
+                today_commonList.setAdapter(new CommonListAdapter(getActivity(),
+                        clist));
+                today_commonList.setOnItemClickListener(new CommonThoughtsClickListener());
                 break;
         }
 
@@ -116,6 +124,8 @@ public class ThoughtTracker_Fragment extends Fragment {
                         newThought, newMood.toString());
                 thoughtDbHelper.addToDb(newEntry);
                 ((ThoughtListAdapter)today_thoughtList.getAdapter()).add(newEntry);
+                break;
+
         }
     }
 
@@ -125,7 +135,6 @@ public class ThoughtTracker_Fragment extends Fragment {
     }
 
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{
-        private LayoutInflater inflater;
 
         public ThoughtListAdapter(Context context, ArrayList<ThoughtDbHelper.DBEntry> list){
             super(context, 0, list);
@@ -135,7 +144,8 @@ public class ThoughtTracker_Fragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ThoughtDbHelper.DBEntry entry = getItem(position);
             if(convertView == null){
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_thought, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_thought,
+                        parent, false);
             }
 
             TextView thoughtView = (TextView)convertView.findViewById(R.id.thought);
@@ -144,6 +154,38 @@ public class ThoughtTracker_Fragment extends Fragment {
             moodView.setText(entry.getMood());
 
             return convertView;
+        }
+    }
+
+    /**
+     * Not even sure this is truly necessary, but here ya go
+     */
+    private class CommonListAdapter extends ArrayAdapter<String>{
+        public CommonListAdapter(Context context, ArrayList<String> list) {
+            super(context, 0, list);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            String entry = getItem(position);
+            if(convertView == null){
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_thought,
+                        parent, false);
+            }
+            TextView thoughtView = (TextView)convertView.findViewById(R.id.thought);
+            thoughtView.setText(entry);
+
+            return convertView;
+        }
+    }
+
+    private class CommonThoughtsClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            String value = (String)adapterView.getItemAtPosition(position);
+            EditText field = (EditText)getActivity().findViewById(R.id.thoughtInput);
+            field.setText(value);
         }
     }
 }
