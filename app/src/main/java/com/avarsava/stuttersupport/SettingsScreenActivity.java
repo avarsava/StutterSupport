@@ -164,8 +164,6 @@ public class SettingsScreenActivity extends PreferenceActivity{
 
     /**
      * Clears the database associated with Thought Tracker. Prompts first.
-     *
-     * TODO: Implement me!
      */
     private boolean clearThoughtDatabase(){
         ThoughtDbHelper tdb = new ThoughtDbHelper(getApplicationContext());
