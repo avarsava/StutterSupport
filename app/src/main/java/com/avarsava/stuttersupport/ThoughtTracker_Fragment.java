@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -51,6 +53,11 @@ public class ThoughtTracker_Fragment extends Fragment {
     ListView today_thoughtList, today_commonList, past_list;
 
     /**
+     * Calendar for summary view
+     */
+    MoodCalendar cal;
+
+    /**
      * Creates a new TrackerFragment and saves database helpers as local variables.
      *
      * @param tdbh Thought Database Helper for accessing the thought database.
@@ -76,7 +83,6 @@ public class ThoughtTracker_Fragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = inflater.inflate(layoutId, container, false);
 
-        //TODO: Populate Summary view's elements
         switch(layoutId){
             case R.layout.fragment_thought_tracker_today:
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
@@ -100,6 +106,12 @@ public class ThoughtTracker_Fragment extends Fragment {
                         thoughtDbHelper.lastThirtyDaysThoughts());
                 past_list = (ListView)rootView.findViewById(R.id.past_list);
                 past_list.setAdapter(new ThoughtListAdapter(getActivity(), list));
+                break;
+
+            case R.layout.fragment_thought_tracker_summary:
+                cal = (MoodCalendar)rootView.findViewById(R.id.mood_calendar);
+                cal.updateCalendar();
+                break;
         }
 
         return rootView;
@@ -108,7 +120,7 @@ public class ThoughtTracker_Fragment extends Fragment {
 
 
     public void onClick(View view){
-        //TODO: Handle Summary view's buttons
+        //TODO: Handle Summary view's buttons?
         switch(view.getId()){
             case R.id.submitThought:
                 String newThought = ((EditText)getActivity().findViewById(R.id.thoughtInput))
@@ -125,14 +137,13 @@ public class ThoughtTracker_Fragment extends Fragment {
                         newThought, newMood.toString());
                 thoughtDbHelper.addToDb(newEntry);
                 ((ThoughtListAdapter)today_thoughtList.getAdapter()).add(newEntry);
+
+                if(cal != null){
+                    cal.updateCalendar();
+                }
                 break;
 
         }
-    }
-
-    //TODO: Implement updateSummaryCalendar();
-    private void updateSummaryCalendar(){
-
     }
 
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{

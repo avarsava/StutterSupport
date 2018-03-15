@@ -72,7 +72,7 @@ public class DbDate {
      */
     protected static String getDateString(Date date){
         String dateString = (date.getYear() + 1900) + "-"
-                + (date.getMonth()) + "-" + date.getDate();
+                + (date.getMonth() + 1) + "-" + date.getDate();
         return dateString;
     }
 

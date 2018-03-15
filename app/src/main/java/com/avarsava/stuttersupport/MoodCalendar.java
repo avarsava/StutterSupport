@@ -56,7 +56,7 @@ public class MoodCalendar extends LinearLayout
     private Context context = getContext();
 
     /**
-     * Database helper from which to get mood data
+     * Helper for accessing database information.
      */
     private ThoughtDbHelper thoughtDbHelper;
 
@@ -68,6 +68,7 @@ public class MoodCalendar extends LinearLayout
     public MoodCalendar(Context context)
     {
         super(context);
+
         thoughtDbHelper = new ThoughtDbHelper(context);
 
         initControl(context);
@@ -82,6 +83,7 @@ public class MoodCalendar extends LinearLayout
     public MoodCalendar(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+
         thoughtDbHelper = new ThoughtDbHelper(context);
 
         initControl(context);
@@ -97,6 +99,7 @@ public class MoodCalendar extends LinearLayout
     public MoodCalendar(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+
         thoughtDbHelper = new ThoughtDbHelper(context);
 
         initControl(context);
@@ -113,28 +116,19 @@ public class MoodCalendar extends LinearLayout
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        inflater.inflate(R.layout.tracker_calendar, this);
+        inflater.inflate(R.layout.mood_calendar, this);
 
         // layout is inflated, assign local variables to components
-        //TODO: Create these views
         txtDate = (TextView)findViewById(R.id.mood_calendar_date_display);
         grid = (GridView)findViewById(R.id.mood_calendar_grid);
-    }
-
-    /**
-     * Refreshes the calendar.
-     */
-    public void updateCalendar(){
-        updateCalendar(null);
     }
 
     /**
      * Draws all the cells in the grid needed to create a calendar, then uses the CalendarAdapter
      * to display highlighting on the dates specified in the HashSet passed in.
      *
-     * @param dates The set of dates which should be highlighted on the calendar.
      */
-    public void updateCalendar(HashMap<Date, MOOD> dates)
+    public void updateCalendar()
     {
         ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar)currentDate.clone();
@@ -153,13 +147,29 @@ public class MoodCalendar extends LinearLayout
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
+        //Get average mood on each date
+        HashMap<Date, MOOD> dates = buildCalendarMap(cells);
+
         // update grid
         grid.setAdapter(new CalendarAdapter(getContext(),
-                new ArrayList<Date>(dates.keySet()),
+                cells,
                 dates));
 
         // update title
         txtDate.setText(DbDate.getMonthAndYear(getContext()));
+    }
+
+    private HashMap<Date, MOOD> buildCalendarMap(ArrayList<Date> dates){
+        HashMap<Date, MOOD> map = new HashMap<>();
+
+        for(Date d : dates){
+            map.put(d,
+                    MOOD.valueOf(
+                            thoughtDbHelper.averageMoodOnDate(
+                                    DbDate.getDateString(d))));
+        }
+
+        return map;
     }
 
     /**
@@ -227,8 +237,11 @@ public class MoodCalendar extends LinearLayout
                             eventDate.getYear() == year)
                     {
                         // colour this date as per average mood
-                        view.setBackgroundColor(moodMap.get(eventDate).getMoodColor());
-                        break;
+                        try {
+                            view.setBackgroundColor(moodMap.get(eventDate).getMoodColor());
+                        } catch (NullPointerException n){
+                            view.setBackgroundColor(Color.WHITE);
+                        }
                     }
                 }
             }

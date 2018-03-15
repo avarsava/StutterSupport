@@ -108,13 +108,6 @@ public class TrackerCalendar extends LinearLayout
     }
 
     /**
-     * Refreshes the calendar.
-     */
-    public void updateCalendar(){
-        updateCalendar(null);
-    }
-
-    /**
      * Draws all the cells in the grid needed to create a calendar, then uses the CalendarAdapter
      * to display highlighting on the dates specified in the HashSet passed in.
      *

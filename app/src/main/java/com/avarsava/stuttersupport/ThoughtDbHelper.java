@@ -231,9 +231,9 @@ public class ThoughtDbHelper extends DatabaseHelper {
 
         int sum = 0;
 
-        while(cursor.moveToNext()){
+        do {
             sum += MOOD.valueOf(cursor.getString(0)).getIntValue();
-        }
+        } while(cursor.moveToNext());
         Log.d(TAG, "Sum = " + sum
         + " Count = " +
         count +
