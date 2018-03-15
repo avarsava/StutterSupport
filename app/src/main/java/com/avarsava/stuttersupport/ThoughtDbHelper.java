@@ -114,7 +114,7 @@ public class ThoughtDbHelper extends DatabaseHelper {
                 + dateString +"\""
                 + " ORDER BY "
                 + C_DATE + " ASC;";
-        String thought, mood;
+        String date, thought, mood;
 
         Log.d(TAG, "Getting thoughts on date: " + dateString);
 
@@ -124,10 +124,11 @@ public class ThoughtDbHelper extends DatabaseHelper {
         int size = cursor.getCount();
         list = new DBEntry[size];
         for(int i = 0; i < size; i++){
+            date = cursor.getString(cursor.getColumnIndex(C_DATE));
             thought = cursor.getString(cursor.getColumnIndex(C_THOUGHT));
             mood = cursor.getString(cursor.getColumnIndex(C_MOOD));
 
-            list[i] = new DBEntry(thought, mood);
+            list[i] = new DBEntry(date, thought, mood);
 
             Log.d(TAG, "Retrieved: " + list[i]);
 
@@ -241,10 +242,18 @@ public class ThoughtDbHelper extends DatabaseHelper {
     }
 
     public class DBEntry{
+        String date;
         String thought;
         String mood;
 
         public DBEntry(String t, String m){
+            this.thought = t;
+            this.mood = m;
+            this.date = "";
+        }
+
+        public DBEntry(String d, String t, String m){
+            this.date = d;
             this.thought = t;
             this.mood = m;
         }
@@ -257,9 +266,11 @@ public class ThoughtDbHelper extends DatabaseHelper {
             return mood;
         }
 
+        public String getDate(){ return date;}
+
         @Override
         public String toString(){
-            return thought + ", " + mood;
+            return date + ": " + thought + ", " + mood;
         }
 
     }
