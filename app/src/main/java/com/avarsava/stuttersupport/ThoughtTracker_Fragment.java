@@ -12,6 +12,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
  * @version 1.1
@@ -72,7 +75,7 @@ public class ThoughtTracker_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View rootView = (View) inflater.inflate(layoutId, container, false);
+        View rootView = inflater.inflate(layoutId, container, false);
 
         //TODO: Populate Past view's elements
         //TODO: Populate Summary view's elements
@@ -80,9 +83,10 @@ public class ThoughtTracker_Fragment extends Fragment {
             case R.layout.fragment_thought_tracker_today:
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
                 dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
-                
+
                 today_thoughtList = (ListView)rootView.findViewById(R.id.todaysThoughts);
-                ThoughtDbHelper.DBEntry[] list = thoughtDbHelper.getTodaysThoughts();
+                ArrayList<ThoughtDbHelper.DBEntry> list =
+                        new ArrayList<>(Arrays.asList(thoughtDbHelper.getTodaysThoughts()));
                 today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
                         list));
                 break;
@@ -123,7 +127,7 @@ public class ThoughtTracker_Fragment extends Fragment {
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{
         private LayoutInflater inflater;
 
-        public ThoughtListAdapter(Context context, ThoughtDbHelper.DBEntry[] list){
+        public ThoughtListAdapter(Context context, ArrayList<ThoughtDbHelper.DBEntry> list){
             super(context, 0, list);
         }
 
