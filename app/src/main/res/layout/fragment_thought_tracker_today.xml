@@ -73,12 +73,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:background="@android:color/background_light"
+        app:layout_constraintTop_toBottomOf="@id/thoughts_label"
         app:layout_constraintBottom_toTopOf="@+id/tt_guideline"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@android:color/background_light"/>
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ListView
         android:id="@+id/commonThoughts"
@@ -87,11 +86,35 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:background="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/thoughts_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Today's Thoughts"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/todaysThoughts"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@android:color/background_light" />
+
+    <TextView
+        android:id="@+id/commons_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Common Thoughts - tap to quickly enter"
+        app:layout_constraintBottom_toTopOf="@id/commonThoughts"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitThought"
+        app:layout_constraintTop_toBottomOf="@id/submitThought"
         android:background="@android:color/background_light"/>
 
 </android.support.constraint.ConstraintLayout>

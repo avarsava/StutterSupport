@@ -49,9 +49,9 @@ public class ThoughtTracker_Fragment extends Fragment {
     private int layoutId;
 
     /**
-     * Lists at top and bottom of Today view
+     * Lists in each view
      */
-    ListView today_thoughtList, today_commonList;
+    ListView today_thoughtList, today_commonList, past_list;
 
     /**
      * Creates a new TrackerFragment and saves database helpers as local variables.
@@ -98,6 +98,12 @@ public class ThoughtTracker_Fragment extends Fragment {
                         clist));
                 today_commonList.setOnItemClickListener(new CommonThoughtsClickListener());
                 break;
+
+            case R.layout.fragment_thought_tracker_past:
+                ArrayList<ThoughtDbHelper.DBEntry> list = new ArrayList<>(
+                        thoughtDbHelper.lastThirtyDaysThoughts());
+                past_list = (ListView)rootView.findViewById(R.id.past_list);
+                past_list.setAdapter(new ThoughtListAdapter(getActivity(), list));
         }
 
         return rootView;
@@ -148,8 +154,10 @@ public class ThoughtTracker_Fragment extends Fragment {
                         parent, false);
             }
 
+            TextView dateView = (TextView)convertView.findViewById(R.id.date);
             TextView thoughtView = (TextView)convertView.findViewById(R.id.thought);
             TextView moodView = (TextView)convertView.findViewById(R.id.mood);
+            dateView.setText(entry.getDate());
             thoughtView.setText(entry.getThought());
             moodView.setText(entry.getMood());
 
