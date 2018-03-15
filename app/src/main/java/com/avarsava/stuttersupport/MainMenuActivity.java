@@ -111,7 +111,7 @@ public class MainMenuActivity extends FragmentActivity {
                 DeepBreatheActivity.class, R.xml.deep_breathe_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_script_splash,
                 ScriptReadingActivity.class, R.xml.script_reading_prefs));
-        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_logo,
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_thought_tracker_menu,
                 ThoughtTrackerActivity.class, R.xml.thought_tracker_prefs));
 
         return fList;
