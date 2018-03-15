@@ -74,12 +74,6 @@ public class ThoughtTracker_Fragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = (View) inflater.inflate(layoutId, container, false);
 
-        //for testing purposes only
-        thoughtDbHelper.getTodaysThoughts();
-        thoughtDbHelper.lastThirtyDaysThoughts();
-        thoughtDbHelper.mostCommonThoughts();
-        thoughtDbHelper.averageMoodOnDate(DbDate.getDateString());
-
         //TODO: Populate Past view's elements
         //TODO: Populate Summary view's elements
         switch(layoutId){
@@ -87,14 +81,18 @@ public class ThoughtTracker_Fragment extends Fragment {
                 TextView dateDisplay = (TextView)rootView.findViewById(R.id.date);
                 dateDisplay.setText(DbDate.getDayMonthAndYear(getActivity()));
 
-                //TODO: There's some onFinishInflate() method this should be in instead
-                //today_thoughtList = (ListView)getActivity().findViewById(R.id.todaysThoughts);
-                //updateThoughtList();
+                //TODO: There's some onFinishInflate() method this should be in instead??
+                today_thoughtList = (ListView)rootView.findViewById(R.id.todaysThoughts);
+                ThoughtDbHelper.DBEntry[] list = thoughtDbHelper.getTodaysThoughts();
+                today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
+                        list));
                 break;
         }
 
         return rootView;
     }
+
+
 
     public void onClick(View view){
         //TODO: Handle Past view's buttons
@@ -109,16 +107,13 @@ public class ThoughtTracker_Fragment extends Fragment {
                         .getSelectedItem()
                         .toString());
 
-                thoughtDbHelper.addToDb(newThought, newMood);
-                updateThoughtList();
+                // This is the strangest syntax I've ever seen,
+                // But apparently this is how this is done.
+                ThoughtDbHelper.DBEntry newEntry = thoughtDbHelper.new DBEntry(
+                        newThought, newMood.toString());
+                thoughtDbHelper.addToDb(newEntry);
+                ((ThoughtListAdapter)today_thoughtList.getAdapter()).add(newEntry);
         }
-    }
-
-    private void updateThoughtList(){
-        ThoughtDbHelper.DBEntry[] list = thoughtDbHelper.getTodaysThoughts();
-
-        //today_thoughtList.setAdapter(new ThoughtListAdapter(getActivity(),
-          //      list));
     }
 
     //TODO: Implement updateSummaryCalendar();
@@ -127,19 +122,25 @@ public class ThoughtTracker_Fragment extends Fragment {
     }
 
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{
-        ThoughtDbHelper.DBEntry[] entries;
+        private LayoutInflater inflater;
 
         public ThoughtListAdapter(Context context, ThoughtDbHelper.DBEntry[] list){
-            super(context, -1, -1, list);
-            entries = list;
+            super(context, 0, list);
         }
-
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View newView = new ThoughtView(getContext(), entries[position].getThought(),
-                    entries[position].getMood());
-            return newView;
+            ThoughtDbHelper.DBEntry entry = getItem(position);
+            if(convertView == null){
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_thought, parent, false);
+            }
+
+            TextView thoughtView = (TextView)convertView.findViewById(R.id.thought);
+            TextView moodView = (TextView)convertView.findViewById(R.id.mood);
+            thoughtView.setText(entry.getThought());
+            moodView.setText(entry.getMood());
+
+            return convertView;
         }
     }
 }
