@@ -2,7 +2,6 @@ package com.avarsava.stuttersupport;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,6 @@ import java.util.Arrays;
  * @since   1.1
  *
  * Parent class for Fragments in Thought Tracker.
- * TODO: Create Summary Calendar class
  */
 
 public class ThoughtTracker_Fragment extends Fragment {

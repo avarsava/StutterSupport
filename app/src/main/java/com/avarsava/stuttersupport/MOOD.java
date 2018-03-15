@@ -1,11 +1,14 @@
 package com.avarsava.stuttersupport;
 
+import android.graphics.Color;
+
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
  * @version 1.1
  * @since   1.1
  *
  * Details the moods possible to enter in the Thought Tracker activity.
+ * ONE should be understood to indicate lowest SEVERITY (best mood)
  */
 
 public enum MOOD {
@@ -29,5 +32,13 @@ public enum MOOD {
             case TEN: return 10;
         }
         return 0;
+    }
+
+    public int getMoodColor(){
+        if (this == null) return Color.WHITE;
+
+        double percentage = getIntValue() * 0.1;
+
+        return Color.rgb((int)(255 * percentage), 100, 100);
     }
 }
