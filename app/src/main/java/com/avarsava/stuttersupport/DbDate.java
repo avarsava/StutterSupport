@@ -10,6 +10,7 @@ import java.util.Date;
  * @since   1.1
  *
  * Utilities for saving and modifying dates in the databases.
+ * Format is DD-mm-YYYY
  */
 
 public class DbDate {
@@ -73,5 +74,54 @@ public class DbDate {
         String dateString = (date.getYear() + 1900) + "-"
                 + (date.getMonth()) + "-" + date.getDate();
         return dateString;
+    }
+
+    /**
+     * Erases the time from a Date object, as otherwise two Dates with the same calendar date
+     * are not identical in the eyes of Java.
+     *
+     * @param dateEntry Date to sanitize
+     * @return sanitized Date
+     */
+    protected static Date clearTime(Date dateEntry) {
+        long fullTime = dateEntry.getTime();
+        long millis = fullTime % 1000;
+        Date newDate = new Date(fullTime - millis);
+        newDate.setHours(0);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        return newDate;
+    }
+
+    /**
+     * Takes a specially formatted String date and calculates whether or not the month in said date
+     * is at or past October (month 10).
+     *
+     * @param strDate String numeric date with dash delimination
+     * @return true if month >= 10, false otherwise
+     */
+    protected static boolean doubleDigitMonth(String strDate) {
+        return strDate.charAt(5) == '1' && strDate.charAt(6) != '-';
+    }
+
+    /**
+     * Taes in a String datestring generated from this class and converts it back to a Java Date
+     *
+     * @param dateString String to convert to Java Date
+     * @return Java Date object, missing time info
+     */
+    protected static Date getDateFromString(String dateString){
+        int date, month, year;
+
+        date = Integer.valueOf(dateString.substring(0, 2));
+        if(doubleDigitMonth(dateString)){
+            month = Integer.valueOf(dateString.substring(5, 7));
+            year = Integer.valueOf(dateString.substring(8,12));
+        } else {
+            month = Integer.valueOf(dateString.substring(5,6));
+            year = Integer.valueOf(dateString.substring(7,11));
+        }
+
+        return new Date(year, month, date);
     }
 }
