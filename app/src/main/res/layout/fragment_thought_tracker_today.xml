@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/ic_tracker_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,28 +26,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tt_guideline"
-        tools:text="todaysDate" />
+        tools:text="todaysDate"
+        android:background="@android:color/background_light"/>
 
     <EditText
         android:id="@+id/thoughtInput"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
         android:hint="Type new thought here..."
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        android:background="@android:color/background_light"/>
 
     <Spinner
         android:id="@+id/moodSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:entries="@array/moods"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toEndOf="@+id/thoughtInput"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        android:background="@android:color/background_light"/>
 
     <Button
         android:id="@+id/submitThought"
@@ -60,7 +65,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thoughtInput"
-        tools:text="Submit" />
+        tools:text="Submit"
+        android:background="@android:color/background_light"/>
 
     <ListView
         android:id="@+id/todaysThoughts"
@@ -71,7 +77,8 @@
         app:layout_constraintBottom_toTopOf="@+id/tt_guideline"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@android:color/background_light"/>
 
     <ListView
         android:id="@+id/commonThoughts"
@@ -84,6 +91,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitThought" />
+        app:layout_constraintTop_toBottomOf="@+id/submitThought"
+        android:background="@android:color/background_light"/>
 
 </android.support.constraint.ConstraintLayout>
