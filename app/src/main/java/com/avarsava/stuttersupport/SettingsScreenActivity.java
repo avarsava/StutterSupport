@@ -61,6 +61,25 @@ public class SettingsScreenActivity extends PreferenceActivity{
         final SharedPreferences sharedPrefs
                 = PreferenceManager.getDefaultSharedPreferences(thisActivity);
 
+        if(preferencesResId == R.xml.thought_tracker_prefs){
+            Preference resetButton = findPreference("clearDatabase");
+            resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Dialog.showDialogWithPosListener(thisActivity,
+                            "Warning!",
+                            "This will erase ALL your previous thoughts. Continue?",
+                            new Callable<Boolean>() {
+                                @Override
+                                public Boolean call() throws Exception {
+                                    return clearThoughtDatabase();
+                                }
+                            });
+                    return true;
+                }
+            });
+        }
+
         Preference backButton = findPreference("backButton");
         backButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -139,6 +158,19 @@ public class SettingsScreenActivity extends PreferenceActivity{
 
         setPreferenceScreen(null);
         addPreferencesFromResource(prefsFile);
+
+        return true;
+    }
+
+    /**
+     * Clears the database associated with Thought Tracker. Prompts first.
+     *
+     * TODO: Implement me!
+     */
+    private boolean clearThoughtDatabase(){
+        ThoughtDbHelper tdb = new ThoughtDbHelper(getApplicationContext());
+
+        tdb.clearDatabase();
 
         return true;
     }

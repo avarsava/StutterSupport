@@ -100,6 +100,12 @@ public class ThoughtDbHelper extends DatabaseHelper {
         db.close();
     }
 
+    public void clearDatabase(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.delete(TABLE, null, null);
+    }
+
     public DBEntry[] getTodaysThoughts(){
         return getThoughtsOnDate(DbDate.getDateString());
     }
