@@ -4,19 +4,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_tracker_bg">
 
     <com.avarsava.stuttersupport.MoodCalendar
         android:id="@+id/mood_calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mood_title"
+        android:background="@android:color/background_light">
+    </com.avarsava.stuttersupport.MoodCalendar>
+
+    <TextView
+        android:id="@+id/mood_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:text="Mood Summary"
+        tools:text="Mood Summary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mood_calendar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@android:color/background_light" />
 
 </android.support.constraint.ConstraintLayout>
