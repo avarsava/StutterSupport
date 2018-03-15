@@ -24,7 +24,6 @@ import java.util.Arrays;
  *
  * Parent class for Fragments in Thought Tracker.
  * TODO: Create Summary Calendar class
- * TODO: Create Layout & View elements for Past
  */
 
 public class ThoughtTracker_Fragment extends Fragment {
@@ -79,7 +78,6 @@ public class ThoughtTracker_Fragment extends Fragment {
                              Bundle savedInstanceState){
         View rootView = inflater.inflate(layoutId, container, false);
 
-        //TODO: Populate Past view's elements
         //TODO: Populate Summary view's elements
         switch(layoutId){
             case R.layout.fragment_thought_tracker_today:
@@ -112,7 +110,6 @@ public class ThoughtTracker_Fragment extends Fragment {
 
 
     public void onClick(View view){
-        //TODO: Handle Past view's buttons
         //TODO: Handle Summary view's buttons
         switch(view.getId()){
             case R.id.submitThought:
