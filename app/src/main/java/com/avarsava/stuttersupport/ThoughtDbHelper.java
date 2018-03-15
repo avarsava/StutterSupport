@@ -71,6 +71,10 @@ public class ThoughtDbHelper extends DatabaseHelper {
         Log.d(TAG, "onCreate w sql: " + sql);
     }
 
+    public void addToDb(DBEntry entry){
+        addToDb(entry.getThought(), MOOD.valueOf(entry.getMood()));
+    }
+
     /**
      * Adds a thought entry to the database. Automatically inputs the correct ID and Date.
      *
