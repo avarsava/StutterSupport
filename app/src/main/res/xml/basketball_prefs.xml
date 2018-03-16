@@ -3,6 +3,7 @@
 
     <!-- Level of word difficulty -->
     <ListPreference android:title="Difficulty Level"
+        android:defaultValue="1"
         android:key="bb_difficulty"
         android:entries="@array/difficultyLevels"
         android:entryValues="@array/levelValues" />
