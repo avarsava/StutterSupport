@@ -42,7 +42,6 @@ public class SettingsScreenActivity extends PreferenceActivity{
         // Load the preferences from an XML resource
         addPreferencesFromResource(prefsFile);
 
-
     }
 
     /**

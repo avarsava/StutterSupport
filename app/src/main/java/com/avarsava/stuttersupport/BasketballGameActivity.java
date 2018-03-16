@@ -52,7 +52,19 @@ public class BasketballGameActivity extends GameActivity {
      *     - The full word displayed is to be spoken during this state
      * RESETTING - The shot is complete, and either the shot went in if correct, or missed if incorrect
      */
-    private enum STATE {NOTREADY, COUNTDOWN, DRIBBLE_1, DRIBBLE_2, SHOOTING, RESETTING};
+    public enum STATE {NOTREADY, COUNTDOWN, DRIBBLE_1, DRIBBLE_2, SHOOTING, RESETTING};
+	
+	/**
+     * The starting point to identify potential words in the internal word list. Retrieved from
+     * the Difficulty object once the preferences have been read.
+     */
+    private int minPair;
+
+    /**
+     * The ending point to identify potential words in the internal word list. Effectively, how
+     * many words there are in the word list.
+     */
+    private int maxPair;
 
     /**
      * The difficulty of the game, either 1, 2 or 3
