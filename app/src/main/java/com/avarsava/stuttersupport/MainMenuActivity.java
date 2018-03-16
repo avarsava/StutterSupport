@@ -113,6 +113,8 @@ public class MainMenuActivity extends FragmentActivity {
                 ScriptReadingActivity.class, R.xml.script_reading_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_basketball_splash,
                 BasketballGameActivity.class, R.xml.basketball_prefs));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_thought_tracker_menu,
+                ThoughtTrackerActivity.class, R.xml.thought_tracker_prefs));
 
         return fList;
     }

@@ -25,6 +25,7 @@ import java.util.HashSet;
  */
 
 public class TrackerDbHelper extends DatabaseHelper {
+
     /**
      * The names of the columns in the table.
      */
@@ -69,10 +70,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
-        String dateString = "";
-        Date currentDate = new Date();
-        dateString = (currentDate.getYear() + 1900) + "-"
-                + (currentDate.getMonth()) + "-" + currentDate.getDate();
+        String dateString = DbDate.getDateString();
 
         values.put(C_ACTIVITY, activityName);
         values.put(C_DATE, dateString);
@@ -102,7 +100,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         Date dateEntry = new Date();
         Calendar cal = Calendar.getInstance();
 
-        dateEntry = clearTime(dateEntry);
+        dateEntry = DbDate.clearTime(dateEntry);
         while(dates.contains(dateEntry)){
             newStreak++;
 
@@ -112,23 +110,6 @@ public class TrackerDbHelper extends DatabaseHelper {
         }
 
         sdbh.updateCurrent(newStreak);
-    }
-
-    /**
-     * Erases the time from a Date object, as otherwise two Dates with the same calendar date
-     * are not identical in the eyes of Java.
-     *
-     * @param dateEntry Date to sanitize
-     * @return sanitized Date
-     */
-    private Date clearTime(Date dateEntry) {
-        long fullTime = dateEntry.getTime();
-        long millis = fullTime % 1000;
-        Date newDate = new Date(fullTime - millis);
-        newDate.setHours(0);
-        newDate.setMinutes(0);
-        newDate.setSeconds(0);
-        return newDate;
     }
 
     /**
@@ -158,7 +139,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         do{
             strDate = cursor.getString(COLUMN_INDEX);
             year = Integer.parseInt(strDate.substring(0, 4)) - 1900;
-            if (doubleDigitMonth(strDate)){
+            if (DbDate.doubleDigitMonth(strDate)){
                 month = Integer.parseInt(strDate.substring(5,7));
                 date = Integer.parseInt(strDate.substring(8));
             } else {
@@ -171,14 +152,5 @@ public class TrackerDbHelper extends DatabaseHelper {
         return dates;
     }
 
-    /**
-     * Takes a specially formatted String date and calculates whether or not the month in said date
-     * is at or past October (month 10).
-     *
-     * @param strDate String numeric date with dash delimination
-     * @return true if month >= 10, false otherwise
-     */
-    private boolean doubleDigitMonth(String strDate) {
-        return strDate.charAt(5) == '1' && strDate.charAt(6) != '-';
-    }
+
 }
