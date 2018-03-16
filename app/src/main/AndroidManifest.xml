@@ -32,6 +32,9 @@
             android:name="com.avarsava.stuttersupport.TrainGameActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.avarsava.stuttersupport.BasketballGameActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.avarsava.stuttersupport.DeepBreatheActivity"
             android:screenOrientation="portrait" />
         <activity
