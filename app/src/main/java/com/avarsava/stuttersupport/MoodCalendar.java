@@ -15,18 +15,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
- * @since   0.1
+ * @version 1.1
+ * @since   1.1
  *
- * Displays a calendar which highlights the current date with blue text, and highlights days on
- * which at least one activity has been successfully completed with a red background.
+ * Displays a calendar which highlights the current date with blue text, and highlights days with
+ * a colour based on the average mood from that date
+ *
+ * TODO: See if this can be refactored to reduce code repetition with TrackerCalendar
  * Takes inspiration from https://github.com/ahmed-alamir/CalendarView
  */
-public class TrackerCalendar extends LinearLayout
+public class MoodCalendar extends LinearLayout
 {
     /**
      * How many days to display in total. Ensures 6 weeks are displayed.
@@ -54,13 +56,21 @@ public class TrackerCalendar extends LinearLayout
     private Context context = getContext();
 
     /**
+     * Helper for accessing database information.
+     */
+    private ThoughtDbHelper thoughtDbHelper;
+
+    /**
      * Constructor, creates RelativeLayout from inflates layout from XML.
      *
      * @param context The application context.
      */
-    public TrackerCalendar(Context context)
+    public MoodCalendar(Context context)
     {
         super(context);
+
+        thoughtDbHelper = new ThoughtDbHelper(context);
+
         initControl(context);
     }
 
@@ -70,9 +80,12 @@ public class TrackerCalendar extends LinearLayout
      * @param context The application context.
      * @param attrs AttributeSet to pass to RelativeLayout constructor.
      */
-    public TrackerCalendar(Context context, AttributeSet attrs)
+    public MoodCalendar(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+
+        thoughtDbHelper = new ThoughtDbHelper(context);
+
         initControl(context);
     }
 
@@ -83,9 +96,12 @@ public class TrackerCalendar extends LinearLayout
      * @param attrs AttributeSet to pass to RelativeLayout constructor.
      * @param defStyle Style from Resources to pass to RelativeLayout constructor.
      */
-    public TrackerCalendar(Context context, AttributeSet attrs, int defStyle)
+    public MoodCalendar(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+
+        thoughtDbHelper = new ThoughtDbHelper(context);
+
         initControl(context);
     }
 
@@ -100,20 +116,19 @@ public class TrackerCalendar extends LinearLayout
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        inflater.inflate(R.layout.tracker_calendar, this);
+        inflater.inflate(R.layout.mood_calendar, this);
 
         // layout is inflated, assign local variables to components
-        txtDate = (TextView)findViewById(R.id.calendar_date_display);
-        grid = (GridView)findViewById(R.id.calendar_grid);
+        txtDate = (TextView)findViewById(R.id.mood_calendar_date_display);
+        grid = (GridView)findViewById(R.id.mood_calendar_grid);
     }
 
     /**
      * Draws all the cells in the grid needed to create a calendar, then uses the CalendarAdapter
      * to display highlighting on the dates specified in the HashSet passed in.
      *
-     * @param dates The set of dates which should be highlighted on the calendar.
      */
-    public void updateCalendar(HashSet<Date> dates)
+    public void updateCalendar()
     {
         ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar)currentDate.clone();
@@ -132,11 +147,29 @@ public class TrackerCalendar extends LinearLayout
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
+        //Get average mood on each date
+        HashMap<Date, MOOD> dates = buildCalendarMap(cells);
+
         // update grid
-        grid.setAdapter(new CalendarAdapter(getContext(), cells, dates));
+        grid.setAdapter(new CalendarAdapter(getContext(),
+                cells,
+                dates));
 
         // update title
         txtDate.setText(DbDate.getMonthAndYear(getContext()));
+    }
+
+    private HashMap<Date, MOOD> buildCalendarMap(ArrayList<Date> dates){
+        HashMap<Date, MOOD> map = new HashMap<>();
+
+        for(Date d : dates){
+            map.put(d,
+                    MOOD.valueOf(
+                            thoughtDbHelper.averageMoodOnDate(
+                                    DbDate.getDateString(d))));
+        }
+
+        return map;
     }
 
     /**
@@ -147,7 +180,7 @@ public class TrackerCalendar extends LinearLayout
         /**
          * Days on which at least one activity has been successfully completed.
          */
-        private HashSet<Date> eventDays;
+        private HashMap<Date, MOOD> moodMap;
 
         /**
          * Used for layout inflation.
@@ -160,12 +193,12 @@ public class TrackerCalendar extends LinearLayout
          *
          * @param context The application context
          * @param days The full set of days to display on the calendar
-         * @param eventDays The set of days which should be highlighted to signal activity
+         * @param moods The set of moods which should be highlighted by value
          */
-        public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date> eventDays)
+        public CalendarAdapter(Context context, ArrayList<Date> days, HashMap<Date, MOOD> moods)
         {
             super(context, R.layout.tracker_calendar_day, days);
-            this.eventDays = eventDays;
+            this.moodMap = moods;
             inflater = LayoutInflater.from(context);
         }
 
@@ -195,17 +228,20 @@ public class TrackerCalendar extends LinearLayout
 
             // if this day has an event, specify event image
             view.setBackgroundResource(0);
-            if (eventDays != null)
+            if (moodMap != null)
             {
-                for (Date eventDate : eventDays)
+                for (Date eventDate : moodMap.keySet())
                 {
                     if (eventDate.getDate() == day &&
                             eventDate.getMonth() == month &&
                             eventDate.getYear() == year)
                     {
-                        // mark this day for event
-                        view.setBackgroundColor(Color.YELLOW);
-                        break;
+                        // colour this date as per average mood
+                        try {
+                            view.setBackgroundColor(moodMap.get(eventDate).getMoodColor());
+                        } catch (NullPointerException n){
+                            view.setBackgroundColor(Color.WHITE);
+                        }
                     }
                 }
             }
