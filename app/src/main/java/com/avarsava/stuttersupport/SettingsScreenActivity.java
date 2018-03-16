@@ -142,6 +142,23 @@ public class SettingsScreenActivity extends PreferenceActivity{
                     pref.setEnabled(!dbLocked);
                 }
                 break;
+            case R.xml.basketball_prefs:
+                Boolean bbLocked =
+                        Boolean.valueOf(sharedPrefs.getBoolean("pti_bbg_override",
+                                false));
+                Preference bbMaxCycles = findPreference("bb_max_cycles");
+                Preference bbSpeed = findPreference("bb_speed");
+                Preference bbDifficulty = findPreference("bb_difficulty");
+
+                List<Preference> bbprefs = new LinkedList<>();
+                bbprefs.add(bbMaxCycles);
+                bbprefs.add(bbSpeed);
+                bbprefs.add(bbDifficulty);
+
+                for(Preference pref: bbprefs){
+                    pref.setEnabled(!bbLocked);
+                }
+                break;
         }
     }
 

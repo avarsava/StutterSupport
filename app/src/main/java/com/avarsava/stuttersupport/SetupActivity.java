@@ -23,7 +23,7 @@ public class SetupActivity extends PreferenceActivity {
     /**
      * Number of settings present in XML
      */
-    private final int NUM_OF_SETTINGS = 12;
+    private final int NUM_OF_SETTINGS = 16;
 
     /**
      * Resource ID of settings file to expand into layout.
