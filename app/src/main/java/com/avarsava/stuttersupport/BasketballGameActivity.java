@@ -85,6 +85,11 @@ public class BasketballGameActivity extends GameActivity {
     private int resetInfo = 0;
 
     /**
+     * Used for Pocketsphinx methods to flag an error when the user makes a mistake
+     */
+    private boolean errorMade = false;
+
+    /**
      * A list of the previously called words, to avoid calling the same word twice.
      */
     private String[] usedStrings;
@@ -115,12 +120,12 @@ public class BasketballGameActivity extends GameActivity {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         currentState = STATE.NOTREADY;
-		difficulty = Integer.valueOf(prefs.getString("bb_difficulty", "1"));
+        difficulty = Integer.valueOf(prefs.getString("bb_difficulty", "1"));
         maxCycles = Integer.valueOf(prefs.getString("bb_max_cycles", "3"));
         usedStrings = new String[maxCycles];
         gameSpeed = Integer.valueOf(prefs.getString("bb_speed", "4"));
         gameSpeed = (1500 * (gameSpeed + 1) / 10) + 500; // [650, 2000] in milliseconds
-		screen = new BasketballGameView(this, this);
+        screen = new BasketballGameView(this, this);
         screen.setBackgroundImage(((BasketballGameView)screen).getInstructionBg());
         setContentView(screen);
         setNewString();
@@ -128,7 +133,7 @@ public class BasketballGameActivity extends GameActivity {
         //  - Set the keywords to a list of all the possible words and syllables
         ArrayList<String> dict = new ArrayList(Arrays.asList(getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName()))));
         dict.addAll(Arrays.asList(getResources().getStringArray(getResources().getIdentifier("basketball_syllables_" + difficulty, "array", getPackageName()))));
-        runRecognizerSetup(currentString, dict.toArray(new String[0]));
+        runRecognizerSetup(currentSyllable, dict.toArray(new String[0]));
     }
 
     /**
@@ -144,7 +149,7 @@ public class BasketballGameActivity extends GameActivity {
         int randId;
 
         do {
-            randId = Numbers.randInt(0, allWords.length) - 1;
+            randId = Numbers.randInt(1, allWords.length) - 1;
             potentialString = allWords[randId];
         } while (usedStringsList.contains(potentialString));
 
@@ -171,18 +176,16 @@ public class BasketballGameActivity extends GameActivity {
      * @param hypothesis PocketSphinx's best guess about what is being said.
      */
     @Override
-    public void onResult (Hypothesis hypothesis) {
-
-    }
-
-    /**
-     * On recognizing speech, processes the speech if the hypothesis matches the word called for.
-     *
-     * @param hypothesis PocketSphinx's best guess about what is being said.
-     */
-    @Override
     public void onPartialResult (Hypothesis hypothesis) {
+        if (hypothesis == null){
+            return;
+        }
 
+        String text = hypothesis.getHypstr().split(" ")[0];
+        Log.d(TAG, "text = " + text + " State = " + currentState + " Word = " + currentString);
+
+        if (currentState == STATE.SHOOTING) errorMade = !text.equals(currentString);
+        else if (currentState == STATE.DRIBBLE_2) errorMade = !text.equals(currentSyllable);
     }
 
     /**
@@ -209,18 +212,16 @@ public class BasketballGameActivity extends GameActivity {
                 else stateInfo++;
                 break;
             case DRIBBLE_1:
+                errorMade = true;
                 if (stateInfo == 3) {
                     resetRecognizer(currentString);
                     currentState = STATE.SHOOTING;
                     stateInfo = 0;
                 }
-                else {
-                    resetRecognizer(currentSyllable);
-                    currentState = STATE.DRIBBLE_2; //Check that time is right
-                }
+                else currentState = STATE.DRIBBLE_2;
                 break;
             case DRIBBLE_2:
-                if (false) { //Syllable mistake, ball is fumbled
+                if (errorMade) { //Syllable mistake, ball is fumbled
                     stateInfo = 0;
                     resetInfo = 1;
                     currentState = STATE.RESETTING;
@@ -229,12 +230,11 @@ public class BasketballGameActivity extends GameActivity {
                     stateInfo++;
                     currentState = STATE.DRIBBLE_1;
                 }
-
                 break;
             case SHOOTING:
+                if (errorMade) resetInfo = 2; //If word mistake
+                else resetInfo = 3; //If no mistake
                 if (stateInfo == 1) {
-                    if (false) resetInfo = 2; //If word mistake
-                    else resetInfo = 3;       //If no mistake
                     currentState = STATE.RESETTING;
                     stateInfo = 0;
                 }
@@ -246,9 +246,10 @@ public class BasketballGameActivity extends GameActivity {
                     if (resetInfo == 3) successfulCycles++;
                     killIfCountHigh(TAG, successfulCycles, difficulty);
                     if (cycleCount < maxCycles) {
-                        currentState = STATE.COUNTDOWN;
                         setNewString();
+                        resetRecognizer(currentSyllable);
                         stateInfo = 0;
+                        currentState = STATE.COUNTDOWN;
                     }
                     else stateInfo++;
                 }
@@ -259,27 +260,27 @@ public class BasketballGameActivity extends GameActivity {
     /**
      * Handles drawing the game to the screen.
      */
-	protected class BasketballGameView extends DrawView {
+    protected class BasketballGameView extends DrawView {
 
-		/**
+        /**
          * Paint used to render the text
          */
-        private Paint blackPaint;
-		
-		/**
-		 * These drawables store the images to be drawn for the background and foreground (net and court)
-		 */
-		private Drawable instructionBg, gameBg;
-		
-		/**
-		 * These drawables store the ball, net and facial expressions for the person shooting the ball
-		 */
-		private Drawable ball, net, happy, concentrate, sad;
-		
-		/**
-		 * These drawables store the images for the person in different states
-		 */
-		private Drawable hold_ball, dribble_ball_1, dribble_ball_2, shoot_ball;
+        private Paint blackPaint, redPaint;
+
+        /**
+         * These drawables store the images to be drawn for the background and foreground (net and court)
+         */
+        private Drawable instructionBg, gameBg;
+
+        /**
+         * These drawables store the ball, net and facial expressions for the person shooting the ball
+         */
+        private Drawable ball, net, happy, concentrate, sad;
+
+        /**
+         * These drawables store the images for the person in different states
+         */
+        private Drawable hold_ball, dribble_ball_1, dribble_ball_2, shoot_ball;
 
         /**
          * The width of the screen of the user's device.
@@ -299,18 +300,18 @@ public class BasketballGameActivity extends GameActivity {
          */
         public BasketballGameView(Context context, GameActivity ga) {
             super(context, ga);
-			setUpPaints();
-			getDrawables();
+            setUpPaints();
+            getDrawables();
         }
-		
-		/**
-		 * Returns the background image for the basketball game to display before the user clicks the start button
+
+        /**
+         * Returns the background image for the basketball game to display before the user clicks the start button
          *
          * @return Drawable instructionBg for the splash screen
-		 */
-		protected Drawable getInstructionBg() {
-			return instructionBg;
-		}
+         */
+        protected Drawable getInstructionBg() {
+            return instructionBg;
+        }
 
         /**
          * Getter for game background, used so Basketball Game can transition to launching game
@@ -320,7 +321,7 @@ public class BasketballGameActivity extends GameActivity {
         protected Drawable getGameBg(){
             return gameBg;
         }
-		
+
         /**
          * Draws the objects to the screen based on the current state of the game
          */
@@ -471,35 +472,65 @@ public class BasketballGameActivity extends GameActivity {
          * Draws the current string to the screen with appropriate highlighting
          */
         protected void drawWord () {
-            //Try to decide if it is possible to have a red highlight on an error
-            String text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
-            if (textChanged || currentState == STATE.COUNTDOWN) blackPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth - 30, text));
-            Rect temp = new Rect();
-            blackPaint.getTextBounds(text, 0, text.length(), temp);
-            canvas.drawText(text,
-                    5,
-                    temp.height() + 10,
-                    blackPaint);
-        }
+            String high = "";
+            String text = "";
 
-        /**
-         * Sets the text size for a Paint object so a given string of text will be a given width.
-         *
-         * @param paint the Paint to set the text size for
-         * @param text the text that should be that width
-         *
-         * @return float - the font size the text should be to fit the width
-         */
-        private float getTextSizeForWidth(Paint paint, int width, String text) {
-            final float testTextSize = 48f;
+            if (currentState == STATE.DRIBBLE_2 || currentState == STATE.DRIBBLE_1) {
+                for (int i = 0; i < 3; i++) {
+                    if (i <= stateInfo) high += currentSyllable + " - ";
+                    else text += currentSyllable + " - ";
+                }
 
-            // Get the bounds of the text, using our testTextSize.
-            paint.setTextSize(testTextSize);
-            Rect bounds = new Rect();
-            paint.getTextBounds(text, 0, text.length(), bounds);
+                text += currentString;
 
-            textChanged = false;
-            return testTextSize * width / bounds.width();
+                if (textChanged) {
+                    float textSize = getTextSizeForWidth(blackPaint, screenWidth - 30, high + text);
+                    blackPaint.setTextSize(textSize);
+                    redPaint.setTextSize(textSize);
+                    textChanged = false;
+                }
+                Rect blackTemp = new Rect();
+                Rect redTemp = new Rect();
+
+                blackPaint.getTextBounds(high + text, 0, high.length() + text.length(), blackTemp);
+                redPaint.getTextBounds(high, 0, high.length(), redTemp);
+
+                canvas.drawText(high,
+                        5,
+                        blackTemp.height() + 10,
+                        redPaint);
+
+                canvas.drawText(text,
+                        redTemp.width() + getScaled(18),
+                        blackTemp.height() + 10,
+                        blackPaint);
+            }
+            else if (currentState == STATE.SHOOTING) {
+                text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
+                if (textChanged) {
+                    redPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth - 30, text));
+                    textChanged = false;
+                }
+                Rect temp = new Rect();
+                redPaint.getTextBounds(text, 0, text.length(), temp);
+                canvas.drawText(text,
+                        5,
+                        temp.height() + 10,
+                        redPaint);
+            }
+            else {
+                text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
+                if (textChanged || currentState == STATE.COUNTDOWN) {
+                    blackPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth - 30, text));
+                    textChanged = false;
+                }
+                Rect temp = new Rect();
+                blackPaint.getTextBounds(text, 0, text.length(), temp);
+                canvas.drawText(text,
+                        5,
+                        temp.height() + 10,
+                        blackPaint);
+            }
         }
 
         /**
@@ -527,8 +558,7 @@ public class BasketballGameActivity extends GameActivity {
             net.setBounds(getScaled(25),
                     screenHeight - getScaled(500),
                     getScaled(200),
-
-            screenHeight - getScaled(100));
+                    screenHeight - getScaled(100));
             concentrate.setBounds(screenWidth - getScaled(100),
                     screenHeight - getScaled(360),
                     screenWidth - getScaled(30),
@@ -560,21 +590,16 @@ public class BasketballGameActivity extends GameActivity {
                     screenHeight - getScaled(66));
         }
 
-		/**
+        /**
          * Sets properties of black paint used to render text in-game.
          */
         private void setUpPaints(){
             blackPaint = new Paint();
             blackPaint.setColor(Color.BLACK);
             blackPaint.setTextAlign(Paint.Align.LEFT);
+            redPaint = new Paint();
+            redPaint.setColor(Color.RED);
+            redPaint.setTextAlign(Paint.Align.LEFT);
         }
     }
 }
-
-/** Left to do
- *    - Add to dictionary all words and syllables
- *      - Add syllables to global dictionary
- *    - Implement PocketSphinx
- *    - Use PocketSphinx to determine words said and use that to transition states
- *    - Highlight letters as they are said
- */
