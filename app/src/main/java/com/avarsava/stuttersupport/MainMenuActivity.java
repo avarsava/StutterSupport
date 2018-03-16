@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -32,6 +35,11 @@ public class MainMenuActivity extends FragmentActivity {
      * Important milestones in the streak count, in days.
      */
     private final List<Integer> MILESTONES = new LinkedList<>(Arrays.asList(1, 7, 31, 50, 75, 100));
+
+    /**
+     * Age at which social media begins to be appropriate.
+     */
+    private final int SOCIAL_MEDIA_AGE = 13;
 
     /**
      * Records whether the social media share message has been offered once already.
@@ -105,6 +113,8 @@ public class MainMenuActivity extends FragmentActivity {
                 ScriptReadingActivity.class, R.xml.script_reading_prefs));
         fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_basketball_splash,
                 BasketballGameActivity.class, R.xml.basketball_prefs));
+        fList.add(GameStarterMenuFragment.newInstance(R.drawable.ic_thought_tracker_menu,
+                ThoughtTrackerActivity.class, R.xml.thought_tracker_prefs));
 
         return fList;
     }
@@ -155,7 +165,7 @@ public class MainMenuActivity extends FragmentActivity {
         int activityPerformance = data.getIntExtra("activityPerformance", -1);
         int activityDifficulty = data.getIntExtra("activityDifficulty", 1);
 
-        if(resultCode == RESULT_OK){
+        if(resultCode >= 1){
             //Show encouragement
             showEncouragement();
 
@@ -167,12 +177,34 @@ public class MainMenuActivity extends FragmentActivity {
 
             //Show dialog if milestone is hit and social media offer hasn't been made yet
             if((MILESTONES.contains(currentStreak) || isLargeMilestone(currentStreak))
-                    && !socialMediaOffered) {
-                showDialog(this, getString(R.string.milestone_header),
-                        getString(R.string.milestone_prompt));
+                    && socialMediaAppropriate()) {
+                Dialog.showDialogWithPosListener(this, getString(R.string.milestone_header),
+                        getString(R.string.milestone_prompt),
+                        new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                return createSocialIntent();
+                            }
+                        });
                 socialMediaOffered = true;
             }
         }
+    }
+
+    /**
+     * Determines whether it is appropriate to trigger the social media prompt.
+     *
+     * @return true if user is of age, social media has not been disabled, and the social media
+     *          prompt has not yet been shown today. False otherwise.
+     */
+    private boolean socialMediaAppropriate(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int userAge = Integer.valueOf(prefs.getString("pti_userAge", "13"));
+        boolean socialMediaEnabled = prefs.getBoolean("pti_socialMediaIntegration", true);
+
+        return (userAge >= SOCIAL_MEDIA_AGE)
+                && socialMediaEnabled
+                && !socialMediaOffered;
     }
 
     /**
@@ -198,41 +230,15 @@ public class MainMenuActivity extends FragmentActivity {
     }
 
     /**
-     * Shows a dialog with a message, and 'OK' and 'Cancel' buttons. If the user presses 'OK',
-     * creates an intent which the OS uses to post a message to whatever social media app installed
-     * on the device the user chooses.
-     *
-     * based on https://stackoverflow.com/questions/8227820/alert-dialog-two-buttons
-     * @param activity This activity
-     * @param title Title for the dialog
-     * @param message Message to display on dialog
-     */
-    public void showDialog(Activity activity, String title, CharSequence message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                createSocialIntent();
-            }
-        };
-
-        if (title != null) builder.setTitle(title);
-
-        builder.setMessage(message);
-        builder.setPositiveButton(getString(R.string.OK_button), positiveListener);
-        builder.setNegativeButton(getString(R.string.Cancel_button), null);
-        builder.show();
-    }
-
-    /**
      * Creates an implicit Intent which the OS uses to send a message to any social media app
      * that the user may have on their device.
      */
-    private void createSocialIntent() {
+    private boolean createSocialIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, generateShareMessage());
         startActivity(Intent.createChooser(shareIntent, "Share..."));
+        return true;
     }
 
     /**

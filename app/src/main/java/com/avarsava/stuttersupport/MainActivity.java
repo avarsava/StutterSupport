@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
@@ -15,6 +16,11 @@ import android.view.View;
  */
 public class MainActivity extends AppCompatActivity {
     /**
+     * Helps check if Setup needs to be shown.
+     */
+    private SetupDbHelper dbHelper;
+
+    /**
      * Creates the Activity and displays the splash screen layout.
      *
      * @param savedInstanceState used for internal Android communication.
@@ -23,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new SetupDbHelper(this, "setup.db", "SETUP");
+        if(!dbHelper.setupIsDone()){
+            View notifPrefs = findViewById(R.id.notificationSettingsButton);
+            View ptInterface = findViewById(R.id.parentTeacherInterfaceButton);
+            notifPrefs.setEnabled(false);
+            ptInterface.setEnabled(false);
+        }
         RegisterAlarmBroadcast();
     }
 
@@ -36,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = null;
         switch(view.getId()){
             case R.id.splashButton:
-                intent = new Intent(this, MainMenuActivity.class);
+                if(!dbHelper.setupIsDone()){
+                    intent = new Intent(this, SetupActivity.class);
+                }else {
+                    intent = new Intent(this, MainMenuActivity.class);
+                }
                 break;
             case R.id.licensesButton:
                 intent = new Intent(this, LicensesActivity.class);
@@ -45,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this,
                         NotificationSettingsActivity.class);
                 intent.putExtra("prefs", R.xml.notifications_prefs);
+                break;
+            case R.id.parentTeacherInterfaceButton:
+                intent = new Intent(this,
+                        PTIPasswordActivity.class);
                 break;
         }
         startActivity(intent);
