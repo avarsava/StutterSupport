@@ -144,7 +144,7 @@ public class SettingsScreenActivity extends PreferenceActivity{
                 break;
             case R.xml.basketball_prefs:
                 Boolean bbLocked =
-                        Boolean.valueOf(sharedPrefs.getBoolean("pti_override_deepBreathing",
+                        Boolean.valueOf(sharedPrefs.getBoolean("pti_bbg_override",
                                 false));
                 Preference bbMaxCycles = findPreference("bb_max_cycles");
                 Preference bbSpeed = findPreference("bb_speed");
