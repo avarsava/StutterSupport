@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 public class TestDifficultyLevel {
 
     Difficulty difficulty;
-    public int TEST_MIN_VAL_PARAM = 2;
+    public int TEST_MIN_VAL_PARAM = 1;
     public int TEST_MIN_VAL;
     public int TEST_MAX_VAL_PARAM = 3;
     public int TEST_MAX_VAL;
