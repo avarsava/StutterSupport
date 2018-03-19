@@ -6,9 +6,12 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,25 +31,31 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class TestDatabaseFunctionalities {
 
-    public TrackerDbHelper trackerDbHelper;
-    public StreakDbHelper streakDbHelper;
-    public SQLiteDatabase trackerDb;
-    public SQLiteDatabase streakDb;
+    public static TrackerDbHelper trackerDbHelper;
+    public static StreakDbHelper streakDbHelper;
+    //public static SQLiteDatabase trackerDb;
+    //public static SQLiteDatabase streakDb;
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
+        Log.d("TestDB", "calling setUp()...");
         //Possible fix: InstrumentationRegistry.getTargetContext().deleteDatabase(DatabaseHelper.) might have to delete old stuff
         Context context = InstrumentationRegistry.getTargetContext();
         trackerDbHelper = new TrackerDbHelper(context);
-        trackerDb = trackerDbHelper.getWritableDatabase();
+        //trackerDb = trackerDbHelper.getWritableDatabase();
+
         streakDbHelper = new StreakDbHelper(context);
-        streakDb = streakDbHelper.getWritableDatabase();
+        //streakDb = streakDbHelper.getWritableDatabase();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
+        Log.d("TestDB", "calling tearDown()...");
+        trackerDbHelper.getWritableDatabase().delete(trackerDbHelper.TABLE, null, null);
+        streakDbHelper.getWritableDatabase().delete(streakDbHelper.TABLE, null, null);
         trackerDbHelper.close();
+        streakDbHelper.close();
     }
 
     @Test
@@ -59,10 +68,10 @@ public class TestDatabaseFunctionalities {
         int testDifficultyItem2 = 3;
         trackerDbHelper.addToDb(testActivityNameItem1, testPerformanceItem1, testDifficultyItem1, streakDbHelper);
         trackerDbHelper.addToDb(testActivityNameItem2, testPerformanceItem2, testDifficultyItem2, streakDbHelper);
-        assertEquals(2, DatabaseUtils.queryNumEntries(trackerDbHelper.getReadableDatabase(), "tracker"));
+        assertEquals(2, DatabaseUtils.queryNumEntries(trackerDbHelper.getWritableDatabase(), "tracker"));
 
         // check data is correct in db
-        Cursor cursor = trackerDb.query("tracker", null, null, null, null, null, null, null);
+        Cursor cursor = trackerDbHelper.getWritableDatabase().query("tracker", null, null, null, null, null, null, null);
         assertTrue(cursor.moveToFirst());
         int activityColIndex = cursor.getColumnIndex(TrackerDbHelper.C_ACTIVITY);
         int performanceColIndex = cursor.getColumnIndex(TrackerDbHelper.C_PERFORMANCE);
@@ -78,12 +87,13 @@ public class TestDatabaseFunctionalities {
     @Test
     public void testUpdateCurrentStreak() {
         int testCurrentValue = 5;
+        int newStreak = 1;
         int currentBestValue = streakDbHelper.getBest();
         assertEquals(0, currentBestValue);
 
         streakDbHelper.updateCurrent(testCurrentValue);
 
-        Cursor cursor = streakDb.query("streak", null, null, null, null, null, null, null);
+        Cursor cursor = streakDbHelper.getWritableDatabase().query("streak", null, null, null, null, null, null, null);
         assertTrue(cursor.moveToFirst());
 
         int typeColumnIndex = cursor.getColumnIndex(StreakDbHelper.C_TYPE);
@@ -98,10 +108,10 @@ public class TestDatabaseFunctionalities {
         int valueColumnIndex2= cursor.getColumnIndex(StreakDbHelper.C_VALUE);
 
         assertEquals(StreakDbHelper.R_BEST, cursor.getString(typeColumnIndex2));
-        assertEquals(testCurrentValue, cursor.getInt(valueColumnIndex2));
+        assertEquals(newStreak, cursor.getInt(valueColumnIndex2));
 
         int updatedBestValue = streakDbHelper.getBest();
-        assertEquals(5, updatedBestValue);
+        assertEquals(newStreak, updatedBestValue);
 
 
     }
