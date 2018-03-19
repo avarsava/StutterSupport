@@ -52,6 +52,8 @@ public class TestDatabaseFunctionalities {
     @AfterClass
     public static void tearDown() throws Exception {
         Log.d("TestDB", "calling tearDown()...");
+        trackerDbHelper.getWritableDatabase().delete(trackerDbHelper.TABLE, null, null);
+        streakDbHelper.getWritableDatabase().delete(streakDbHelper.TABLE, null, null);
         trackerDbHelper.close();
         streakDbHelper.close();
     }
