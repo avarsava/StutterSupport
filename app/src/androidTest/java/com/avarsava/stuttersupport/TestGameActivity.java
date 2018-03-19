@@ -1,8 +1,10 @@
 package com.avarsava.stuttersupport;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -29,38 +32,43 @@ public class TestGameActivity {
     BasketballGameActivity bActivity;
     Intent testIntent;
 
-    @Rule
-    public ActivityTestRule<GameActivity> ruleGameActivity  = new  ActivityTestRule<>(GameActivity.class);
-    @Rule ActivityTestRule<BasketballGameActivity> ruleBasketballActivity = new ActivityTestRule<>(BasketballGameActivity.class);
+    //@Rule
+   // public ActivityTestRule<GameActivity> ruleGameActivity; // = new  ActivityTestRule<>(GameActivity.class, false, true);
+    @Rule public ActivityTestRule<BasketballGameActivity> ruleBasketballActivity = new ActivityTestRule<>(BasketballGameActivity.class, false, true);
 
     @Before
-    public void setUp() {
-        activity = ruleGameActivity.getActivity();
+    public void setUp() throws Exception{
         bActivity = ruleBasketballActivity.getActivity();
-        testIntent = activity.getIntent();
-        testIntent.putExtra("activityName", "TestActivityName");
-        testIntent.putExtra("activityPerformance", 1);
-        testIntent.putExtra("activityDifficulty", 1);
+        testIntent = bActivity.getIntent();
+        long startTime = System.currentTimeMillis();
+
+        Field speechRecognizer = bActivity.getClass().getSuperclass().getDeclaredField("recognizer");
+        speechRecognizer.setAccessible(true);
+        while(speechRecognizer.get(bActivity) == null){
+            Thread.sleep(100);
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (elapsedTime > 5000){
+                fail("Recognizer did not initialize");
+                return;
+            }
+        }
     }
 
     // Ensure that the activity is killed properly with the appropriate intent
     @Test
     public void testKillIfCountHigh() throws Exception {
-        Field privateCycleCount = activity.getClass().getDeclaredField("cycleCount");
+        Field privateCycleCount = bActivity.getClass().getSuperclass().getDeclaredField("cycleCount");
         privateCycleCount.setAccessible(true);
-        privateCycleCount.set(activity, 5);
-        Field privateMaxCycle = activity.getClass().getDeclaredField("maxCycles");
-        privateMaxCycle.set(activity, 3);
+        privateCycleCount.set(bActivity, 5);
+        Field privateMaxCycle = bActivity.getClass().getSuperclass().getDeclaredField("maxCycles");
+        privateMaxCycle.set(bActivity, 3);
 
-        activity.killIfCountHigh("TestActivityName",1,1);
-        Field resultCode = activity.getClass().getDeclaredField("mResultCode");
-        resultCode.setAccessible(true);
-        int actualResultCode = (Integer) resultCode.get(activity);
-        assertThat(actualResultCode, is(-1));
+        bActivity.killIfCountHigh("TestActivityName",1,1);
+        Bundle bundle = testIntent.getExtras();
 
-        Field resultData = activity.getClass().getDeclaredField("mResultData");
-        resultData.setAccessible(true);
-        assertEquals(testIntent, resultData.get(activity));
+        assertEquals("TestActivityName", bundle.getString("activityName"));
+        assertEquals(1, bundle.getInt("activityPerformance"));
+        assertEquals(1, bundle.getInt("activityDifficulty"));
     }
 
     @Test
@@ -69,8 +77,9 @@ public class TestGameActivity {
         privateCurrentState.setAccessible(true);
         privateCurrentState.set(bActivity, BasketballGameActivity.STATE.DRIBBLE_2);
         Field privateStateInfo = bActivity.getClass().getDeclaredField("stateInfo");
-        int currentStateInfo = (int) privateStateInfo.get(bActivity);
         privateStateInfo.setAccessible(true);
+        int currentStateInfo = (int) privateStateInfo.get(bActivity);
+
 
         //Check for state dribble_2
         bActivity.switchState();
