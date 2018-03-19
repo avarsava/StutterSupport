@@ -4,6 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class TestMainActivity {
 
         View splashButtonView = activity.findViewById(R.id.splashButton);
         assertNotNull(splashButtonView);
-        assertThat(splashButtonView, instanceOf(Button.class));
+        assertThat(splashButtonView, instanceOf(ImageView.class));
 
         View licensesButtonView = activity.findViewById(R.id.licensesButton);
         assertNotNull(licensesButtonView);
