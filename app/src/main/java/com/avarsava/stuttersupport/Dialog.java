@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Helper class for displaying dialogs to the screen.

@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Tyler Crane (02/08/2018)
- * @version 1.0
- * @since   0.1
+ * @version 1.5
+ * @since   1.1
  *
  * A game in a man is holding a basketball, and a word is displayed at the top of the screen. When
  * the countdown finishes, the man will begin dribbling the ball. Each time the ball connects with
@@ -44,13 +43,16 @@ public class BasketballGameActivity extends GameActivity {
      * NOTREADY - The voice recognition engine has not yet initialized, and the Start Button has
      * not been pressed.
      * COUNTDOWN - The timer is counting down to start a new cycle
-     * DRIBBLE_1 - The person is starting to dribble the ball, but the ball is not connected to the ground
+     * DRIBBLE_1 - The person is starting to dribble the ball, but the ball is not connected to the
+     *      ground
      *     - Syllables spoken during this state will cause an incorrect cycle
-     * DRIBBLE_2 - The person is still dribbling the ball, and the ball is now connected to the ground
+     * DRIBBLE_2 - The person is still dribbling the ball, and the ball is now connected to the
+     *      ground
      *     - Syllables are to be said during this state
      * SHOOTING - The person is shooting the ball
      *     - The full word displayed is to be spoken during this state
-     * RESETTING - The shot is complete, and either the shot went in if correct, or missed if incorrect
+     * RESETTING - The shot is complete, and either the shot went in if correct, or missed if
+     *      incorrect
      */
     public enum STATE {NOTREADY, COUNTDOWN, DRIBBLE_1, DRIBBLE_2, SHOOTING, RESETTING};
 	
@@ -77,22 +79,24 @@ public class BasketballGameActivity extends GameActivity {
     private STATE currentState;
 
     /**
-     * The current string that the user will try to say for the game
+     * The current full word that the user will try to say for the game
      */
     private String currentString;
 
     /**
-     * The current string that the user will try to say for the game
+     * The current syllable that the user will try to say for the game
      */
     private String currentSyllable;
 
     /**
      * The states store additional information as an int when needed
+     * TODO: Clarify what is being stored here
      */
     private int stateInfo = 0;
 
     /**
      * Similar to stateInfo, this variable stores extra info for the resetting state only
+     * TODO: Clarify what is being stored here
      */
     private int resetInfo = 0;
 
@@ -143,8 +147,16 @@ public class BasketballGameActivity extends GameActivity {
         setNewString();
         //Changing the keywords may have an effect on the accuracy
         //  - Set the keywords to a list of all the possible words and syllables
-        ArrayList<String> dict = new ArrayList(Arrays.asList(getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName()))));
-        dict.addAll(Arrays.asList(getResources().getStringArray(getResources().getIdentifier("basketball_syllables_" + difficulty, "array", getPackageName()))));
+        ArrayList<String> dict = new ArrayList(Arrays.asList(getResources().getStringArray
+                (getResources().getIdentifier
+                        ("basketball_words_" + difficulty,
+                                "array",
+                                getPackageName()))));
+        dict.addAll(Arrays.asList(getResources().getStringArray
+                (getResources().getIdentifier
+                        ("basketball_syllables_" + difficulty,
+                                "array",
+                                getPackageName()))));
         runRecognizerSetup(currentSyllable, dict.toArray(new String[0]));
     }
 
@@ -155,8 +167,10 @@ public class BasketballGameActivity extends GameActivity {
      */
     private void setNewString () {
         String potentialString;
-        String[] allWords = getResources().getStringArray(getResources().getIdentifier("basketball_words_" + difficulty, "array", getPackageName()));
-        String[] allSyll = getResources().getStringArray(getResources().getIdentifier("basketball_syllables_" + difficulty, "array", getPackageName()));
+        String[] allWords = getResources().getStringArray(getResources().getIdentifier
+                ("basketball_words_" + difficulty, "array", getPackageName()));
+        String[] allSyll = getResources().getStringArray(getResources().getIdentifier
+                ("basketball_syllables_" + difficulty, "array", getPackageName()));
         List<String> usedStringsList = Arrays.asList(usedStrings);
         int randId;
 
@@ -280,12 +294,14 @@ public class BasketballGameActivity extends GameActivity {
         private Paint blackPaint, redPaint;
 
         /**
-         * These drawables store the images to be drawn for the background and foreground (net and court)
+         * These drawables store the images to be drawn for the background and foreground
+         * (net and court)
          */
         private Drawable instructionBg, gameBg;
 
         /**
-         * These drawables store the ball, net and facial expressions for the person shooting the ball
+         * These drawables store the ball, net and facial expressions for the person shooting the
+         * ball
          */
         private Drawable ball, net, happy, concentrate, sad;
 
@@ -317,7 +333,8 @@ public class BasketballGameActivity extends GameActivity {
         }
 
         /**
-         * Returns the background image for the basketball game to display before the user clicks the start button
+         * Returns the background image for the basketball game to display before the user clicks
+         * the start button
          *
          * @return Drawable instructionBg for the splash screen
          */
@@ -496,7 +513,9 @@ public class BasketballGameActivity extends GameActivity {
                 text += currentString;
 
                 if (textChanged) {
-                    float textSize = getTextSizeForWidth(blackPaint, screenWidth - 30, high + text);
+                    float textSize = getTextSizeForWidth(blackPaint,
+                            screenWidth - 30,
+                            high + text);
                     blackPaint.setTextSize(textSize);
                     redPaint.setTextSize(textSize);
                     textChanged = false;
@@ -504,7 +523,10 @@ public class BasketballGameActivity extends GameActivity {
                 Rect blackTemp = new Rect();
                 Rect redTemp = new Rect();
 
-                blackPaint.getTextBounds(high + text, 0, high.length() + text.length(), blackTemp);
+                blackPaint.getTextBounds(high + text,
+                        0,
+                        high.length() + text.length(),
+                        blackTemp);
                 redPaint.getTextBounds(high, 0, high.length(), redTemp);
 
                 canvas.drawText(high,
@@ -518,9 +540,18 @@ public class BasketballGameActivity extends GameActivity {
                         blackPaint);
             }
             else if (currentState == STATE.SHOOTING) {
-                text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
+                text = currentSyllable
+                        + " - "
+                        + currentSyllable
+                        + " - "
+                        + currentSyllable
+                        + " - "
+                        + currentString;
                 if (textChanged) {
-                    redPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth - 30, text));
+                    redPaint.setTextSize(getTextSizeForWidth
+                            (blackPaint,
+                                    screenWidth - 30,
+                                    text));
                     textChanged = false;
                 }
                 Rect temp = new Rect();
@@ -531,9 +562,17 @@ public class BasketballGameActivity extends GameActivity {
                         redPaint);
             }
             else {
-                text = currentSyllable + " - " + currentSyllable + " - " + currentSyllable + " - " + currentString;
+                text = currentSyllable
+                        + " - "
+                        + currentSyllable
+                        + " - "
+                        + currentSyllable
+                        + " - "
+                        + currentString;
                 if (textChanged || currentState == STATE.COUNTDOWN) {
-                    blackPaint.setTextSize(getTextSizeForWidth(blackPaint, screenWidth - 30, text));
+                    blackPaint.setTextSize(getTextSizeForWidth(blackPaint,
+                            screenWidth - 30,
+                            text));
                     textChanged = false;
                 }
                 Rect temp = new Rect();

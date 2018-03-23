@@ -1,7 +1,6 @@
 package com.avarsava.stuttersupport;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -12,7 +11,7 @@ import java.util.Map;
 
 /**
  * @author Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * First time the app is launched, user is sent to this screen
@@ -52,7 +51,8 @@ public class SetupActivity extends PreferenceActivity {
         addPreferencesFromResource(prefsFile);
 
         //TODO: Make strings not hardcoded
-        Dialog.showDialog(this, "Welcome!", "Please set your initial settings before" +
+        Dialog.showDialog(this, "Welcome!",
+                "Please set your initial settings before" +
                 " beginning to use this app.");
     }
 
@@ -81,7 +81,8 @@ public class SetupActivity extends PreferenceActivity {
                     return true;
                 } else {
                     //TODO: Make strings not hardcoded
-                    Dialog.showDialog(thisActivity, "Sorry!", "Please fill out every" +
+                    Dialog.showDialog(thisActivity, "Sorry!",
+                            "Please fill out every" +
                             " setting before pressing Submit.");
                     return false;
                 }

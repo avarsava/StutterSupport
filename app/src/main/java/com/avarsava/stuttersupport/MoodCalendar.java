@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Displays a calendar which highlights the current date with blue text, and highlights days with
@@ -75,7 +75,8 @@ public class MoodCalendar extends LinearLayout
     }
 
     /**
-     * Constructor, creates RelativeLayout from inflates layout from XML.
+     * Constructor, creates RelativeLayout from inflates layout from XML. Initializes
+     * ThoughtDBHelper to get thought information.
      *
      * @param context The application context.
      * @param attrs AttributeSet to pass to RelativeLayout constructor.
@@ -90,7 +91,8 @@ public class MoodCalendar extends LinearLayout
     }
 
     /**
-     * Constructor, creates RelativeLayout from inflates layout from XML.
+     * Constructor, creates RelativeLayout from inflates layout from XML. Initializes
+     * ThoughtDBHelper to get thought information.
      *
      * @param context The application context.
      * @param attrs AttributeSet to pass to RelativeLayout constructor.
@@ -159,6 +161,12 @@ public class MoodCalendar extends LinearLayout
         txtDate.setText(DbDate.getMonthAndYear(getContext()));
     }
 
+    /**
+     * Builds a HashMap of dates to the average mood logged on that date.
+     *
+     * @param dates ArrayList of Java Date objects
+     * @return HashMap of Date to average MOOD
+     */
     private HashMap<Date, MOOD> buildCalendarMap(ArrayList<Date> dates){
         HashMap<Date, MOOD> map = new HashMap<>();
 

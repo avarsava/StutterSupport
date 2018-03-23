@@ -12,7 +12,7 @@ import android.util.Log;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Provides Settings screen for changing the Daily notification timing
@@ -61,7 +61,8 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
 
     /**
      * Expands preferences from XML into a settings screen layout, then sets back and restore
-     * buttons to listen for click activity.
+     * buttons to listen for click activity. On change of time, warns user if time is outside
+     * accepted range, otherwise resets the alarm registered with the OS.
      *
      * @param preferencesResId Resource ID of the preferences file to expand
      */
@@ -107,7 +108,8 @@ public class NotificationSettingsActivity extends SettingsScreenActivity{
                 }
 
                 int oldMinute =
-                        Integer.valueOf(sp.getString("notificationCustomMinute", "00"));
+                        Integer.valueOf(sp.getString
+                                ("notificationCustomMinute", "00"));
                 notificationRegistrator.updateAlarm(newHour, oldMinute);
                 return true;
             }

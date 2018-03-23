@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * Displays the splash screen, with a button to show the third party licenses. Sets up the daily
@@ -43,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
      * Handles clicking on the screen, launches the Main Menu or the Licenses screen depending
      * on which was clicked.
      *
-     * @param view the view which was clicked (in this case, either the splash screen or licenses)
+     * @param view the view which was clicked (in this case, either the splash screen,
+     *            parent-teacher interface, notification settings, or licenses)
      */
     public void onClick(View view){
         Intent intent = null;

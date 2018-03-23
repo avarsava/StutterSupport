@@ -1,8 +1,6 @@
 package com.avarsava.stuttersupport;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -16,10 +14,11 @@ import java.util.concurrent.Callable;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
- * Allows for the creation of a Settings page based on an XML preferences list.
+ * Allows for the creation of a Settings page based on an XML preferences list. Renders settings
+ * dynamically based on override settings configured in Parent-Teacher Interface
  */
 public class SettingsScreenActivity extends PreferenceActivity{
     /**
@@ -118,7 +117,8 @@ public class SettingsScreenActivity extends PreferenceActivity{
             case R.xml.train_game_prefs:
                 Preference tgDifficulty = findPreference("tg_Difficulty");
                 Boolean tgLocked
-                        = Boolean.valueOf(sharedPrefs.getBoolean("pti_tg_override", false));
+                        = Boolean.valueOf
+                        (sharedPrefs.getBoolean("pti_tg_override", false));
 
                 //If Train Game is NOT locked, enable the preference.
                 tgDifficulty.setEnabled(!tgLocked);

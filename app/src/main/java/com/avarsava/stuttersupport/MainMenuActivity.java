@@ -1,8 +1,6 @@
 package com.avarsava.stuttersupport;
-
-import android.app.Activity;
+;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,7 +22,7 @@ import java.util.concurrent.Callable;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * Uses a ViewPager to scroll multiple Fragments horizontally, providing a menu. The Fragments
@@ -34,7 +32,8 @@ public class MainMenuActivity extends FragmentActivity {
     /**
      * Important milestones in the streak count, in days.
      */
-    private final List<Integer> MILESTONES = new LinkedList<>(Arrays.asList(1, 7, 31, 50, 75, 100));
+    private final List<Integer> MILESTONES = new LinkedList<>
+            (Arrays.asList(1, 7, 31, 50, 75, 100));
 
     /**
      * Age at which social media begins to be appropriate.
@@ -148,7 +147,7 @@ public class MainMenuActivity extends FragmentActivity {
     }
 
     /**
-     * Executed when game activities return a result. If RESULT_OK is received, indicating a
+     * Executed when game activities return a result. If a non-zero score is received, indicating a
      * successful activity, then encouragement is shown, the streak is updated, and a social media
      * prompt may be displayed to the user.
      *
@@ -232,6 +231,8 @@ public class MainMenuActivity extends FragmentActivity {
     /**
      * Creates an implicit Intent which the OS uses to send a message to any social media app
      * that the user may have on their device.
+     *
+     * @return true, because necessary for use as Callable
      */
     private boolean createSocialIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);

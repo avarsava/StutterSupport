@@ -8,15 +8,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Allows the user to track their thoughts or self-talk through an interactive database frontend.
@@ -27,7 +25,6 @@ import java.util.List;
  * of negative thinking in order to target and reduce that thought pattern. This helps make the
  * user proactive against anxiety- or depression-triggering thought patterns.
  *
- * TODO: Art for Main Menu
  */
 
 public class ThoughtTrackerActivity extends FragmentActivity {

@@ -15,11 +15,12 @@ import java.util.HashSet;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
- * Eases access to database containing dates on which at least one activity was successfully
- * completed. This database is used for tracking the activity of the user and for calculating the
+ * Eases access to database containing dates on which activities were successfully
+ * completed, and information regarding how well the user did.
+ * This database is used for tracking the activity of the user and for calculating the
  * current and best streak scores.
  * Based off DbHelper.java from Learning Android by Marko Gargenta.
  */
@@ -43,7 +44,10 @@ public class TrackerDbHelper extends DatabaseHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + TABLE + " (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+        String sql = "CREATE TABLE "
+                + TABLE
+                + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + C_ACTIVITY + " TEXT NOT NULL, "
                 + C_DATE + " DATE NOT NULL, "
                 + C_PERFORMANCE + " INTEGER NOT NULL, "
@@ -120,7 +124,16 @@ public class TrackerDbHelper extends DatabaseHelper {
     public HashSet<Date> getDates() {
         HashSet<Date> dates = new HashSet<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(true, TABLE, null, null, null, null, null, null, null);
+        Cursor cursor = db.query
+                (true,
+                        TABLE,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         String strDate;
         int year, month, date;
         final int COLUMN_INDEX = 2; //The column that dates are located in
@@ -151,6 +164,4 @@ public class TrackerDbHelper extends DatabaseHelper {
         db.close();
         return dates;
     }
-
-
 }

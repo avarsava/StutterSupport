@@ -19,7 +19,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * An activity in which the player is tasked, without timing or pressure, to read aloud a script
