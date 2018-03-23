@@ -15,18 +15,26 @@ import static org.junit.Assert.*;
 
 /**
  * @author  Aditi Trivedi <at15gp@brocku.ca>
- * @version 1.1
- * @since   0.1
+ * @version 1.5
+ * @since   1.1
  *
  * TODO: Add intent testing
- * Test MainActivity
+ * Tests MainActivity for the presence of buttons
  */
 @RunWith(AndroidJUnit4.class)
 public class TestMainActivity {
-
+    /**
+     * Enables launching MainActivity
+     */
     @Rule
-    public ActivityTestRule<MainActivity> ruleMainActivity  = new  ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> ruleMainActivity
+            = new  ActivityTestRule<>(MainActivity.class);
 
+    /**
+     * Ensures buttons are present on screen
+     *
+     * @throws Exception if something fails
+     */
     @Test
     public void ensureButtonsArePresent() throws Exception {
         MainActivity activity = ruleMainActivity.getActivity();
@@ -43,5 +51,4 @@ public class TestMainActivity {
         assertNotNull(notificationsSettingsButtonView);
         assertThat(notificationsSettingsButtonView, instanceOf(Button.class));
     }
-
 }

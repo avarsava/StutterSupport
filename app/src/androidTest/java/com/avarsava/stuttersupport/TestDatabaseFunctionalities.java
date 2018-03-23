@@ -3,14 +3,11 @@ package com.avarsava.stuttersupport;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,35 +17,47 @@ import static org.junit.Assert.*;
 
 /**
  * @author  Aditi Trivedi <at15gp@brocku.ca>
- * @version 1.0
- * @since   0.1
+ * @version 1.5
+ * @since   1.1
  *
  * Testing functionality of TrackerDbHelper, StreakDbHelper, DatabaseHelper
  */
 
 
-//test updateStreak in trackerdbhelper
 @RunWith(AndroidJUnit4.class)
 public class TestDatabaseFunctionalities {
-
+    /**
+     * Accesses tracker database
+     */
     public static TrackerDbHelper trackerDbHelper;
+
+    /**
+     * Accesses streak database
+     */
     public static StreakDbHelper streakDbHelper;
-    //public static SQLiteDatabase trackerDb;
-    //public static SQLiteDatabase streakDb;
 
-
+    /**
+     * Before running tests, get context and databases
+     *
+     * @throws Exception Throws exception if cannot get context
+     */
     @BeforeClass
     public static void setUp() throws Exception {
         Log.d("TestDB", "calling setUp()...");
-        //Possible fix: InstrumentationRegistry.getTargetContext().deleteDatabase(DatabaseHelper.) might have to delete old stuff
         Context context = InstrumentationRegistry.getTargetContext();
         trackerDbHelper = new TrackerDbHelper(context);
-        //trackerDb = trackerDbHelper.getWritableDatabase();
-
         streakDbHelper = new StreakDbHelper(context);
-        //streakDb = streakDbHelper.getWritableDatabase();
     }
 
+    /**
+     * After running tests, clear the tracker and streak databases and close connections.
+     * ATTN: If you run the tests on an existing copy of the app,
+     *      !!! IT WILL DELETE THE EXISTING TRACKING INFO !!!
+     * This shouldn't be an issue as we probably won't be running these tests against
+     * existing copies of the app.
+     *
+     * @throws Exception if database deletion fails
+     */
     @AfterClass
     public static void tearDown() throws Exception {
         Log.d("TestDB", "calling tearDown()...");
@@ -58,6 +67,9 @@ public class TestDatabaseFunctionalities {
         streakDbHelper.close();
     }
 
+    /**
+     * Adds entries to Tracker Database and ensures they got added correctly.
+     */
     @Test
     public void testAddingToTrackerDb() {
         String testActivityNameItem1 = "testActivityForTracker1";
@@ -83,7 +95,9 @@ public class TestDatabaseFunctionalities {
     }
 
 
-    // Tests for updateCurrentStreak and incrementBest
+    /**
+     * Tests for updateCurrentStreak and incrementBest
+     */
     @Test
     public void testUpdateCurrentStreak() {
         int testCurrentValue = 5;
@@ -93,7 +107,15 @@ public class TestDatabaseFunctionalities {
 
         streakDbHelper.updateCurrent(testCurrentValue);
 
-        Cursor cursor = streakDbHelper.getWritableDatabase().query("streak", null, null, null, null, null, null, null);
+        Cursor cursor = streakDbHelper.getWritableDatabase().query
+                ("streak",
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         assertTrue(cursor.moveToFirst());
 
         int typeColumnIndex = cursor.getColumnIndex(StreakDbHelper.C_TYPE);
@@ -112,7 +134,5 @@ public class TestDatabaseFunctionalities {
 
         int updatedBestValue = streakDbHelper.getBest();
         assertEquals(newStreak, updatedBestValue);
-
-
     }
 }
