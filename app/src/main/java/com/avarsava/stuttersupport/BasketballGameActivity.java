@@ -89,14 +89,13 @@ public class BasketballGameActivity extends GameActivity {
     private String currentSyllable;
 
     /**
-     * The states store additional information as an int when needed
-     * TODO: Clarify what is being stored here
+     * Used to keep track of how long the game has been in a certain state. Used for drawing
+     * and knowing when to switch states
      */
     private int stateInfo = 0;
 
     /**
-     * Similar to stateInfo, this variable stores extra info for the resetting state only
-     * TODO: Clarify what is being stored here
+     * Used for the resetting state to know whether the ball went in the net or was fumbled
      */
     private int resetInfo = 0;
 
