@@ -90,12 +90,14 @@ public class BasketballGameActivity extends GameActivity {
 
     /**
      * Used to keep track of how long the game has been in a certain state. Used for drawing
-     * and knowing when to switch states
+     * and knowing when to switch states. Operates as if a sub-state: dependent on the current
+     * STATE.
      */
     private int stateInfo = 0;
 
     /**
-     * Used for the resetting state to know whether the ball went in the net or was fumbled
+     * Used for the resetting state to know whether the ball went in the net or was fumbled.
+     * Operates like an exit code within states.
      */
     private int resetInfo = 0;
 
