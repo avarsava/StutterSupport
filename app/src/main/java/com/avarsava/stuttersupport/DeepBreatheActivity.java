@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * Activity responsible for running the Deep Breathe activity. When the start button is pressed,

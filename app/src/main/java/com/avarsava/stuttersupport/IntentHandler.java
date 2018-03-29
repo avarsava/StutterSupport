@@ -55,7 +55,8 @@ public class IntentHandler extends IntentService {
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(getString(R.string.reminder_text))
                     .setContentIntent(
-                            PendingIntent.getActivity(this, 0, new Intent(this,
+                            PendingIntent.getActivity(this, 0, new Intent
+                                            (this,
                                             MainActivity.class),
                                     PendingIntent.FLAG_UPDATE_CURRENT))
                     .setSound(soundUri).setSmallIcon(R.drawable.ic_logo)

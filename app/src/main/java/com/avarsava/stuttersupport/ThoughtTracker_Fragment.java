@@ -15,12 +15,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Parent class for Fragments in Thought Tracker.
@@ -118,9 +116,13 @@ public class ThoughtTracker_Fragment extends Fragment {
     }
 
 
-
+    /**
+     * Handles on-screen taps. When submitThought button is tapped by the user, get the entered
+     * String and MOOD, and inputs into database. Refreshes the calendar if it has been rendered.
+     *
+     * @param view Button which was tapped.
+     */
     public void onClick(View view){
-        //TODO: Handle Summary view's buttons?
         switch(view.getId()){
             case R.id.submitThought:
                 String newThought = ((EditText)getActivity().findViewById(R.id.thoughtInput))
@@ -132,7 +134,7 @@ public class ThoughtTracker_Fragment extends Fragment {
                         .toString());
 
                 // This is the strangest syntax I've ever seen,
-                // But apparently this is how this is done.
+                // But apparently this is how this is done when your class isn't static.
                 ThoughtDbHelper.DBEntry newEntry = thoughtDbHelper.new DBEntry(
                         newThought, newMood.toString());
                 thoughtDbHelper.addToDb(newEntry);
@@ -146,12 +148,29 @@ public class ThoughtTracker_Fragment extends Fragment {
         }
     }
 
+    /**
+     * Provides a list of DBEntry objects, properly formatted into Thought and Mood views
+     * in each list item.
+     */
     private class ThoughtListAdapter extends ArrayAdapter<ThoughtDbHelper.DBEntry>{
-
+        /**
+         * Constructor. Just calls super, nothing fancy
+         *
+         * @param context Activity context
+         * @param list ArrayList of DBEntry with which to populate list
+         */
         public ThoughtListAdapter(Context context, ArrayList<ThoughtDbHelper.DBEntry> list){
             super(context, 0, list);
         }
 
+        /**
+         * Inflates list entry XML and creates a single item for List.
+         *
+         * @param position Numerical position within list of this entry
+         * @param convertView View provided by OS to convert to our format
+         * @param parent ViewGroup provided by OS. Unused
+         * @return convertView formatted as DBEntry list item
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ThoughtDbHelper.DBEntry entry = getItem(position);
@@ -172,13 +191,28 @@ public class ThoughtTracker_Fragment extends Fragment {
     }
 
     /**
+     * Provides a list of the most common thoughts in the database.
      * Not even sure this is truly necessary, but here ya go
      */
     private class CommonListAdapter extends ArrayAdapter<String>{
+        /**
+         * Constructor.
+         *
+         * @param context Activity context
+         * @param list ArrayList of Strings representing entered Thoughts
+         */
         public CommonListAdapter(Context context, ArrayList<String> list) {
             super(context, 0, list);
         }
 
+        /**
+         * Puts the thought in the list.
+         *
+         * @param position Numerical position within list of this entry
+         * @param convertView View provided by OS to convert to our format
+         * @param parent ViewGroup provided by OS. Unused
+         * @return View containing a string
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
             String entry = getItem(position);
@@ -193,8 +227,20 @@ public class ThoughtTracker_Fragment extends Fragment {
         }
     }
 
+    /**
+     * Listener for clicks on List items in Common Thoughts
+     */
     private class CommonThoughtsClickListener implements AdapterView.OnItemClickListener{
 
+        /**
+         * Handles clicks on list items. Puts the text of the selected item into the
+         * Thought entry text box.
+         *
+         * @param adapterView self, i think.
+         * @param view Item object which was tapped
+         * @param position numerical position of selected item in list
+         * @param l ???
+         */
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             String value = (String)adapterView.getItemAtPosition(position);

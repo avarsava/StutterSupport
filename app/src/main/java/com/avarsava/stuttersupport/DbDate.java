@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Utilities for saving and modifying dates in the databases.

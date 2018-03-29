@@ -19,10 +19,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
-//TODO: Javadoc
+/**
+ * @author Weston James Knight
+ * @version 1.5
+ * @since   1.1
+ *
+ * Provides a backend interface for use by parents, teachers, SLP, &c. Provides information on
+ * completed activities, access to override settings, and the ability to export activity data
+ * to CSV for processing and reporting
+ */
 public class ParentTeacherInterfaceActivity extends Activity {
+    /**
+     * Used to access activity completion data
+     */
     private TrackerDbHelper trackerDbHelper;
 
+    /**
+     * Used to display information from the Tracker DB to the screen
+     */
     public static TextView activitiesToday;
     public static TextView activitiesThisMonth;
     public static TextView activitiesThisWeek;
@@ -31,9 +45,17 @@ public class ParentTeacherInterfaceActivity extends Activity {
     public static TextView numberScriptReading;
     public static TextView numberTrainGame;
 
+    /**
+     * Onscreen buttons provide access to Settings screen and exporting data to CSV
+     */
     public static Button settingsButton;
     public static Button exportDataButton;
 
+    /**
+     * Inflates XML to screen and assigns TextViews to internal objects.
+     *
+     * @param savedInstanceState Bundle used by Android for internal messaging
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -54,6 +76,11 @@ public class ParentTeacherInterfaceActivity extends Activity {
         refreshData();
     }
 
+    /**
+     * Handles button presses
+     *
+     * @param view Button which was pressed
+     */
     public void onClick(View view){
         //Handle each type of button
         switch (view.getId()) {
@@ -69,7 +96,9 @@ public class ParentTeacherInterfaceActivity extends Activity {
         }
     }
 
-    //Refresh and display the data
+    /**
+     * Refreshes screen. Pulls data from TrackerDB and writes to TextViews.
+     */
     public void refreshData() {
         Date currentDate = new Date();
         String today = (currentDate.getYear() + 1900) + "-"
@@ -102,7 +131,12 @@ public class ParentTeacherInterfaceActivity extends Activity {
                         "TrainGame" + "'") + ".");
     }
 
-    //Returns the number of results in the database for the given query string
+    /**
+     * Returns the number of results in the database for the given query string
+     *
+     * @param query SQL to execute
+     * @return integer of number of lines returned by database
+     */
     private int queryCount(String query){
         SQLiteDatabase db = trackerDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -112,9 +146,13 @@ public class ParentTeacherInterfaceActivity extends Activity {
         return count;
     }
 
-    //Exports the entire database to a .csv file on the users external storage
+    /**
+     * Exports the entire database to a .csv file on the users external storage
+     */
     private void exportDatabase(){
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission =
+                ActivityCompat.checkSelfPermission
+                        (this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {//Check if permission to store files
             String[] PERMISSIONS_STORAGE = {
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -147,7 +185,12 @@ public class ParentTeacherInterfaceActivity extends Activity {
             cursor.moveToFirst();
             for(int i=0;i<cols;i++){
                 if( i!=cols-1) {//if not last item
-                    try {buffer.write(cursor.getColumnName(i) + ",");} catch (IOException e) {e.printStackTrace();}
+                    try {
+                        buffer.write
+                                (cursor.getColumnName(i) + ",");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {//last item
                     try {
                         buffer.write(cursor.getColumnName(i));
@@ -160,7 +203,11 @@ public class ParentTeacherInterfaceActivity extends Activity {
                 cursor.moveToPosition(i);
                 for(int j=0;j<cols;j++){
                     if(j!=cols-1){//if not last item
-                        try {buffer.write(cursor.getString(j) + ",");} catch (IOException e) {e.printStackTrace();}
+                        try {
+                            buffer.write(cursor.getString(j) + ",");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         try {
                             buffer.write(cursor.getString(j));//last item

@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Details the moods possible to enter in the Thought Tracker activity.
@@ -14,6 +14,12 @@ import android.graphics.Color;
 public enum MOOD {
     ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
 
+    /**
+     * Converts integer to Mood object
+     *
+     * @param i Integer from 1-10 to return as Mood
+     * @return Mood object for value 1-10, null if param is <1 or >10
+     */
     public static MOOD valueOf(int i){
         switch(i){
             case 1: return ONE;
@@ -30,10 +36,20 @@ public enum MOOD {
         return null;
     }
 
+    /**
+     * Converts Mood to String
+     *
+     * @return name of Mood as String
+     */
     public String toString(){
         return name();
     }
 
+    /**
+     * Returns integer value of Mood
+     *
+     * @return Int value of Mood if between 1-10. Else, returns 0
+     */
     public int getIntValue(){
         switch(this){
             case ONE: return 1;
@@ -50,6 +66,11 @@ public enum MOOD {
         return 0;
     }
 
+    /**
+     * Produces a colour representing the mood on a scale from blue-green to orange.
+     *
+     * @return integer representing Java Color
+     */
     public int getMoodColor(){
         if (this == null) return Color.WHITE;
 

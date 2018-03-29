@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   0.1
  *
  * Registers daily notifications with the Android OS.

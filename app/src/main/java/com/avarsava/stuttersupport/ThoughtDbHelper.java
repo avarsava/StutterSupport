@@ -6,28 +6,20 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Facilitates data storage for the Thought Tracker activity.
@@ -57,7 +49,9 @@ public class ThoughtDbHelper extends DatabaseHelper {
     }
 
     /**
-     * Details how Thought Tracker database should be laid out.
+     * Details how Thought Tracker database should be laid out. Four columns: GUID, thought, mood,
+     * date.
+     *
      * @param db SQLite database to have table created.
      */
     @Override
@@ -71,6 +65,11 @@ public class ThoughtDbHelper extends DatabaseHelper {
         Log.d(TAG, "onCreate w sql: " + sql);
     }
 
+    /**
+     * Adds a DBEntry object to the database.
+     *
+     * @param entry DBEntry object to add to database.
+     */
     public void addToDb(DBEntry entry){
         addToDb(entry.getThought(), MOOD.valueOf(entry.getMood()));
     }
@@ -100,16 +99,30 @@ public class ThoughtDbHelper extends DatabaseHelper {
         db.close();
     }
 
+    /**
+     * Clears all entries from the database table. Triggered from Settings.
+     */
     public void clearDatabase(){
         SQLiteDatabase db = getWritableDatabase();
 
         db.delete(TABLE, null, null);
     }
 
+    /**
+     * Gets all thoughts entered on today's date.
+     *
+     * @return Array of DBEntry objects representing all thoughts entered on today's date
+     */
     public DBEntry[] getTodaysThoughts(){
         return getThoughtsOnDate(DbDate.getDateString());
     }
 
+    /**
+     * Gets all thoughts entered on date represented by DbDate-formatted date string.
+     *
+     * @param dateString DbDate-formatted string representing target date.
+     * @return Array of DBEntry objects representing all thoughts entered on target date.
+     */
     public DBEntry[] getThoughtsOnDate(String dateString){
         DBEntry[] list;
         String sql = "SELECT * FROM "
@@ -145,6 +158,14 @@ public class ThoughtDbHelper extends DatabaseHelper {
         return list;
     }
 
+    /**
+     * Generates list of 25 thoughts retrieved from database, ordered by most-entered.
+     *
+     * TODO: 25 is a magic number, move to constant
+     *
+     * @return List of Strings representing 25 most-entered thoughts in database, ordered by
+     *          most-entered.
+     */
     public List<String> mostCommonThoughts(){
         //Set up data
         List<String> sortedThoughts = new ArrayList<>();
@@ -200,7 +221,11 @@ public class ThoughtDbHelper extends DatabaseHelper {
         return sortedThoughts;
     }
 
-
+    /**
+     * Retrieves all thoughts entered in the 30 days prior to today's date as DBEntry objects.
+     *
+     * @return List of DBEntry objects representing all thoughts entered in the past 30 days.
+     */
     public List<DBEntry> lastThirtyDaysThoughts(){
         List<DBEntry> sortedList = new ArrayList<>();
         Log.d(TAG, "Getting last 30 days' thoughts...");
@@ -217,6 +242,12 @@ public class ThoughtDbHelper extends DatabaseHelper {
         return sortedList;
     }
 
+    /**
+     * Calculates the average mood (rounded) on target date. Returns as integer.
+     *
+     * @param dateString DbDate-formatted String representing target date.
+     * @return integer representing average (rounded) mood on target date.
+     */
     public int averageMoodOnDate(String dateString){
         String sql = "SELECT "
                 + C_MOOD +
@@ -247,33 +278,80 @@ public class ThoughtDbHelper extends DatabaseHelper {
         return sum / count;
     }
 
+    /**
+     * Object representing one entry in database. Used to facilitate processing of entries.
+     */
     public class DBEntry{
+        /**
+         * Date field, DbDate-formatted
+         */
         String date;
+
+        /**
+         * Thought entered by user
+         */
         String thought;
+
+        /**
+         * Mood assigned by user, represented as String
+         */
         String mood;
 
+        /**
+         * Constructor for DBEntry with blank date field.
+         *
+         * @param t String representing thought entered by user.
+         * @param m String representing mood entered by user.
+         */
         public DBEntry(String t, String m){
             this.thought = t;
             this.mood = m;
             this.date = "";
         }
 
+        /**
+         * Constructor for DBEntry with all fields filled.
+         *
+         * @param d String representing DbDate-formatted Date
+         * @param t String representing thought entered by user
+         * @param m String representing mood entered by user
+         */
         public DBEntry(String d, String t, String m){
             this.date = d;
             this.thought = t;
             this.mood = m;
         }
 
+        /**
+         * Gets Thought from this entry.
+         *
+         * @return String representing thought entered by user
+         */
         public String getThought() {
             return thought;
         }
 
+        /**
+         * Gets Mood as String from this entry.
+         *
+         * @return String representing mood entered by user
+         */
         public String getMood(){
             return mood;
         }
 
+        /**
+         * Gets DbDate-formatted String representing Date on which this entry was entered.
+         *
+         * @return DbDate-formatted String representing Date for this entry
+         */
         public String getDate(){ return date;}
 
+        /**
+         * Formats this entry as "[date]: [thought], [mood]"
+         *
+         * @return String of formatted DBEntry
+         */
         @Override
         public String toString(){
             return date + ": " + thought + ", " + mood;
@@ -281,23 +359,54 @@ public class ThoughtDbHelper extends DatabaseHelper {
 
     }
 
+    /**
+     * Internal object used to facilitate counting of how often a thought occurs.
+     */
     public class DBCounter{
+        /**
+         * String of thought being counted
+         */
         String thought;
+
+        /**
+         * Integer representing number of times thought was entered.
+         */
         Integer count;
 
+        /**
+         * Constructor for new DBCounter object.
+         *
+         * @param t Thought being counted
+         * @param i integer representing number of occurences in database
+         */
         public DBCounter(String t, Integer i){
             this.thought = t;
             this.count = i;
         }
 
+        /**
+         * Gets thought being counted
+         *
+         * @return String representing thought being counted
+         */
         public String getThought(){
             return thought;
         }
 
+        /**
+         * Gets count of occurences of thought
+         *
+         * @return integer representing number of times thought occurs in database
+         */
         public Integer getCount(){
             return count;
         }
 
+        /**
+         * Formats DBCounter object as "[thought], x[count]"
+         *
+         * @return String of formatted DBCounter
+         */
         @Override
         public String toString(){
             return thought + ", x" + count;

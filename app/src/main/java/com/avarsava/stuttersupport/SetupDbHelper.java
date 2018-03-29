@@ -9,11 +9,12 @@ import android.util.Log;
 
 /**
  * @author Alexis Varsava <av11sl@brocku.ca>
- * @version 1.1
+ * @version 1.5
  * @since   1.1
  *
  * Keeps track of whether the Setup Wizard has run or not.
- * Unfortunately this is more permanent than a preference.
+ * Unfortunately this is more permanent than a preference, so it's preferable despite the
+ * comparative difficulty of implementation.
  */
 
 public class SetupDbHelper extends DatabaseHelper {
@@ -34,6 +35,13 @@ public class SetupDbHelper extends DatabaseHelper {
         super(context, dbname, table);
     }
 
+    /**
+     * Creates new database with two columns (name, value) and one row (name = 'done', value
+     * = FALSE). This row will get changed to (name = 'done', value = TRUE) once the Setup has
+     * been completed.
+     *
+     * @param db SQLite database to have table created.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " + TABLE + " (" + C_NAME + " TEXT PRIMARY KEY, "
@@ -52,6 +60,9 @@ public class SetupDbHelper extends DatabaseHelper {
         }
     }
 
+    /**
+     * Changes the 'value' column from FALSE to TRUE.
+     */
     public void setDone(){
         ContentValues existingRow = new ContentValues();
         existingRow.clear();
@@ -63,6 +74,13 @@ public class SetupDbHelper extends DatabaseHelper {
         db.close();
     }
 
+    /**
+     * Checks whether the 'value' column contains TRUE or FALSE, indicating whether or not
+     * the Setup has been successfully completed. Used for determining whether to trigger
+     * the Setup when splash screen is tapped.
+     *
+     * @return true if Setup has already been completed, false if it has not been.
+     */
     public boolean setupIsDone(){
         int value;
         SQLiteDatabase db = getReadableDatabase();

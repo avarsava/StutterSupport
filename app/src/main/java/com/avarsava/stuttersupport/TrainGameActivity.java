@@ -16,7 +16,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * A game in which a man prompts you to repeat after him, then you are interrupted by a passing
