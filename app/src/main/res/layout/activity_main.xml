@@ -54,7 +54,8 @@
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="Notification Settings"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/splashButton"
+        app:layout_constraintEnd_toStartOf="@+id/parentTeacherInterfaceButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Notification Settings" />
@@ -64,10 +65,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="Parent Teacher Interface"
+        android:text="Parents/Teachers"
+        app:layout_constraintBottom_toTopOf="@+id/splashButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationSettingsButton"
-        tools:text="Parent Teacher Interface" />
+        app:layout_constraintStart_toEndOf="@+id/notificationSettingsButton"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Parents/Teachers" />
 
 </android.support.constraint.ConstraintLayout>
