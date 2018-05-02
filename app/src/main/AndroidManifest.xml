@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-feature android:name="android.hardware.screen.portrait" />
 
     <uses-feature android:name="android.hardware.screen.portrait" />
 
@@ -14,7 +15,6 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
 
         <activity
             android:name="com.avarsava.stuttersupport.MainActivity"
