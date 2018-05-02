@@ -7,13 +7,18 @@ import android.view.View;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * Displays the splash screen, with a button to show the third party licenses. Sets up the daily
  * reminder notification.
  */
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Helps check if Setup needs to be shown.
+     */
+    private SetupDbHelper dbHelper;
+
     /**
      * Creates the Activity and displays the splash screen layout.
      *
@@ -23,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new SetupDbHelper(this, "setup.db", "SETUP");
+        if(!dbHelper.setupIsDone()){
+            View notifPrefs = findViewById(R.id.notificationSettingsButton);
+            View ptInterface = findViewById(R.id.parentTeacherInterfaceButton);
+            notifPrefs.setEnabled(false);
+            ptInterface.setEnabled(false);
+        }
         RegisterAlarmBroadcast();
     }
 
@@ -30,16 +42,30 @@ public class MainActivity extends AppCompatActivity {
      * Handles clicking on the screen, launches the Main Menu or the Licenses screen depending
      * on which was clicked.
      *
-     * @param view the view which was clicked (in this case, either the splash screen or licenses)
+     * @param view the view which was clicked (in this case, either the splash screen,
+     *            parent-teacher interface, notification settings, or licenses)
      */
     public void onClick(View view){
         Intent intent = null;
         switch(view.getId()){
             case R.id.splashButton:
-                intent = new Intent(this, MainMenuActivity.class);
+                if(!dbHelper.setupIsDone()){
+                    intent = new Intent(this, SetupActivity.class);
+                }else {
+                    intent = new Intent(this, MainMenuActivity.class);
+                }
                 break;
             case R.id.licensesButton:
                 intent = new Intent(this, LicensesActivity.class);
+                break;
+            case R.id.notificationSettingsButton:
+                intent = new Intent(this,
+                        NotificationSettingsActivity.class);
+                intent.putExtra("prefs", R.xml.notifications_prefs);
+                break;
+            case R.id.parentTeacherInterfaceButton:
+                intent = new Intent(this,
+                        PTIPasswordActivity.class);
                 break;
         }
         startActivity(intent);
@@ -49,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
      * Registers a new alarm for timing daily notifications
      */
     private void RegisterAlarmBroadcast(){
-        NotificationRegistrator register = new NotificationRegistrator(false);
-        register.register(this);
+        NotificationRegistrator register
+                = new NotificationRegistrator(false, this);
+        register.register();
     }
 }

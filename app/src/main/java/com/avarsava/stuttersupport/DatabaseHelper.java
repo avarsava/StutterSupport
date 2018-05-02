@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.Date;
+
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
  * @version 1.0
@@ -25,7 +27,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Version of database. Not really used for anything but required.
      */
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     /**
      * Database helper constructor. Saves information to object and creates SQLite helper.

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -14,58 +15,71 @@ import java.util.HashSet;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
- * Eases access to database containing dates on which at least one activity was successfully
- * completed. This database is used for tracking the activity of the user and for calculating the
+ * Eases access to database containing dates on which activities were successfully
+ * completed, and information regarding how well the user did.
+ * This database is used for tracking the activity of the user and for calculating the
  * current and best streak scores.
  * Based off DbHelper.java from Learning Android by Marko Gargenta.
  */
 
 public class TrackerDbHelper extends DatabaseHelper {
+
     /**
-     * The name of the single column in the table, named 'date'.
+     * The names of the columns in the table.
      */
+    public static final String C_ACTIVITY = "activity";
     public static final String C_DATE = "date";
+    public static final String C_PERFORMANCE = "performance";
+    public static final String C_DIFFICULTY = "difficulty";
+
 
     /**
-     * Creates a new DatabaseHelper with the tracker database.
-     *
-     * @param context The application context.
-     */
-    public TrackerDbHelper(Context context) {
-        super(context, "tracker.db", "tracker");
-    }
-
-    /**
-     * Called when DB is first created. Creates a table of a single column labelled 'date', which
-     * will be added onto as new rows.
+     * Called when DB is first created. Creates a table consisting of a primary key id, activity
+     * name, date played, performance score, and activity difficulty.
      *
      * @param db Database to create table on.
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + TABLE + " (" + C_DATE + " DATE PRIMARY KEY)";
+        String sql = "CREATE TABLE "
+                + TABLE
+                + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + C_ACTIVITY + " TEXT NOT NULL, "
+                + C_DATE + " DATE NOT NULL, "
+                + C_PERFORMANCE + " INTEGER NOT NULL, "
+                + C_DIFFICULTY + " INTEGER)";
         db.execSQL(sql);
         Log.d("TrackerDbHelper", "onCreate w sql: " + sql);
     }
 
+
+    public TrackerDbHelper(Context context) {
+        super(context, "tracker.db", "tracker");
+    }
+
     /**
-     * Adds today's date to the database as a new row. Then updates the streaks on the Streak
+     * Adds activity tracking information to the database as a new row. Then updates the streaks on the Streak
      * Database, as this new row may imply a change in the information there.
      *
+     * @param activityName The name of the activity that was played
+     * @param performance The score the user received on the activity
+     * @param difficulty The difficulty that the activity was run on
      * @param sdbh StreakDatabaseHelper so that the streak update can be triggered.
      */
-    public void addDateToDb(StreakDbHelper sdbh) {
+    public void addToDb(String activityName, int performance, int difficulty, StreakDbHelper sdbh) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.clear();
-        String dateString = "";
-        Date currentDate = new Date();
-        dateString = (currentDate.getYear() + 1900) + "-"
-                + (currentDate.getMonth()) + "-" + currentDate.getDate();
+        String dateString = DbDate.getDateString();
+
+        values.put(C_ACTIVITY, activityName);
         values.put(C_DATE, dateString);
+        values.put(C_PERFORMANCE, performance);
+        values.put(C_DIFFICULTY, difficulty);
         try {
             db.insertOrThrow(TABLE, null, values);
         } catch (SQLException e){
@@ -90,7 +104,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         Date dateEntry = new Date();
         Calendar cal = Calendar.getInstance();
 
-        dateEntry = clearTime(dateEntry);
+        dateEntry = DbDate.clearTime(dateEntry);
         while(dates.contains(dateEntry)){
             newStreak++;
 
@@ -103,23 +117,6 @@ public class TrackerDbHelper extends DatabaseHelper {
     }
 
     /**
-     * Erases the time from a Date object, as otherwise two Dates with the same calendar date
-     * are not identical in the eyes of Java.
-     *
-     * @param dateEntry Date to sanitize
-     * @return sanitized Date
-     */
-    private Date clearTime(Date dateEntry) {
-        long fullTime = dateEntry.getTime();
-        long millis = fullTime % 1000;
-        Date newDate = new Date(fullTime - millis);
-        newDate.setHours(0);
-        newDate.setMinutes(0);
-        newDate.setSeconds(0);
-        return newDate;
-    }
-
-    /**
      * Gets all of the dates which are recorded in the database.
      *
      * @return HashSet of all the dates in the database.
@@ -127,10 +124,19 @@ public class TrackerDbHelper extends DatabaseHelper {
     public HashSet<Date> getDates() {
         HashSet<Date> dates = new HashSet<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(true, TABLE, null, null, null, null, null, null, null);
+        Cursor cursor = db.query
+                (true,
+                        TABLE,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         String strDate;
         int year, month, date;
-        final int COLUMN_INDEX = 0; //There's only 1 column in this table
+        final int COLUMN_INDEX = 2; //The column that dates are located in
 
         cursor.moveToFirst();
         try {
@@ -146,7 +152,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         do{
             strDate = cursor.getString(COLUMN_INDEX);
             year = Integer.parseInt(strDate.substring(0, 4)) - 1900;
-            if (doubleDigitMonth(strDate)){
+            if (DbDate.doubleDigitMonth(strDate)){
                 month = Integer.parseInt(strDate.substring(5,7));
                 date = Integer.parseInt(strDate.substring(8));
             } else {
@@ -157,16 +163,5 @@ public class TrackerDbHelper extends DatabaseHelper {
         } while (cursor.moveToNext());
         db.close();
         return dates;
-    }
-
-    /**
-     * Takes a specially formatted String date and calculates whether or not the month in said date
-     * is at or past October (month 10).
-     *
-     * @param strDate String numeric date with dash delimination
-     * @return true if month >= 10, false otherwise
-     */
-    private boolean doubleDigitMonth(String strDate) {
-        return strDate.charAt(5) == '1' && strDate.charAt(6) != '-';
     }
 }

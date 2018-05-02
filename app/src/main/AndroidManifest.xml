@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.screen.portrait" />
 
+    <uses-feature android:name="android.hardware.screen.portrait" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_logo"
@@ -30,6 +32,9 @@
             android:name="com.avarsava.stuttersupport.TrainGameActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.avarsava.stuttersupport.BasketballGameActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.avarsava.stuttersupport.DeepBreatheActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -40,6 +45,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.avarsava.stuttersupport.ScriptReadingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.avarsava.stuttersupport.NotificationSettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.avarsava.stuttersupport.ThoughtTrackerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.avarsava.stuttersupport.ParentTeacherInterfaceActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.avarsava.stuttersupport.SetupActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.avarsava.stuttersupport.PTIPasswordActivity"
             android:screenOrientation="portrait" />
 
         <service

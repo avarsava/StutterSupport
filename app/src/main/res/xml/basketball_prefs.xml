@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Level of word difficulty -->
+    <ListPreference android:title="Difficulty Level"
+        android:defaultValue="1"
+        android:key="bb_difficulty"
+        android:entries="@array/difficultyLevels"
+        android:entryValues="@array/levelValues" />
+
+    <!-- Number of rounds to perform -->
+    <EditTextPreference
+        android:defaultValue="3"
+        android:key="bb_max_cycles"
+        android:inputType="number"
+        android:numeric="integer"
+        android:singleLine="true"
+        android:maxLength="2"
+        android:title="Number of Rounds" />
+
+    <!-- The speed of the game (in terms of how fast you pronounce the syllables -->
+    <EditTextPreference
+        android:defaultValue="4"
+        android:inputType="number"
+        android:key="bb_speed"
+        android:maxLength="1"
+        android:numeric="integer"
+        android:singleLine="true"
+        android:summary="The lower the number, the faster the speed of the game"
+        android:title="Speed of Game" />
+
+    <!-- Button to restore default preferences -->
+    <Preference android:title="Restore Defaults"
+        android:key="restoreDefaults" />
+
+    <!-- Button to go back to Main Menu -->
+    <Preference android:title="Back to Menu"
+        android:key="backButton" />
+</PreferenceScreen>

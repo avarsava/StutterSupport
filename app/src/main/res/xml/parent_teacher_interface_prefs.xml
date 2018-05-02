@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Global Settings">
+    <EditTextPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:key="pti_userAge"
+        android:maxLength="3"
+        android:numeric="integer"
+        android:title="User Age" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pti_socialMediaIntegration"
+        android:title="Social Media Integration" />
+
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pti_disableNotifications"
+        android:title="Disable Notifications" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Game Settings">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pti_tg_override"
+            android:title="Override No Need to Shout Difficulty"
+            android:disableDependentsState="false"/>
+        <ListPreference
+            android:defaultValue="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/difficultyLevels"
+            android:entryValues="@array/levelValues"
+            android:key="tg_Difficulty"
+            android:title="No Need to Shout Difficulty"
+            android:dependency="pti_tg_override"/>
+
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="pti_override_deepBreathing"
+            android:title="Override Relax Settings"
+            android:disableDependentsState="false"/>
+        <EditTextPreference
+            android:defaultValue="7"
+            android:inputType="number"
+            android:key="db_inhaleLength"
+            android:maxLength="2"
+            android:numeric="integer"
+            android:title="Inhale Length"
+            android:dependency="pti_override_deepBreathing"/>
+        <EditTextPreference android:title="Exhale Length"
+            android:key="db_exhaleLength"
+            android:defaultValue="11"
+            android:inputType="number"
+            android:numeric="integer"
+            android:maxLength="2"
+            android:dependency="pti_override_deepBreathing"/>
+        <EditTextPreference android:title="Number of Breaths"
+            android:key="db_noOfBreaths"
+            android:defaultValue="3"
+            android:inputType="number"
+            android:numeric="integer"
+            android:maxLength="2"
+            android:dependency="pti_override_deepBreathing"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pti_bbg_override"
+            android:title="Override Basketball Settings"
+            android:disableDependentsState="false"/>
+        <!-- Level of word difficulty -->
+        <ListPreference android:title="Basketball Difficulty"
+            android:defaultValue="1"
+            android:key="bb_difficulty"
+            android:entries="@array/difficultyLevels"
+            android:entryValues="@array/levelValues"
+            android:dependency="pti_bbg_override"/>
+
+        <!-- Number of rounds to perform -->
+        <EditTextPreference
+            android:defaultValue="3"
+            android:key="bb_max_cycles"
+            android:inputType="number"
+            android:numeric="integer"
+            android:singleLine="true"
+            android:maxLength="2"
+            android:title="Number of Rounds"
+            android:dependency="pti_bbg_override"/>
+
+        <!-- The speed of the game (in terms of how fast you pronounce the syllables -->
+        <EditTextPreference
+            android:defaultValue="4"
+            android:inputType="number"
+            android:key="bb_speed"
+            android:maxLength="1"
+            android:numeric="integer"
+            android:singleLine="true"
+            android:summary="The lower the number, the faster the speed of the game"
+            android:title="Speed of Game"
+            android:dependency="pti_bbg_override"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Menu">
+        <Preference android:title="Restore Defaults"
+            android:key="restoreDefaults" />
+        <Preference android:title="Back to Menu"
+            android:key="backButton" />
+    </PreferenceCategory>
+</PreferenceScreen>

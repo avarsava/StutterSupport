@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Button to reset database -->
+    <Preference android:title="Clear Database"
+        android:key="clearDatabase" />
+
+    <!-- Button to restore default preferences -->
+    <Preference android:title="Restore Defaults"
+        android:key="restoreDefaults" />
+
+    <!-- Button to go back to Main Menu -->
+    <Preference android:title="Back to Menu"
+        android:key="backButton" />
+</PreferenceScreen>

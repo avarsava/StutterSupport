@@ -16,7 +16,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * A game in which a man prompts you to repeat after him, then you are interrupted by a passing
@@ -26,6 +26,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
  * correct word at the right time.
  */
 public class TrainGameActivity extends GameActivity{
+    public static final String ACTIVITY_NAME = "TrainGame";
     /**
      * Tag for debug logs
      */
@@ -179,20 +180,6 @@ public class TrainGameActivity extends GameActivity{
     }
 
     /**
-     * Determines whether the user passed all the cycles of gameplay and returns the appropriate
-     * result code for Android.
-     *
-     * @return RESULT_OK if the user has successfully completed the Activity, else RESULT_CANCELED
-     */
-    private int calculateSuccess(){
-        if (passed == maxCycles){
-            return RESULT_OK;
-        } else {
-            return RESULT_CANCELED;
-        }
-    }
-
-    /**
      * Cancels the cycle, causing the game to wait for the specified duration.
      */
     public void cancelCycle() {
@@ -218,7 +205,11 @@ public class TrainGameActivity extends GameActivity{
             passed++;
             Log.d(TAG, "passed = " + passed + ", successful should now be true");
         } else {
-            cancelCycle();
+            if(currentState == STATE.NOTREADY){
+                return;
+            }else {
+                cancelCycle();
+            }
         }
     }
 
@@ -277,7 +268,7 @@ public class TrainGameActivity extends GameActivity{
         /**
          * Game scenery
          */
-        private Drawable instructionBg, gameBg, gameFg;
+        private Drawable instructionBg, gameBg, gameFg, person;
 
         /**
          * Game objects used to denote gameplay progression.
@@ -313,10 +304,12 @@ public class TrainGameActivity extends GameActivity{
         protected void doDrawing(){
             switch(currentState){
                 case CALL:
+                    person.draw(canvas);
                     bgBalloon.draw(canvas);
+                    blackPaint.setTextSize(getTextSizeForWidth(blackPaint, Math.min(getScaled(345) - getScaled(115) - getScaled(60), getResources().getDimensionPixelSize(R.dimen.tg_font_size)), currentString));
                     canvas.drawText(currentString,
-                            getScaled(120),
-                            getScaled(125),
+                            screenWidth - getScaled(230),
+                            getScaled(110),
                             blackPaint);
                     happy.draw(canvas);
                     gameFg.draw(canvas);
@@ -327,6 +320,7 @@ public class TrainGameActivity extends GameActivity{
                     break;
                 case RESP:
                     gameFg.draw(canvas);
+                    person.draw(canvas);
                     bgBalloon.draw(canvas);
                     if(successful){
                         Log.d(TAG, "successful is true, draw good result");
@@ -346,7 +340,7 @@ public class TrainGameActivity extends GameActivity{
 
             //cycle end logic
             switchStateIfNecessary();
-            killIfCountHigh(calculateSuccess());
+            killIfCountHigh(ACTIVITY_NAME, passed, Integer.valueOf(prefs.getString("tg_Difficulty", "1")));
         }
 
         /**
@@ -374,7 +368,6 @@ public class TrainGameActivity extends GameActivity{
             blackPaint = new Paint();
             blackPaint.setColor(Color.BLACK);
             blackPaint.setTextAlign(Paint.Align.CENTER);
-            blackPaint.setTextSize(100);
         }
 
         /**
@@ -396,11 +389,13 @@ public class TrainGameActivity extends GameActivity{
             happy = resources.getDrawable(R.drawable.ic_train_game_happy_face);
             sad = resources.getDrawable(R.drawable.ic_train_game_sad_face);
 
+            person = resources.getDrawable(R.drawable.ic_train_game_person);
+
             //Set boundaries for drawings
             gameFg.setBounds(0, 0, screenWidth, screenHeight);
-            bgBalloon.setBounds(0, 0,
-                    screenWidth - getScaled(100),
-                    screenHeight - getScaled(400));
+            bgBalloon.setBounds(screenWidth - getScaled(345), getScaled(35),
+                    screenWidth - getScaled(115),
+                    getScaled(210));
             fgBalloon.setBounds(screenWidth - getScaled(175),
                     screenHeight - getScaled(300),
                     screenWidth,
@@ -413,11 +408,17 @@ public class TrainGameActivity extends GameActivity{
                     getScaled(80),
                     screenWidth - getScaled(30),
                     getScaled(180));
+            person.setBounds(screenWidth - getScaled(115),
+                    getScaled(75),
+                    screenWidth - getScaled(10),
+                    getScaled(325));
             car.setBounds(0, 0, screenWidth, screenHeight - getScaled(120));
-            checkmark.setBounds(getScaled(75), getScaled(50),
-                    getScaled(175), getScaled(155));
-            qmark.setBounds(getScaled(75), getScaled(50),
-                    getScaled(175), getScaled(155));
+            checkmark.setBounds(screenWidth - getScaled(345), getScaled(35),
+                    screenWidth - getScaled(115),
+                    getScaled(210));
+            qmark.setBounds(screenWidth - getScaled(345), getScaled(35),
+                    screenWidth - getScaled(115),
+                    getScaled(210));
         }
     }
 }

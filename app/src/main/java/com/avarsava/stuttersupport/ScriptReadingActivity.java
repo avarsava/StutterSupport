@@ -19,7 +19,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.5
  * @since   0.1
  *
  * An activity in which the player is tasked, without timing or pressure, to read aloud a script
@@ -28,6 +28,7 @@ import edu.cmu.pocketsphinx.Hypothesis;
  */
 
 public class ScriptReadingActivity extends GameActivity {
+    public static final String ACTIVITY_NAME = "ScriptReading";
     /**
      * Tag for debug logs.
      */
@@ -62,6 +63,7 @@ public class ScriptReadingActivity extends GameActivity {
      * Describes whether or not the voice recognition engine has been initialized.
      */
     private boolean recognizerInitialized;
+
 
     /**
      * Set up objects necessary for gameplay. Called automatically when Activity starts
@@ -143,7 +145,7 @@ public class ScriptReadingActivity extends GameActivity {
 
                 //If there are no more words, exit with successful status
                 } else {
-                    killIfCountHigh(RESULT_OK);
+                    killIfCountHigh(ACTIVITY_NAME, 1,1);
                 }
             }
             resetRecognizer();
@@ -196,7 +198,7 @@ public class ScriptReadingActivity extends GameActivity {
         /**
          * How far down to push the text from the top of the screen.
          */
-        private final int TOP_OFFSET = getScaled(100);
+        private final int TOP_OFFSET = getScaled(60);
 
         /**
          * Used to wrap the text to the size of the device screen and update screen with new text
@@ -206,7 +208,7 @@ public class ScriptReadingActivity extends GameActivity {
         /**
          * For styling text on the canvas
          */
-        private TextPaint textPaint, highlightPaint;
+        private TextPaint textPaint;
 
         /**
          * Script to display in DynamicLayout. Needs to be SpannableStringBuilder
@@ -291,14 +293,9 @@ public class ScriptReadingActivity extends GameActivity {
         private void setUpPaints(){
             textPaint = new TextPaint();
             textPaint.setColor(Color.BLACK);
-            textPaint.setTextSize(70);
+            textPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.sr_font_size));
             textPaint.setTextAlign(Paint.Align.LEFT);
             textPaint.setAntiAlias(true);
-            highlightPaint = new TextPaint();
-            highlightPaint.setColor(Color.RED);
-            highlightPaint.setTextSize(50);
-            highlightPaint.setTextAlign(Paint.Align.CENTER);
-            highlightPaint.setAntiAlias(true);
         }
 
         /**

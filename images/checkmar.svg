@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
+   width="310mm"
    height="297mm"
-   viewBox="0 0 210 297"
+   viewBox="0 0 310 297"
    version="1.1"
    id="svg1795"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
    sodipodi:docname="checkmar.svg">
   <defs
      id="defs1789" />
@@ -25,14 +25,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="438.76752"
-     inkscape:cy="471.03442"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="885.98176"
+     inkscape:cy="570.59611"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1440"
+     inkscape:window-height="838"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -53,20 +53,19 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:2.56500006;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect1797"
-       width="49.136902"
-       height="111.125"
-       x="185.11046"
-       y="-47.865669"
+       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:1.72338557;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1797-3-4"
+       width="33.014355"
+       height="74.663246"
+       x="173.78308"
+       y="-87.013786"
        rx="0"
        ry="0"
        transform="rotate(48.142645)" />
     <path
-       transform="rotate(133.46286)"
-       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:2.04561353;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 82.159946,-228.3053 v 88.62332 l -39.187179,0 v -43.3138"
-       id="rect1797-7"
+       style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:1.37441742;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 147.19027,145.78318 -43.21876,-40.95985 18.11151,-19.110329 21.12275,20.018729"
+       id="rect1797-7-2-8"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
   </g>
