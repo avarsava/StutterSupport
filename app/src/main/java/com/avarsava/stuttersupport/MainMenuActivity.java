@@ -1,5 +1,5 @@
 package com.avarsava.stuttersupport;
-;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +27,9 @@ import java.util.concurrent.Callable;
  *
  * Uses a ViewPager to scroll multiple Fragments horizontally, providing a menu. The Fragments
  * include a GameStarterMenuFragment for each game, plus a TrackerFragment to display the Tracker.
+ *
+ * Also responsible for generating encouragement and social media prompts based on values passed
+ * back from Activities.
  */
 public class MainMenuActivity extends FragmentActivity {
     /**
