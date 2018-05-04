@@ -153,10 +153,10 @@ public class TrackerDbHelper extends DatabaseHelper {
             strDate = cursor.getString(COLUMN_INDEX);
             year = Integer.parseInt(strDate.substring(0, 4)) - 1900;
             if (DbDate.doubleDigitMonth(strDate)){
-                month = Integer.parseInt(strDate.substring(5,7));
+                month = Integer.parseInt(strDate.substring(5,7)) - 1;
                 date = Integer.parseInt(strDate.substring(8));
             } else {
-                month = Integer.parseInt(String.valueOf(strDate.charAt(5)));
+                month = Integer.parseInt(strDate.substring(5,6)) - 1;
                 date = Integer.parseInt(strDate.substring(7));
             }
             dates.add(new Date(year, month, date));
