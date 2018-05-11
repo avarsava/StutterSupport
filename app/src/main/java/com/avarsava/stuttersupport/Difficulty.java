@@ -6,6 +6,8 @@ package com.avarsava.stuttersupport;
  * @since   0.1
  *
  * Reports on word list boundaries for different difficulty levels.
+ *
+ * TODO: Should this be an enum?
  */
 
 public class Difficulty {
