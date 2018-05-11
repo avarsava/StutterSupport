@@ -126,7 +126,7 @@ public class DbDate {
         return new Date(year, month, date);
     }
 
-    protected String getRangeDate(DATE_RANGE range){
+    protected static String getRangeDate(DATE_RANGE range){
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -range.getIntValue());
         Date rangeDate = cal.getTime();
