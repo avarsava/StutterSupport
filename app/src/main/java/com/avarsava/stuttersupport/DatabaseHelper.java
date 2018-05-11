@@ -77,8 +77,20 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public int getSum(){
-
+    /**
+     * Gets sum of results from a constructed query.
+     *
+     * @param activity Valid options are defined by ACTIVITY. Null is taken to mean 'any'
+     * @param dateRange Valid options are defined by DATE_RANGE. Cannot be null.
+     * @param difficulty Valid options are "1", "2", "3", and "*". Cannot be null.
+     * @return Cursor of results from database.
+     */
+    public int getSum(ACTIVITY activity,
+                      @NonNull DATE_RANGE dateRange,
+                      @NonNull String difficulty){
+        checkValidDifficulty(difficulty);
+        Cursor results = getResults(COUNT_TYPE.DATE, activity, dateRange, difficulty);
+        return results.getCount();
     }
 
     public double getMean(){
@@ -99,10 +111,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
                              @NonNull DATE_RANGE dateRange,
                              @NonNull String difficulty){
 
-        List<String> validDifficulties = new LinkedList<String>(Arrays.asList("1", "2", "3", "*"));
-        if (!validDifficulties.contains(difficulty)){
-            throw new IllegalArgumentException("Difficulty must be 1, 2, 3, or *");
-        }
+        checkValidDifficulty(difficulty);
 
         String activityStr;
         if (activity == null){
@@ -127,5 +136,12 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
                 null);
 
         return cursor;
+    }
+
+    private void checkValidDifficulty(String diff){
+        List<String> validDifficulties = new LinkedList<String>(Arrays.asList("1", "2", "3", "*"));
+        if (!validDifficulties.contains(diff)){
+            throw new IllegalArgumentException("Difficulty must be 1, 2, 3, or *");
+        }
     }
 }
