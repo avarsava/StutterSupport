@@ -83,18 +83,47 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
      * @param activity Valid options are defined by ACTIVITY. Null is taken to mean 'any'
      * @param dateRange Valid options are defined by DATE_RANGE. Cannot be null.
      * @param difficulty Valid options are "1", "2", "3", and "*". Cannot be null.
-     * @return Cursor of results from database.
+     * @return Number of results from query
      */
     public int getSum(ACTIVITY activity,
                       @NonNull DATE_RANGE dateRange,
                       @NonNull String difficulty){
         checkValidDifficulty(difficulty);
         Cursor results = getResults(COUNT_TYPE.DATE, activity, dateRange, difficulty);
-        return results.getCount();
+        int sum = results.getCount();
+        results.close();
+
+        return sum;
     }
 
-    public double getMean(){
+    /**
+     * Gets mean result from a constructed query
+     *
+     * @param countType Valid options are defined by COUNT_TYPE. Cannot be null.
+     * @param activity Valid options are defined by ACTIVITY. Null is taken to mean 'any'
+     * @param dateRange Valid options are defined by DATE_RANGE. Cannot be null.
+     * @param difficulty Valid options are "1", "2", "3", and "*". Cannot be null.
+     * @return Cursor of results from database.
+     */
+    public double getMean(@NonNull COUNT_TYPE countType,
+                          ACTIVITY activity,
+                          @NonNull DATE_RANGE dateRange,
+                          @NonNull String difficulty){
+        Cursor results = getResults(countType, activity, dateRange, difficulty);
+        int sum = results.getCount();
+        int total = 0;
+        int colIndex = 0;
+        switch(countType){
+            case DIFFICULTY: colIndex = 4; break;
+            case PERFORMANCE: colIndex = 3; break;
+        }
 
+        results.moveToFirst();
+        while(results.moveToNext()){
+            total =+ results.getInt(colIndex);
+        }
+
+        return (double) total/sum;
     }
 
     /**

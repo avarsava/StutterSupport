@@ -14,10 +14,10 @@ import java.util.Date;
 import java.util.HashSet;
 
 /**
- * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.5
- * @since   0.1
- *
+ * @author Alexis Varsava <av11sl@brocku.ca>
+ * @version 1.6
+ * @since 0.1
+ * <p>
  * Eases access to database containing dates on which activities were successfully
  * completed, and information regarding how well the user did.
  * This database is used for tracking the activity of the user and for calculating the
@@ -66,9 +66,9 @@ public class TrackerDbHelper extends DatabaseHelper {
      * Database, as this new row may imply a change in the information there.
      *
      * @param activityName The name of the activity that was played
-     * @param performance The score the user received on the activity
-     * @param difficulty The difficulty that the activity was run on
-     * @param sdbh StreakDatabaseHelper so that the streak update can be triggered.
+     * @param performance  The score the user received on the activity
+     * @param difficulty   The difficulty that the activity was run on
+     * @param sdbh         StreakDatabaseHelper so that the streak update can be triggered.
      */
     public void addToDb(String activityName, int performance, int difficulty, StreakDbHelper sdbh) {
         SQLiteDatabase db = getWritableDatabase();
@@ -82,7 +82,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         values.put(C_DIFFICULTY, difficulty);
         try {
             db.insertOrThrow(TABLE, null, values);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             Log.e("DATABASE", "ERROR when adding to DB");
             e.printStackTrace();
         }
@@ -105,7 +105,7 @@ public class TrackerDbHelper extends DatabaseHelper {
         Calendar cal = Calendar.getInstance();
 
         dateEntry = DbDate.clearTime(dateEntry);
-        while(dates.contains(dateEntry)){
+        while (dates.contains(dateEntry)) {
             newStreak++;
 
             cal.setTime(dateEntry);
@@ -144,19 +144,19 @@ public class TrackerDbHelper extends DatabaseHelper {
                 db.close();
                 return dates;
             }
-        } catch (CursorIndexOutOfBoundsException e){
+        } catch (CursorIndexOutOfBoundsException e) {
             db.close();
             return dates;
         }
         //Past this point, safe to assume there's dates in the database
-        do{
+        do {
             strDate = cursor.getString(COLUMN_INDEX);
             year = Integer.parseInt(strDate.substring(0, 4)) - 1900;
-            if (DbDate.doubleDigitMonth(strDate)){
-                month = Integer.parseInt(strDate.substring(5,7)) - 1;
+            if (DbDate.doubleDigitMonth(strDate)) {
+                month = Integer.parseInt(strDate.substring(5, 7)) - 1;
                 date = Integer.parseInt(strDate.substring(8));
             } else {
-                month = Integer.parseInt(strDate.substring(5,6)) - 1;
+                month = Integer.parseInt(strDate.substring(5, 6)) - 1;
                 date = Integer.parseInt(strDate.substring(7));
             }
             dates.add(new Date(year, month, date));
