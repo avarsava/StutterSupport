@@ -20,13 +20,16 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
+ * @author Alexis Varsava <av11sl@brocku.ca>
  * @author Weston James Knight
- * @version 1.5
+ * @version 1.6
  * @since   1.1
  *
  * Provides a backend interface for use by parents, teachers, SLP, &c. Provides information on
  * completed activities, access to override settings, and the ability to export activity data
  * to CSV for processing and reporting
+ *
+ * TODO: A tappable Calendar interface would go great here
  */
 public class ParentTeacherInterfaceActivity extends Activity {
     /**
@@ -44,12 +47,6 @@ public class ParentTeacherInterfaceActivity extends Activity {
     public static TextView numberDeepBreathe;
     public static TextView numberScriptReading;
     public static TextView numberTrainGame;
-
-    /**
-     * Onscreen buttons provide access to Settings screen and exporting data to CSV
-     */
-    public static Button settingsButton;
-    public static Button exportDataButton;
 
     /**
      * Inflates XML to screen and assigns TextViews to internal objects.
@@ -70,9 +67,6 @@ public class ParentTeacherInterfaceActivity extends Activity {
         numberScriptReading = (TextView) findViewById(R.id.numberScriptReading);
         numberTrainGame = (TextView) findViewById(R.id.numberTrainGame);
 
-        settingsButton = (Button) findViewById(R.id.settingsButton);
-        exportDataButton = (Button) findViewById(R.id.exportDataButton);
-
         refreshData();
     }
 
@@ -84,13 +78,13 @@ public class ParentTeacherInterfaceActivity extends Activity {
     public void onClick(View view){
         //Handle each type of button
         switch (view.getId()) {
-            case R.id.settingsButton:
+            case R.id.ptiSettingsButton:
                Intent settingsIntent = new Intent(this,SettingsScreenActivity.class);
                settingsIntent.putExtra("prefs", R.xml.parent_teacher_interface_prefs);
                 startActivity(settingsIntent);
                 break;
 
-            case R.id.exportDataButton:
+            case R.id.exportButton:
                 exportDatabase();
                 break;
         }
