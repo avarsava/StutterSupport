@@ -1,19 +1,29 @@
 package com.avarsava.stuttersupport;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author  Alexis Varsava <av11sl@brocku.ca>
- * @version 1.0
+ * @version 1.6
  * @since   0.1
  *
  * Generic database helper class to interface with SQLite.
  */
 public abstract class DatabaseHelper extends SQLiteOpenHelper {
+    /**
+     * Restricts vocabulary for arguments
+     */
+    protected enum COUNT_TYPE {DATE, PERFORMANCE, DIFFICULTY}
+
     /**
      * Name of database.
      */
@@ -65,5 +75,57 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
         //and recreate it from scratch
         onCreate(db);
+    }
+
+    public int getSum(){
+
+    }
+
+    public double getMean(){
+
+    }
+
+    /**
+     * Gets results from a constructed query.
+     *
+     * @param countType Valid options are defined by COUNT_TYPE. Cannot be null.
+     * @param activity Valid options are defined by ACTIVITY. Null is taken to mean 'any'
+     * @param dateRange Valid options are defined by DATE_RANGE. Cannot be null.
+     * @param difficulty Valid options are "1", "2", "3", and "*". Cannot be null.
+     * @return Cursor of results from database.
+     */
+    public Cursor getResults(@NonNull COUNT_TYPE countType,
+                             ACTIVITY activity,
+                             @NonNull DATE_RANGE dateRange,
+                             @NonNull String difficulty){
+
+        List<String> validDifficulties = new LinkedList<String>(Arrays.asList("1", "2", "3", "*"));
+        if (!validDifficulties.contains(difficulty)){
+            throw new IllegalArgumentException("Difficulty must be 1, 2, 3, or *");
+        }
+
+        String activityStr;
+        if (activity == null){
+            activityStr = "*";
+        } else {
+            activityStr = activity.name();
+        }
+
+        String today, rangeDate;
+        today = DbDate.getDateString();
+        rangeDate = DbDate.getRangeDate(dateRange);
+
+        SQLiteDatabase db = getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " + countType.name()
+                + " FROM " + TABLE
+                + " WHERE ( date BETWEEN " + today + " AND " + rangeDate + ")"
+                + " AND ( difficulty = " + difficulty + ")"
+                + " AND ( activity = '" + activityStr + "')",
+                null);
+
+        return cursor;
     }
 }
