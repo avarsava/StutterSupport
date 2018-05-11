@@ -105,7 +105,7 @@ public class DbDate {
     }
 
     /**
-     * Taes in a String datestring generated from this class and converts it back to a Java Date
+     * Takes in a String datestring generated from this class and converts it back to a Java Date
      *
      * @param dateString String to convert to Java Date
      * @return Java Date object, missing time info
